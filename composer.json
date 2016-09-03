@@ -1,5 +1,5 @@
 {
-    "name": "filipsedivy/eet",
+    "name": "filipsedivy/php-eet",
     "description": "PHP knihovna pro elektronickou evidenci tržeb",
     "homepage": "https://github.com/filipsedivy/PHP-EET",
     "license": "GNU GPL 3",
