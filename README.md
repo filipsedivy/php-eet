@@ -5,7 +5,5 @@
 ## Instalace
 
 ```bash
-​```
 composer require filipsedivy/php-eet
-​```
 ```
