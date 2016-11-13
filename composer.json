@@ -22,12 +22,12 @@
             "role": "Developer"
         }
     ],
-    "require": {
-        "php": ">=5.3.2"
-    },
     "autoload": {
         "psr-4": {
             "": "src/"
         }
+    },
+    "require": {
+        "robrichards/wse-php": "2.0.0"
     }
 }
