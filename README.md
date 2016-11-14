@@ -47,6 +47,10 @@ echo $dispatcher->send($r);
 
 Pokud potřebujete pomoc s implementací nebo poradit se okolo EET (registrace EET, generování certifikátů,...) můžete mě kontaktovat (*https://filipsedivy.cz*).
 
+## Screencasty
+
+- Generování certifikátu pro EET - https://youtu.be/N5Cb9SqeP6g
+
 ## Odkazy
 - etržby.cz - http://www.etrzby.cz/
 - Finanční správa - http://www.financnisprava.cz/cs/financni-sprava/eet
