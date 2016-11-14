@@ -58,4 +58,4 @@ Pokud potřebujete pomoc s implementací nebo poradit se okolo EET (registrace E
 
 ## Licence
 
-Licence bude doplněna do vydání první stabilní verze
+GNU GPL 3 - http://www.gnugpl.cz/v3/
