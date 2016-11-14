@@ -55,6 +55,7 @@ Pokud potřebujete pomoc s implementací nebo poradit se okolo EET (registrace E
 - etržby.cz - http://www.etrzby.cz/
 - Finanční správa - http://www.financnisprava.cz/cs/financni-sprava/eet
 - Daňový portál - https://adisspr.mfcr.cz/adistc/adis/idpr_pub/eet/eet_sluzby.faces
+- Informace o EET z pohledu podnikání - http://www.jakpodnikat.cz/eet-elektronicka-evidence-trzeb.php
 
 ## Licence
 
