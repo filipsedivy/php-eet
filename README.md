@@ -12,6 +12,19 @@ Pro instalaci balíčku je nutné jej instalovat skrze [Composer](https://getcom
 composer require filipsedivy/php-eet
 ```
 
+### Bez Composeru
+
+S každou verzí, která bude vydána bude přiložen i ZIP balíček, pro možnost instalace bez Composeru. **Avšak tuto možnost nedoporučuji, neboť není v našich silách udržet aktualizovaný ZIP baliček a verzi pro Composer.** Proto ZIP balíček bude vždy vygenerován pro velké verze, nikoliv pro menší aktualizace.
+
+#### Aktuální ZIP balíček
+
+Verze: 1.0.1
+
+Datum vygenerování: 15.11.2016
+
+Stáhnout: https://github.com/filipsedivy/PHP-EET/releases/download/v1.0.1/php-eet-20161115.zip
+
+
 ## Ukázka užití
 
 Ukázky naleznete ve složce **examples/**.
