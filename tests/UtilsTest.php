@@ -4,7 +4,7 @@ namespace Tests;
 
 use FilipSedivy\EET\Utils\UUID;
 
-class OtherTest extends \PHPUnit_Framework_TestCase
+class UtilsTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testMinimumUUIDLength(){
