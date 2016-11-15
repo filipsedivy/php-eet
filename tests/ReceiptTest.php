@@ -16,11 +16,7 @@ class ReceiptTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach($attributes as $attribute){
-<<<<<<< HEAD
             $this->assertClassHasAttribute($attribute, new Receipt());
-=======
-            $this->assertClassHasAttribute($attribute, Receipt::class);
->>>>>>> 8a99cbf7f39897f71680a31b2e1afeb8e1670705
         }
     }
 }
