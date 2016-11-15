@@ -2,3 +2,6 @@
 composer.lock
 docs/
 vendor/
+/tests/DispatcherTest.php
+/tests/ReceiptTest.php
+/tests/SoapClientTest.php
