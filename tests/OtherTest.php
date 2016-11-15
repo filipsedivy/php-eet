@@ -6,11 +6,10 @@ use FilipSedivy\EET\Utils\UUID;
 
 class OtherTest extends \PHPUnit_Framework_TestCase{
 
-    public function testDateTypeUUID(){
+    public function testMinimumUUIDLength(){
         $uuid = UUID::v4();
-        $this->assertInternalType('string', $uuid);
+        $lengthAssert = strlen($uuid) > 35;
+        $this->assertTrue($lengthAssert);
     }
-
-
 
 }
