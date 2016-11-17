@@ -15,14 +15,8 @@ use RobRichards\XMLSecLibs\XMLSecurityKey;
 class Dispatcher {
 
     /**
-     * Certificate key
-     * @var string
-     */
-    private $key;
-
-    /**
      * Certificate
-     * @var string
+     * @var Certificate
      */
     private $cert;
 
@@ -45,12 +39,10 @@ class Dispatcher {
 
     /**
      *
-     * @param string $key
-     * @param string $cert
+     * @param Certificate $cert
      */
-    public function __construct($service, $key, $cert) {
+    public function __construct($service,Certificate $cert) {
         $this->service = $service;
-        $this->key = $key;
         $this->cert = $cert;
         $this->checkRequirements();
     }
@@ -116,12 +108,12 @@ class Dispatcher {
 
     /**
      *
-     * @param \Ondrejnov\EET\Receipt $receipt
+     * @param \FilipSedivy\EET\Receipt $receipt
      * @return array
      */
     public function getCheckCodes(Receipt $receipt) {
         $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
-        $objKey->loadKey($this->key, TRUE);
+        $objKey->loadKey($this->cert->getPrivateKey());
 
         $arr = [
             $receipt->dic_popl,
@@ -192,7 +184,7 @@ class Dispatcher {
      */
     private function initSoapClient() {
         if ($this->soapClient === NULL) {
-            $this->soapClient = new SoapClient($this->service, $this->key, $this->cert, $this->trace);
+            $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace);
         }
     }
 

@@ -9,10 +9,7 @@ use RobRichards\XMLSecLibs\XMLSecurityKey;
 
 class SoapClient extends \SoapClient {
 
-    /** @var string */
-    private $key;
-
-    /** @var string */
+    /** @var Certificate */
     private $cert;
 
     /** @var boolean */
@@ -44,17 +41,15 @@ class SoapClient extends \SoapClient {
     /**
      *
      * @param string $service
-     * @param string $key
-     * @param string $cert
+     * @param Certificate $cert
      * @param boolean $trace
      */
-    public function __construct($service, $key, $cert, $trace = FALSE) {
+    public function __construct($service, Certificate $cert, $trace = FALSE) {
         $this->connectionStartTime = microtime(TRUE);
         parent::__construct($service, [
             'exceptions' => TRUE,
             'trace' => $trace
         ]);
-        $this->key = $key;
         $this->cert = $cert;
         $this->traceRequired = $trace;
     }
@@ -68,10 +63,10 @@ class SoapClient extends \SoapClient {
         $objWSSE->addTimestamp();
 
         $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
-        $objKey->loadKey($this->key, TRUE);
+        $objKey->loadKey($this->cert->getPrivateKey());
         $objWSSE->signSoapDoc($objKey, ["algorithm" => XMLSecurityDSig::SHA256]);
 
-        $token = $objWSSE->addBinaryToken(file_get_contents($this->cert));
+        $token = $objWSSE->addBinaryToken($this->cert->getCert());
         $objWSSE->attachTokentoSig($token);
 
         return $objWSSE->saveXML();
