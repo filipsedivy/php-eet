@@ -29,32 +29,35 @@ Stáhnout: https://github.com/filipsedivy/PHP-EET/releases/download/v1.0.1/php-e
 
 Ukázky naleznete ve složce **examples/**.
 
-Ve složce **examples/cert/** je certifikát pro testovacího uživatele.
+Certifikát **EET_CA1_Playground-CZ00000019.p12** byl vydán pro účel testování Daňovou správou. Tento certifikát nepoužívejte pro ostrou verzi. Svůj certifikát si vygenerujete skrze rozhraní Daňové správy.
 
 ```php
+use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
 use FilipSedivy\EET\Utils\UUID;
 
-$dispatcher = new Dispatcher(
-    Playground,
-    __DIR__.'/cert/eet.key',
-    __DIR__.'/cert/eet.pem'
-);
+$certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'eet');
+$dispatcher = new Dispatcher(Playground, $certificate);
 
 $uuid = UUID::v4(); // Generování UUID
 
 $r = new Receipt;
 $r->uuid_zpravy = $uuid;
-$r->id_provoz = '100';
-$r->id_pokl = '1';
-$r->dic_popl = 'CZ72080043';
+$r->id_provoz = '11';
+$r->id_pokl = 'IP105';
+$r->dic_popl = 'CZ1212121218';
 $r->porad_cis = '1';
 $r->dat_trzby = new \DateTime();
 $r->celk_trzba = 500;
 
 echo $dispatcher->send($r);
 ```
+
+## Aktualizace
+
+- 2.0.0
+  - Úprava načítání certifikátu (*nyní není třeba certifikát převádět, třída jej převede sama*)
 
 ## Podpora / Implementace
 
