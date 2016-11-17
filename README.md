@@ -18,11 +18,11 @@ S každou verzí, která bude vydána bude přiložen i ZIP balíček, pro možn
 
 #### Aktuální ZIP balíček
 
-Verze: 1.0.1
+Verze: 2.0.0
 
-Datum vygenerování: 15.11.2016
+Datum vygenerování: 17.11.2016
 
-Stáhnout: https://github.com/filipsedivy/PHP-EET/releases/download/v1.0.1/php-eet-20161115.zip
+Stáhnout: https://github.com/filipsedivy/PHP-EET/releases/download/v2.0.0/php-eet-20161117.zip
 
 
 ## Ukázka užití
