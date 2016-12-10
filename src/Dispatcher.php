@@ -38,6 +38,26 @@ class Dispatcher {
     private $soapClient;
 
     /**
+     * Generated PKP from Receipt
+     */
+    protected $pkp;
+
+    /**
+     * Generated BKP from Receipt
+     */
+    protected $bkp;
+
+    /**
+     * Received FIK
+     */
+    protected $fik;
+
+    /**
+     * Last Receipt
+     */
+    protected $lastReceipt;
+
+    /**
      *
      * @param Certificate $cert
      */
@@ -123,17 +143,18 @@ class Dispatcher {
             $receipt->dat_trzby->format('c'),
             Format::price($receipt->celk_trzba)
         ];
-        $sign = $objKey->signData(join('|', $arr));
 
+        $this->pkp = $objKey->signData(implode('|', $arr));
+        $this->bkp = Format::BKB(sha1($this->pkp));
         return [
             'pkp' => [
-                '_' => $sign,
+                '_' => $this->pkp,
                 'digest' => 'SHA256',
                 'cipher' => 'RSA2048',
                 'encoding' => 'base64'
             ],
             'bkp' => [
-                '_' => Format::BKB(sha1($sign)),
+                '_' => $this->bkp,
                 'digest' => 'SHA1',
                 'encoding' => 'base16'
             ]
@@ -153,7 +174,8 @@ class Dispatcher {
 
         isset($response->Chyba) && $this->processError($response->Chyba);
 
-        return $check ? TRUE : $response->Potvrzeni->fik;
+        $this->fik = $check ? TRUE : $response->Potvrzeni->fik;
+        return $this->fik;
     }
 
     /**
@@ -220,6 +242,8 @@ class Dispatcher {
             'rezim' => $receipt->rezim
         ];
 
+        $this->lastReceipt = $receipt;
+
         return [
             'Hlavicka' => $head,
             'Data' => $body,
@@ -258,6 +282,29 @@ class Dispatcher {
             $msg = isset($msgs[$error->kod]) ? $msgs[$error->kod] : '';
             throw new ServerException($msg, $error->kod);
         }
+    }
+
+    public function getBkp()
+    {
+        return $this->bkp;
+    }
+
+    public function getPkp($encoded = true)
+    {
+        if($encoded){
+            return base64_encode((string)$this->pkp);
+        }
+        return $this->pkp;
+    }
+
+    public function getFik()
+    {
+        return $this->fik;
+    }
+
+    public function getLastReceipt()
+    {
+        return $this->lastReceipt;
     }
 
 }
