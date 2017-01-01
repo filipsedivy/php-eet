@@ -25,6 +25,10 @@ class Certificate
         $certs = [];
         $pkcs12 = file_get_contents($certificate);
 
+        if (!extension_loaded('openssl') || !function_exists('openssl_pkcs12_read')) {
+            throw new ClientException("Rozsireni OpenSSL neni dostupne.");
+        }
+
         $openSSL = openssl_pkcs12_read($pkcs12, $certs, $password);
         if(!$openSSL)
         {
