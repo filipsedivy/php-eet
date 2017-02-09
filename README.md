@@ -1,29 +1,16 @@
 # PHP knihovna pro EET
 
-[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![Latest Unstable Version](https://poser.pugx.org/filipsedivy/php-eet/v/unstable)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://poser.pugx.org/filipsedivy/php-eet/license)](https://packagist.org/packages/filipsedivy/php-eet)
+[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://poser.pugx.org/filipsedivy/php-eet/license)](https://packagist.org/packages/filipsedivy/php-eet)
 
 ## Instalace
 
 ### Composer
 
-Pro instalaci balíčku je nutné jej instalovat skrze [Composer](https://getcomposer.org/).
+Pro instalaci balíčku je nutné jej instalovat skrze [composer](https://getcomposer.org/).
 
 ```bash
 composer require filipsedivy/php-eet
 ```
-
-### Bez Composeru
-
-S každou verzí, která bude vydána bude přiložen i ZIP balíček, pro možnost instalace bez Composeru. **Avšak tuto možnost nedoporučuji, neboť není v našich silách udržet aktualizovaný ZIP baliček a verzi pro Composer.** Proto ZIP balíček bude vždy vygenerován pro velké verze, nikoliv pro menší aktualizace.
-
-#### Aktuální ZIP balíček
-
-Verze: 2.0.0
-
-Datum vygenerování: 17.11.2016
-
-Stáhnout: https://github.com/filipsedivy/PHP-EET/releases/download/v2.0.0/php-eet-20161117.zip
-
 
 ## Ukázka užití
 
@@ -56,12 +43,34 @@ echo $dispatcher->send($r);
 
 ## Aktualizace
 
+- 3.0.0
+  - Vytvoření [wiki](https://github.com/filipsedivy/PHP-EET/wiki) systému  
+  - Úprava licence z GNU GPL 3 na MIT
+  - Zrušení instalace bez composeru - [vyjádření](https://github.com/filipsedivy/PHP-EET/wiki/Pro%C4%8D-byla-zru%C5%A1ena-mo%C5%BEnost-instalace-bez-composeru%3F)
+  - Code review
+  - Úprava issues (_počeštění_)
+  - Vytvoření standardu pro issues, pull requesty, vývoj,...
 - 2.0.0
   - Úprava načítání certifikátu (*nyní není třeba certifikát převádět, třída jej převede sama*)
 
-## Podpora / Implementace
+## Pomoc a řešní chyb
+V případě že potřebujete poradit, nebo při implementaci Vám třída zobrazuje chybu můžete využít následujících kontaktů.
+Základní pomoc je poskytována zcela zdarma. V ostatních případech se řídí dle aktuální ceny, kterou naleznete ve [wiki](https://github.com/filipsedivy/PHP-EET/wiki/Zasl%C3%A1n%C3%AD-p%C5%99%C3%ADsp%C4%9Bvku#co-z-toho-nebudu-m%C3%ADt).
 
-Pokud potřebujete pomoc s implementací nebo poradit se okolo EET (registrace EET, generování certifikátů,...) můžete mě kontaktovat (*https://filipsedivy.cz*).
+### Issues
+Issues je systém veřejných hlášení chyb. V rámci veřejné podpory jsou k dispozici štítky **otázka** a **potřebuji pomoc**.
+Před tím než vytvoříte issue, zkuste se podívat zda není problém již řešen nebo již vyřešen někým jiným. [Seznam problémů řešených i vyřešených](https://github.com/filipsedivy/PHP-EET/issues?q=label%3Aot%C3%A1zka+label%3A%22pot%C5%99ebuji+pomoc%22).
+
+### Email
+V případě že veřejné řešení problémů nepřipadá v úvahu, tak je možné mě kontaktovat na emailové adrese, kterou naleznete na mé osobní stránce https://filipsedivy.cz.
+
+## Příspěvek
+V případě že se vám knihovna líbí a je vám užitečná, můžete mi zaslat příspěvěk. Jak zaslat příspěvek a co z toho budete mít můžete nalést [ve wiki](https://github.com/filipsedivy/PHP-EET/wiki/Zasl%C3%A1n%C3%AD-p%C5%99%C3%ADsp%C4%9Bvku).
+
+### Přispěvatelé
+| Přispěvatel | Částka |
+|-------------|--------|
+| https://www.manvel.cz | 500 Kč |
 
 ## Screencasty
 
@@ -74,5 +83,4 @@ Pokud potřebujete pomoc s implementací nebo poradit se okolo EET (registrace E
 - Informace o EET z pohledu podnikání - http://www.jakpodnikat.cz/eet-elektronicka-evidence-trzeb.php
 
 ## Licence
-
-GNU GPL 3 - http://www.gnugpl.cz/v3/
+MIT - https://opensource.org/licenses/MIT
