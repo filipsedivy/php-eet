@@ -36,9 +36,10 @@ use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
 use FilipSedivy\EET\Utils\UUID;
+use FilipSedivy\EET\Schema\Wsdl;
 
 $certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'eet');
-$dispatcher = new Dispatcher(Playground, $certificate);
+$dispatcher = new Dispatcher(Wsdl::playground(), $certificate);
 
 $uuid = UUID::v4(); // Generování UUID
 
