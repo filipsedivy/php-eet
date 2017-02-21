@@ -15,10 +15,10 @@ namespace FilipSedivy\EET\Exceptions;
 
 
 /**
- * Class ResponseException
+ * Class EetException
  * @package FilipSedivy\EET\Exceptions
  */
-class ResponseException extends \Exception
+class EetException extends \Exception
 {
 
 }
