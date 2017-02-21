@@ -25,7 +25,8 @@ use RobRichards\XMLSecLibs\XMLSecurityKey;
  * Class Dispatcher
  * @package FilipSedivy\EET
  */
-class Dispatcher {
+class Dispatcher
+{
 
     /** @var Certificate */
     private $cert;
@@ -37,6 +38,7 @@ class Dispatcher {
     private $soapClient;
 
     /** @var string|bool */
+    private $trace = false;
 
     /** @var string Generated PKP from Receipt */
     protected $pkp;
@@ -50,13 +52,14 @@ class Dispatcher {
     /** @var Receipt Last Receipt */
     protected $lastReceipt;
 
+
     /**
      * Initialization
      *
      * @param Certificate $cert
      */
-    public function __construct($service,Certificate $cert) {
-        $this->service = $service;
+    public function __construct(Certificate $cert)
+    {
         $this->cert = $cert;
         $this->checkRequirements();
     }
@@ -131,6 +134,7 @@ class Dispatcher {
 
         $this->pkp = $objKey->signData(implode('|', $arr));
         $this->bkp = Format::BKB(sha1($this->pkp));
+
         return [
             'pkp' => [
                 '_' => $this->pkp,
@@ -146,13 +150,16 @@ class Dispatcher {
         ];
     }
 
+
     /**
+     * Send receipt
      *
      * @param Receipt $receipt
      * @param boolean $check
      * @return boolean|string
      */
-    public function send(Receipt $receipt, $check = FALSE) {
+    public function send(Receipt $receipt, $check = FALSE)
+    {
         $this->initSoapClient();
 
         $response = $this->processData($receipt, $check);
@@ -168,8 +175,10 @@ class Dispatcher {
      * @throws RequirementsException
      * @return void
      */
-    private function checkRequirements() {
-        if (!class_exists('\SoapClient')) {
+    private function checkRequirements()
+    {
+        if (!class_exists('\SoapClient'))
+        {
             throw new RequirementsException('Class SoapClient is not defined! Please, allow php extension php_soap.dll in php.ini');
         }
     }
@@ -179,7 +188,8 @@ class Dispatcher {
      *
      * @return SoapClient
      */
-    public function getSoapClient() {
+    public function getSoapClient()
+    {
         !isset($this->soapClient) && $this->initSoapClient();
         return $this->soapClient;
     }
@@ -191,17 +201,27 @@ class Dispatcher {
      * @return void
      * @throws ClientException
      */
-    private function initSoapClient() {
-        if ($this->soapClient === NULL) {
+    private function initSoapClient()
+    {
+        if(!isset($this->service))
+        {
+            throw new ClientException("Not set service");
+        }
+
+        if ($this->soapClient === NULL)
+        {
             $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace);
         }
     }
 
-    public function prepareData($receipt, $check = FALSE) {
 
     /**
      * Enable debug mode
      */
+    public function enableDebug()
+    {
+        unset($this->trace);
+    }
 
 
     /**
@@ -209,6 +229,10 @@ class Dispatcher {
      *
      * @return bool|string
      */
+    public function getTrace()
+    {
+        return $this->trace;
+    }
 
 
     /**
@@ -216,6 +240,8 @@ class Dispatcher {
      * @param  bool      $check
      * @return array
      */
+    public function prepareData($receipt, $check = FALSE)
+    {
         $head = [
             'uuid_zpravy' => $receipt->uuid_zpravy,
             'dat_odesl' => time(),
@@ -263,7 +289,8 @@ class Dispatcher {
      * @param   boolean     $check
      * @return  object
      */
-    private function processData(Receipt $receipt, $check = FALSE) {
+    private function processData(Receipt $receipt, $check = FALSE)
+    {
         $data = $this->prepareData($receipt, $check);
 
         return $this->getSoapClient()->OdeslaniTrzby($data);
@@ -273,23 +300,6 @@ class Dispatcher {
     /**
      * @return string
      */
-    private function processError($error) {
-        if ($error->kod) {
-            $msgs = [
-                -1 => 'Docasna technicka chyba zpracovani – odeslete prosim datovou zpravu pozdeji',
-                2 => 'Kodovani XML neni platne',
-                3 => 'XML zprava nevyhovela kontrole XML schematu',
-                4 => 'Neplatny podpis SOAP zpravy',
-                5 => 'Neplatny kontrolni bezpecnostni kod poplatnika (BKP)',
-                6 => 'DIC poplatnika ma chybnou strukturu',
-                7 => 'Datova zprava je prilis velka',
-                8 => 'Datova zprava nebyla zpracovana kvuli technicke chybe nebo chybe dat',
-            ];
-            $msg = isset($msgs[$error->kod]) ? $msgs[$error->kod] : '';
-            throw new ServerException($msg, $error->kod);
-        }
-    }
-
     public function getBkp()
     {
         return $this->bkp;
@@ -331,4 +341,24 @@ class Dispatcher {
      * @param $error
      * @throws ServerException
      */
+    private function processError($error)
+    {
+        if ($error->kod)
+        {
+            $msgs = [
+                -1 => 'Docasna technicka chyba zpracovani – odeslete prosim datovou zpravu pozdeji',
+                2 => 'Kodovani XML neni platne',
+                3 => 'XML zprava nevyhovela kontrole XML schematu',
+                4 => 'Neplatny podpis SOAP zpravy',
+                5 => 'Neplatny kontrolni bezpecnostni kod poplatnika (BKP)',
+                6 => 'DIC poplatnika ma chybnou strukturu',
+                7 => 'Datova zprava je prilis velka',
+                8 => 'Datova zprava nebyla zpracovana kvuli technicke chybe nebo chybe dat',
+            ];
+            $msg = isset($msgs[$error->kod]) ? $msgs[$error->kod] : '';
+            throw new ServerException($msg, $error->kod);
+        }
+    }
+
+
 }
