@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of the PHP-EET package.
+  ~
+  ~ (c) Filip Sedivy <mail@filipsedivy.cz>
+  ~
+  ~ For the full copyright and license information, please view the LICENSE
+  ~ file that was distributed with this source code.
+  ~
+  ~ @license MIT
+  ~ @author Filip Sedivy <mail@filipsedivy.cz>
+  -->
+
 <wsdl:definitions name="EET" targetNamespace="http://fs.mfcr.cz/eet/schema/v3" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://fs.mfcr.cz/eet/schema/v3" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <wsdl:documentation>
         Ucel     : Sluzba pro odeslani datove zpravy evidovane trzby

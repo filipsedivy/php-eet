@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of the PHP-EET package.
+  ~
+  ~ (c) Filip Sedivy <mail@filipsedivy.cz>
+  ~
+  ~ For the full copyright and license information, please view the LICENSE
+  ~ file that was distributed with this source code.
+  ~
+  ~ @license MIT
+  ~ @author Filip Sedivy <mail@filipsedivy.cz>
+  -->
+
 <xs:schema elementFormDefault="qualified" targetNamespace="http://fs.mfcr.cz/eet/schema/v3" version="3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://fs.mfcr.cz/eet/schema/v3">
     <!--  Zmeny:
         2016-09-19 version 3.1 - prodlouzeni polozky porad_cis na max 25 znaku

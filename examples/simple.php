@@ -4,6 +4,17 @@ require_once __DIR__.'/../../../../vendor/autoload.php';
 
 define('Playground', __DIR__.'/../src/Schema/PlaygroundService.wsdl');
 define('Production', __DIR__.'/../src/Schema/ProductionService.wsdl');
+/**
+ * This file is part of the PHP-EET package.
+ *
+ * (c) Filip Sedivy <mail@filipsedivy.cz>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license MIT
+ * @author Filip Sedivy <mail@filipsedivy.cz>
+ */
 
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
