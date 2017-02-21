@@ -11,8 +11,14 @@
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
 
+namespace FilipSedivy\EET\Exceptions;
+
 
 /**
  * Class ClientException
  * @package FilipSedivy\EET\Exceptions
  */
+class CertificateException extends \Exception
+{
+
+}
