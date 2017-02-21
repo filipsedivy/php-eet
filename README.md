@@ -1,6 +1,6 @@
 # PHP knihovna pro EET
 
-[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://poser.pugx.org/filipsedivy/php-eet/license)](https://packagist.org/packages/filipsedivy/php-eet)
+[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://packagist.org/packages/filipsedivy/php-eet)
 
 **Koukněte se na [přispěvatelé](#př%C3%ADspěvek), a příspějte taktéž na vývoj.** Díky těmto lidem je knihovna dále udržována a šířena zdarma jako open source.
 [Příspějte](https://github.com/filipsedivy/PHP-EET/wiki/Zaslán%C3%AD-př%C3%ADspěvku) a buďte na seznamu přispěvatelů
