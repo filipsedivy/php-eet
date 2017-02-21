@@ -18,16 +18,24 @@ use FilipSedivy\EET\Exceptions\CertificateException;
 /**
  * Parsování PKCS#12 a uchování X.509 certifikátu
  *
- * @author Filip Šedivý <mail@filipsedivy.cz>
- * @version 1.0.1
+ * @version 1.0.2
 */
 class Certificate
 {
+    /** @var string */
     private $pkey;
 
+    /** @var string */
     private $cert;
 
+
+    /**
+     * Certificate constructor
+     *
+     * @param   string  $certificate  Path of certificate
+     * @param   string  $password     Certificate password
      * @throws  CertificateException
+     */
     public function __construct($certificate, $password)
     {
         if(!file_exists($certificate))
@@ -53,10 +61,20 @@ class Certificate
         $this->cert = $certs['cert'];
     }
 
+
+    /**
+     *
+     * @return string
+     */
     public function getPrivateKey(){
         return $this->pkey;
     }
 
+
+    /**
+     *
+     * @return string
+     */
     public function getCert(){
         return $this->cert;
     }
