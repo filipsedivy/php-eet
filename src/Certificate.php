@@ -13,7 +13,7 @@
 
 namespace FilipSedivy\EET;
 
-use FilipSedivy\EET\Exceptions\ClientException;
+use FilipSedivy\EET\Exceptions\CertificateException;
 
 /**
  * Parsování PKCS#12 a uchování X.509 certifikátu
@@ -27,23 +27,26 @@ class Certificate
 
     private $cert;
 
+     * @throws  CertificateException
     public function __construct($certificate, $password)
     {
-        if(!file_exists($certificate)){
-            throw new ClientException("Certifikat nebyl nalezen");
+        if(!file_exists($certificate))
+        {
+            throw new CertificateException("Certificate was not found");
         }
 
         $certs = [];
         $pkcs12 = file_get_contents($certificate);
 
-        if (!extension_loaded('openssl') || !function_exists('openssl_pkcs12_read')) {
-            throw new ClientException("Rozsireni OpenSSL neni dostupne.");
+        if (!extension_loaded('openssl') || !function_exists('openssl_pkcs12_read'))
+        {
+            throw new CertificateException("OpenSSL extension is not available.");
         }
 
         $openSSL = openssl_pkcs12_read($pkcs12, $certs, $password);
         if(!$openSSL)
         {
-            throw new ClientException("Certifikat se nepodarilo vyexportovat.");
+            throw new CertificateException("The certificate has failed to export.");
         }
 
         $this->pkey = $certs['pkey'];
