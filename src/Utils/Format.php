@@ -1,31 +1,39 @@
 <?php
 
-/*
- * Copyright (C) 2016 Filip Šedivý
+/**
+ * This file is part of the PHP-EET package.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (c) Filip Sedivy <mail@filipsedivy.cz>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * @license MIT
+ * @author Filip Sedivy <mail@filipsedivy.cz>
  */
 
 namespace FilipSedivy\EET\Utils;
 
+/**
+ * Class Format
+ * @package FilipSedivy\EET\Utils
+ */
 class Format
 {
+    /**
+     *
+     * @param  double  $value
+     * @return string
+     */
     public static function price($value)
     {
         return number_format($value, 2, '.', '');
     }
 
+    /**
+     * @param   string  $code
+     * @return  string
+     */
     public static function BKB($code)
     {
         $r = '';

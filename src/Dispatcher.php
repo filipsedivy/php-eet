@@ -1,4 +1,15 @@
 <?php
+/**
+ * This file is part of the PHP-EET package.
+ *
+ * (c) Filip Sedivy <mail@filipsedivy.cz>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license MIT
+ * @author Filip Sedivy <mail@filipsedivy.cz>
+ */
 
 namespace FilipSedivy\EET;
 
@@ -9,129 +20,106 @@ use FilipSedivy\EET\SoapClient;
 use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
-/**
- * Receipt for Ministry of Finance
- */
-class Dispatcher {
 
-    /**
-     * Certificate
-     * @var Certificate
-     */
+/**
+ * Class Dispatcher
+ * @package FilipSedivy\EET
+ */
+class Dispatcher
+{
+
+    /** @var Certificate */
     private $cert;
 
-    /**
-     * WSDL path or URL
-     * @var string
-     */
+    /** @var string WSDL path or URL */
     private $service;
 
-    /**
-     * @var boolean
-     */
-    public $trace;
-
-    /**
-     *
-     * @var SoapClient
-     */
+    /** @var SoapClient */
     private $soapClient;
 
-    /**
-     * Generated PKP from Receipt
-     */
+    /** @var string|bool */
+    private $trace = false;
+
+    /** @var string Generated PKP from Receipt */
     protected $pkp;
 
-    /**
-     * Generated BKP from Receipt
-     */
+    /** @var string Generated BKP from Receipt */
     protected $bkp;
 
-    /**
-     * Received FIK
-     */
+    /** @var string Received FIK */
     protected $fik;
 
-    /**
-     * Last Receipt
-     */
+    /** @var Receipt Last Receipt */
     protected $lastReceipt;
 
+
     /**
+     * Initialization
      *
      * @param Certificate $cert
      */
-    public function __construct($service,Certificate $cert) {
-        $this->service = $service;
+    public function __construct(Certificate $cert)
+    {
         $this->cert = $cert;
         $this->checkRequirements();
     }
 
+
     /**
+     * Setting WSDL path or URL
      *
      * @param string $service
+     */
+    public function setService($service)
+    {
+        $this->service = $service;
+    }
+
+
+    /**
+     * Test environment for testing the functionality of the program
+     */
+    public function setPlaygroundService()
+    {
+        $this->setService(__DIR__."/Schema/PlaygroundService.wsdl");
+    }
+
+
+    /**
+     * Production environment for sending receipt
+     */
+    public function setProductionService()
+    {
+        $this->setService(__DIR__."/Schema/ProductionService.wsdl");
+    }
+
+
+    /**
+     * Checking the accuracy of data sent
+     *
      * @param Receipt $receipt
      * @return boolean|string
      */
-    public function check(Receipt $receipt) {
-        try {
+    public function check(Receipt $receipt)
+    {
+        try
+        {
             return $this->send($receipt, TRUE);
         } catch (ServerException $e) {
             return FALSE;
         }
     }
 
-    /**
-     *
-     * @param boolean $tillLastRequest optional If not set/FALSE connection time till now is returned.
-     * @return float
-     */
-    public function getConnectionTime($tillLastRequest = FALSE) {
-        !$this->trace && $this->throwTraceNotEnabled();
-        return $this->getSoapClient()->__getConnectionTime($tillLastRequest);
-    }
+
 
     /**
+     * Check codes
      *
-     * @return int
-     */
-    public function getLastResponseSize() {
-        !$this->trace && $this->throwTraceNotEnabled();
-        return mb_strlen($this->getSoapClient()->__getLastResponse(), '8bit');
-    }
-
-    /**
-     *
-     * @return int
-     */
-    public function getLastRequestSize() {
-        !$this->trace && $this->throwTraceNotEnabled();
-        return mb_strlen($this->getSoapClient()->__getLastRequest(), '8bit');
-    }
-
-    /**
-     *
-     * @return float time in ms
-     */
-    public function getLastResponseTime() {
-        !$this->trace && $this->throwTraceNotEnabled();
-        return $this->getSoapClient()->__getLastResponseTime();
-    }
-
-    /**
-     *
-     * @throws ClientException
-     */
-    private function throwTraceNotEnabled() {
-        throw new ClientException('Trace is not enabled! Set trace property to TRUE.');
-    }
-
-    /**
-     *
-     * @param \FilipSedivy\EET\Receipt $receipt
+     * @param Receipt $receipt
      * @return array
      */
-    public function getCheckCodes(Receipt $receipt) {
+    public function getCheckCodes(Receipt $receipt)
+    {
         $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $objKey->loadKey($this->cert->getPrivateKey());
 
@@ -146,6 +134,7 @@ class Dispatcher {
 
         $this->pkp = $objKey->signData(implode('|', $arr));
         $this->bkp = Format::BKB(sha1($this->pkp));
+
         return [
             'pkp' => [
                 '_' => $this->pkp,
@@ -161,13 +150,16 @@ class Dispatcher {
         ];
     }
 
+
     /**
+     * Send receipt
      *
      * @param Receipt $receipt
      * @param boolean $check
      * @return boolean|string
      */
-    public function send(Receipt $receipt, $check = FALSE) {
+    public function send(Receipt $receipt, $check = FALSE)
+    {
         $this->initSoapClient();
 
         $response = $this->processData($receipt, $check);
@@ -183,8 +175,10 @@ class Dispatcher {
      * @throws RequirementsException
      * @return void
      */
-    private function checkRequirements() {
-        if (!class_exists('\SoapClient')) {
+    private function checkRequirements()
+    {
+        if (!class_exists('\SoapClient'))
+        {
             throw new RequirementsException('Class SoapClient is not defined! Please, allow php extension php_soap.dll in php.ini');
         }
     }
@@ -194,23 +188,60 @@ class Dispatcher {
      *
      * @return SoapClient
      */
-    public function getSoapClient() {
+    public function getSoapClient()
+    {
         !isset($this->soapClient) && $this->initSoapClient();
         return $this->soapClient;
     }
+
 
     /**
      * Require to initialize a new SOAP client for a new request.
      *
      * @return void
+     * @throws ClientException
      */
-    private function initSoapClient() {
-        if ($this->soapClient === NULL) {
+    private function initSoapClient()
+    {
+        if(!isset($this->service))
+        {
+            throw new ClientException("Not set service");
+        }
+
+        if ($this->soapClient === NULL)
+        {
             $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace);
         }
     }
 
-    public function prepareData($receipt, $check = FALSE) {
+
+    /**
+     * Enable debug mode
+     */
+    public function enableDebug()
+    {
+        unset($this->trace);
+    }
+
+
+    /**
+     * Get trace from SoapClient
+     *
+     * @return bool|string
+     */
+    public function getTrace()
+    {
+        return $this->trace;
+    }
+
+
+    /**
+     * @param  Receipt   $receipt
+     * @param  bool      $check
+     * @return array
+     */
+    public function prepareData($receipt, $check = FALSE)
+    {
         $head = [
             'uuid_zpravy' => $receipt->uuid_zpravy,
             'dat_odesl' => time(),
@@ -251,24 +282,69 @@ class Dispatcher {
         ];
     }
 
+
     /**
      *
-     * @param Receipt $receipt
-     * @param boolean $check
-     * @return object
+     * @param   Receipt     $receipt
+     * @param   boolean     $check
+     * @return  object
      */
-    private function processData(Receipt $receipt, $check = FALSE) {
+    private function processData(Receipt $receipt, $check = FALSE)
+    {
         $data = $this->prepareData($receipt, $check);
 
         return $this->getSoapClient()->OdeslaniTrzby($data);
     }
 
+
+    /**
+     * @return string
+     */
+    public function getBkp()
+    {
+        return $this->bkp;
+    }
+
+
+    /**
+     * @param   bool $encoded
+     * @return  string
+     */
+    public function getPkp($encoded = true)
+    {
+        if($encoded){
+            return base64_encode((string)$this->pkp);
+        }
+        return $this->pkp;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getFik()
+    {
+        return $this->fik;
+    }
+
+
+    /**
+     * @return Receipt
+     */
+    public function getLastReceipt()
+    {
+        return $this->lastReceipt;
+    }
+
+
     /**
      * @param $error
      * @throws ServerException
      */
-    private function processError($error) {
-        if ($error->kod) {
+    private function processError($error)
+    {
+        if ($error->kod)
+        {
             $msgs = [
                 -1 => 'Docasna technicka chyba zpracovani – odeslete prosim datovou zpravu pozdeji',
                 2 => 'Kodovani XML neni platne',
@@ -284,27 +360,5 @@ class Dispatcher {
         }
     }
 
-    public function getBkp()
-    {
-        return $this->bkp;
-    }
-
-    public function getPkp($encoded = true)
-    {
-        if($encoded){
-            return base64_encode((string)$this->pkp);
-        }
-        return $this->pkp;
-    }
-
-    public function getFik()
-    {
-        return $this->fik;
-    }
-
-    public function getLastReceipt()
-    {
-        return $this->lastReceipt;
-    }
 
 }

@@ -1,32 +1,72 @@
 <?php
+/**
+ * This file is part of the PHP-EET package.
+ *
+ * (c) Filip Sedivy <mail@filipsedivy.cz>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license MIT
+ * @author Filip Sedivy <mail@filipsedivy.cz>
+ */
+
 namespace FilipSedivy\EET;
 
+/**
+ * Class Receipt
+ * @package FilipSedivy\EET
+ */
 class Receipt {
-    /** @var string */
+    /**
+     * @var string
+     * @require
+     */
     public $uuid_zpravy;
 
-    /** @var boolean */
+    /**
+     * @var boolean
+     * @require
+     */
     public $prvni_zaslani = TRUE;
 
-    /** @var string */
+    /**
+     * @var string
+     * @require
+     */
     public $dic_popl;
 
     /** @var string */
     public $dic_poverujiciho;
 
-    /** @var string */
+    /**
+     * @var string
+     * @require
+     */
     public $id_provoz;
 
-    /** @var string */
+    /**
+     * @var string
+     * @require
+     */
     public $id_pokl;
 
-    /** @var string */
+    /**
+     * @var string
+     * @require
+     */
     public $porad_cis;
 
-    /** @var \DateTime */
+    /**
+     * @var \DateTime
+     * @require
+     */
     public $dat_trzby;
 
-    /** @var float */
+    /**
+     * @var float
+     * @require
+     */
     public $celk_trzba = 0;
 
     /** @var float */

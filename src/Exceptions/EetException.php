@@ -10,13 +10,15 @@
  * @license MIT
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
+
 namespace FilipSedivy\EET\Exceptions;
 
+
 /**
- * Class ClientException
+ * Class EetException
  * @package FilipSedivy\EET\Exceptions
  */
-class ClientException extends \Exception
+class EetException extends \Exception
 {
 
 }
