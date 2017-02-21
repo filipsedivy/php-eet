@@ -23,9 +23,9 @@ Než se zeptáte, zkuste se do něj podívat, zda-li již problém není zdokume
 
 
 ### Nejvíce zasílaných otázek
-* [Issue aneb zaslání chyby nebo nápadu](Issue-aneb-zaslání-chyby-nebo-nápadu)
-* [Získání povinných kódů FIK, PKP a BKP](Z%C3%ADskán%C3%AD-BKP,-PKP-a-FIK-kódu)
-* [Popis prostředí playground a production a jejich nastavení](Práce-a-popis-prostřed%C3%AD)
+* [Issue aneb zaslání chyby nebo nápadu](https://github.com/filipsedivy/PHP-EET/wiki/Issue-aneb-zaslán%C3%AD-chyby-nebo-nápadu)
+* [Získání povinných kódů FIK, PKP a BKP](https://github.com/filipsedivy/PHP-EET/wiki/Z%C3%ADskán%C3%AD-BKP,-PKP-a-FIK-kódu)
+* [Popis prostředí playground a production a jejich nastavení](https://github.com/filipsedivy/PHP-EET/wiki/Práce-a-popis-prostřed%C3%AD)
 
 ## Ukázka užití
 
