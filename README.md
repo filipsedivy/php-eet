@@ -2,6 +2,9 @@
 
 [![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://poser.pugx.org/filipsedivy/php-eet/license)](https://packagist.org/packages/filipsedivy/php-eet)
 
+**Koukněte se na [přispěvatelé](#př%C3%ADspěvek), a příspějte taktéž na vývoj.** Díky těmto lidem je knihovna dále udržována a šířena zdarma jako open source.
+[Příspějte](https://github.com/filipsedivy/PHP-EET/wiki/Zaslán%C3%AD-př%C3%ADspěvku) a buďte na seznamu přispěvatelů
+
 ## Instalace
 
 ### Composer
@@ -17,6 +20,12 @@ composer require filipsedivy/php-eet
 Dokumentaci k použítí naleznete ve [wiki systému](https://github.com/filipsedivy/PHP-EET/wiki)
 
 Než se zeptáte, zkuste se do něj podívat, zda-li již problém není zdokumentován
+
+
+### Nejvíce zasílaných otázek
+* [Issue aneb zaslání chyby nebo nápadu](Issue-aneb-zaslání-chyby-nebo-nápadu)
+* [Získání povinných kódů FIK, PKP a BKP](Z%C3%ADskán%C3%AD-BKP,-PKP-a-FIK-kódu)
+* [Popis prostředí playground a production a jejich nastavení](Práce-a-popis-prostřed%C3%AD)
 
 ## Ukázka užití
 
