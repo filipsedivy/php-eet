@@ -34,6 +34,9 @@ Ukázky naleznete ve složce **examples/**.
 Certifikát **EET_CA1_Playground-CZ00000019.p12** byl vydán pro účel testování Daňovou správou. Tento certifikát nepoužívejte pro ostrou verzi. Svůj certifikát si vygenerujete skrze rozhraní Daňové správy.
 
 ```php
+<?php
+require_once __DIR__.'/vendor/autoload.php';
+
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
