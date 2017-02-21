@@ -13,9 +13,12 @@
 
 namespace FilipSedivy\EET\Exceptions;
 
-class RequirementsException extends \Exception {
 
-}/**
+/**
  * Class RequirementsException
  * @package FilipSedivy\EET\Exceptions
  */
+class RequirementsException extends \Exception
+{
+
+}
