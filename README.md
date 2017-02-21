@@ -12,6 +12,12 @@ Pro instalaci balíčku je nutné jej instalovat skrze [composer](https://getcom
 composer require filipsedivy/php-eet
 ```
 
+## Dokumentace
+
+Dokumentaci k použítí naleznete ve [wiki systému](https://github.com/filipsedivy/PHP-EET/wiki)
+
+Než se zeptáte, zkuste se do něj podívat, zda-li již problém není zdokumentován
+
 ## Ukázka užití
 
 Ukázky naleznete ve složce **examples/**.
@@ -25,9 +31,10 @@ use FilipSedivy\EET\Receipt;
 use FilipSedivy\EET\Utils\UUID;
 
 $certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'eet');
-$dispatcher = new Dispatcher(Playground, $certificate);
+$dispatcher = new Dispatcher($certificate);
+$dispatcher->setPlaygroundService();
 
-$uuid = UUID::v4(); // Generování UUID
+$uuid = UUID::v4();
 
 $r = new Receipt;
 $r->uuid_zpravy = $uuid;
@@ -38,7 +45,28 @@ $r->porad_cis = '1';
 $r->dat_trzby = new \DateTime();
 $r->celk_trzba = 500;
 
-echo $dispatcher->send($r);
+echo '<h2>---REQUEST---</h2>';
+echo "<pre>";
+
+try {
+
+    $dispatcher->send($r);
+
+    // Tržba byla úspěšně odeslána
+    echo sprintf("FIK: %s <br>", $dispatcher->getFik());
+    echo sprintf("BKP: %s <br>", $dispatcher->getBkp());
+
+}catch(\FilipSedivy\EET\Exceptions\EetException $ex){
+    // Tržba nebyla odeslána
+
+    echo sprintf("BKP: %s <br>", $dispatcher->getBkp());
+    echo sprintf("PKP: %s <br>", $dispatcher->getPkp());
+
+}catch(Exception $ex){
+    // Obecná chyba
+    var_dump($ex);
+
+}
 ```
 
 ## Aktualizace
@@ -50,6 +78,8 @@ echo $dispatcher->send($r);
   - Code review
   - Úprava issues (_počeštění_)
   - Vytvoření standardu pro issues, pull requesty, vývoj,...
+  - Opravení BKP a PKP kódu
+  - Oprava PhpDoc bloků
 - 2.0.0
   - Úprava načítání certifikátu (*nyní není třeba certifikát převádět, třída jej převede sama*)
 
