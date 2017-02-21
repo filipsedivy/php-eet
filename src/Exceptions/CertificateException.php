@@ -10,3 +10,9 @@
  * @license MIT
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
+
+
+/**
+ * Class ClientException
+ * @package FilipSedivy\EET\Exceptions
+ */

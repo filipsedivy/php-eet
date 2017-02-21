@@ -14,13 +14,26 @@
 
 namespace FilipSedivy\EET\Utils;
 
+/**
+ * Class Format
+ * @package FilipSedivy\EET\Utils
+ */
 class Format
 {
+    /**
+     *
+     * @param  double  $value
+     * @return string
+     */
     public static function price($value)
     {
         return number_format($value, 2, '.', '');
     }
 
+    /**
+     * @param   string  $code
+     * @return  string
+     */
     public static function BKB($code)
     {
         $r = '';

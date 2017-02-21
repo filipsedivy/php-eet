@@ -18,6 +18,10 @@ use RobRichards\WsePhp\WSSESoap;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
+/**
+ * Class SoapClient
+ * @package FilipSedivy\EET
+ */
 class SoapClient extends \SoapClient {
 
     /** @var Certificate */
@@ -38,22 +42,21 @@ class SoapClient extends \SoapClient {
     /** @var string */
     private $lastRequest;
 
+    /** @var bool */
     private $returnRequest = FALSE;
 
-    /**
-     * @var int timeout in milliseconds
-     */
+    /** @var int timeout in milliseconds */
     private $timeout = 2500;
-    /**
-     * @var int connection timeout in milliseconds
-     */
+
+    /** @var int connection timeout in milliseconds */
     private $connectTimeout = 2000;
+
 
     /**
      *
-     * @param string $service
-     * @param Certificate $cert
-     * @param boolean $trace
+     * @param string        $service
+     * @param Certificate   $cert
+     * @param boolean       $trace
      */
     public function __construct($service, Certificate $cert, $trace = FALSE) {
         $this->connectionStartTime = microtime(TRUE);
@@ -66,6 +69,12 @@ class SoapClient extends \SoapClient {
     }
 
     public function getXML($request) {
+
+    /**
+     *
+     * @param string $request
+     * @return mixed
+     */
 
         $doc = new \DOMDocument('1.0');
         $doc->loadXML($request);

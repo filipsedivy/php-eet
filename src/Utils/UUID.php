@@ -14,6 +14,10 @@
 
 namespace FilipSedivy\EET\Utils;
 
+/**
+ * Class UUID
+ * @package FilipSedivy\EET\Utils
+ */
 class UUID
 {
     /**
