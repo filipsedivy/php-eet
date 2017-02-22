@@ -1,9 +1,12 @@
 # PHP knihovna pro EET
 
-[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://poser.pugx.org/filipsedivy/php-eet/license)](https://packagist.org/packages/filipsedivy/php-eet)
+[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://packagist.org/packages/filipsedivy/php-eet)
 
 **Koukněte se na [přispěvatelé](#př%C3%ADspěvek), a příspějte taktéž na vývoj.** Díky těmto lidem je knihovna dále udržována a šířena zdarma jako open source.
 [Příspějte](https://github.com/filipsedivy/PHP-EET/wiki/Zaslán%C3%AD-př%C3%ADspěvku) a buďte na seznamu přispěvatelů
+
+V případě že podáváte **issue** a nenastavíte label - šítek, pro lepší přehlednost, tak je issue automaticky uzavřen bez řešení.
+Před podáním issue, prosím věnujte čas k pročtení [příručky](https://github.com/filipsedivy/PHP-EET/wiki/Issue-aneb-zaslán%C3%AD-chyby-nebo-nápadu).
 
 ## Instalace
 
@@ -14,6 +17,10 @@ Pro instalaci balíčku je nutné jej instalovat skrze [composer](https://getcom
 ```bash
 composer require filipsedivy/php-eet
 ```
+
+### Instalace bez composeru
+
+O tom jak nainstalovat závislosti bez composeru navštivte wiki - [instace bez composeru](https://github.com/filipsedivy/PHP-EET/wiki/Instalace-bez-composeru-pomoc%C3%AD-souboru)
 
 ## Dokumentace
 
