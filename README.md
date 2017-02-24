@@ -93,7 +93,6 @@ try {
 - 3.0.0
   - Vytvoření [wiki](https://github.com/filipsedivy/PHP-EET/wiki) systému  
   - Úprava licence z GNU GPL 3 na MIT
-  - Zrušení instalace bez composeru - [vyjádření](https://github.com/filipsedivy/PHP-EET/wiki/Pro%C4%8D-byla-zru%C5%A1ena-mo%C5%BEnost-instalace-bez-composeru%3F)
   - Code review
   - Úprava issues (_počeštění_)
   - Vytvoření standardu pro issues, pull requesty, vývoj,...
