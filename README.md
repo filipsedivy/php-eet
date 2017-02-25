@@ -68,23 +68,19 @@ echo '<h2>---REQUEST---</h2>';
 echo "<pre>";
 
 try {
-
+    // Odeslání tržby
     $dispatcher->send($r);
 
     // Tržba byla úspěšně odeslána
     echo sprintf("FIK: %s <br>", $dispatcher->getFik());
     echo sprintf("BKP: %s <br>", $dispatcher->getBkp());
-
 }catch(\FilipSedivy\EET\Exceptions\EetException $ex){
     // Tržba nebyla odeslána
-
     echo sprintf("BKP: %s <br>", $dispatcher->getBkp());
     echo sprintf("PKP: %s <br>", $dispatcher->getPkp());
-
 }catch(Exception $ex){
     // Obecná chyba
     var_dump($ex);
-
 }
 ```
 
