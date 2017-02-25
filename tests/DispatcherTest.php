@@ -38,14 +38,15 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $r->dat_trzby = new \DateTime();
         $r->celk_trzba = 500;
 
+        print "\n--- EET ---\n";
         try{
             $dispatcher->send($r);
             print "FIK: ".$dispatcher->getFik()."\n";
             print "BKP: ".$dispatcher->getBkp()."\n";
             $this->assertTrue( is_string($dispatcher->getFik()) && is_string($dispatcher->getBkp()) );
         }catch(EetException $ex){
-            $this->expectOutputString("PKP: ".$dispatcher->getPkp());
-            $this->expectOutputString("BKP: ".$dispatcher->getBkp());
+            print "PKP: ".$dispatcher->getPkp()."\n";
+            print "BKP: ".$dispatcher->getBkp()."\n";
             $this->assertTrue( is_string($dispatcher->getPkp()) && is_string($dispatcher->getBkp()) );
         }catch(\Exception $ex){
             $this->fail();
