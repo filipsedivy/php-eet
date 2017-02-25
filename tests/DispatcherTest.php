@@ -40,8 +40,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
 
         try{
             $dispatcher->send($r);
-            $this->expectOutputString("FIK: ".$dispatcher->getFik());
-            $this->expectOutputString("BKP: ".$dispatcher->getBkp());
+            print "FIK: ".$dispatcher->getFik()."\n";
+            print "BKP: ".$dispatcher->getBkp()."\n";
             $this->assertTrue( is_string($dispatcher->getFik()) && is_string($dispatcher->getBkp()) );
         }catch(EetException $ex){
             $this->expectOutputString("PKP: ".$dispatcher->getPkp());
