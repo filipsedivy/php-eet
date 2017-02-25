@@ -46,7 +46,7 @@ class CertificateTestTest extends \PHPUnit_Framework_TestCase
         try
         {
             $certificate = new Certificate(__DIR__."/../examples/EET_CA1_Playground-CZ00000019.p12", "eet");
-            $this->assertTrue( is_string($certificate->getPrivateKey()) && is_string($certificate->getCert()) );
+            $this->assertTrue( is_string($certificate->getPrivateKey()) && !is_string($certificate->getCert()) );
         }catch(CertificateException $ex){
             $this->fail();
         }
