@@ -39,7 +39,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $r->celk_trzba = 500;
 
         print "\n--- EET - Jedna platba ---\n";
-        print sprintf("Castka: %i\n", 500);
+        print sprintf("Castka: %s\n", 500);
         print sprintf("UUID: %s\n", $uuid);
 
         try{
@@ -79,10 +79,10 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             $r->dat_trzby = new \DateTime();
             $r->celk_trzba = $castka;
 
-            print "- Pokus cislo: ".($i + 1)."\n";
-            print sprintf("Castka: %i\n", $castka);
+            print "\n- Pokus cislo: ".($i + 1)."\n";
+            print sprintf("Castka: %s\n", $castka);
             print sprintf("UUID: %s\n", $uuid);
-            
+
             try{
                 $dispatcher->send($r);
                 print "FIK: ".$dispatcher->getFik()."\n";
