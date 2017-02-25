@@ -39,6 +39,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $r->celk_trzba = 500;
 
         print "\n--- EET - Jedna platba ---\n";
+        print sprintf("Castka: %i\n", 500);
+        print sprintf("UUID: %s\n", $uuid);
+
         try{
             $dispatcher->send($r);
             print "FIK: ".$dispatcher->getFik()."\n";
@@ -60,9 +63,12 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
+        print "\n--- EET - Rezim zcykleneho placeni ---\n";
+
         for($i = 0; $i < rand(4, 9); $i++)
         {
             $uuid = UUID::v4();
+            $castka = rand(400, 100000);
 
             $r = new Receipt();
             $r->uuid_zpravy = $uuid;
@@ -71,10 +77,12 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             $r->dic_popl = 'CZ1212121218';
             $r->porad_cis = '1';
             $r->dat_trzby = new \DateTime();
-            $r->celk_trzba = 500;
+            $r->celk_trzba = $castka;
 
-            print "\n--- EET - Rezim zcykleneho placeni ---\n";
             print "- Pokus cislo: ".($i + 1)."\n";
+            print sprintf("Castka: %i\n", $castka);
+            print sprintf("UUID: %s\n", $uuid);
+            
             try{
                 $dispatcher->send($r);
                 print "FIK: ".$dispatcher->getFik()."\n";
