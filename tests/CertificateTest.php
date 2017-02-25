@@ -16,7 +16,7 @@ namespace Tests;
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Exceptions\CertificateException;
 
-class CertificateTestTest extends \PHPUnit_Framework_TestCase
+class CertificateTest extends \PHPUnit_Framework_TestCase
 {
     public function testFileNotExists()
     {
