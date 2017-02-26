@@ -115,6 +115,7 @@ V případě že se vám knihovna líbí a je vám užitečná, můžete mi zasl
 | Přispěvatel | Částka |
 |-------------|--------|
 | https://www.manvel.cz | 500 Kč |
+| http://www.skoda-dily.cz | 1 000 Kč |
 
 ## Screencasty
 
