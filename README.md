@@ -114,8 +114,10 @@ V případě že se vám knihovna líbí a je vám užitečná, můžete mi zasl
 ### Přispěvatelé
 | Přispěvatel | Částka |
 |-------------|--------|
+| http://www.elektrahk.cz | 1 000 Kč |
+| http://www.nerosty.cz |500 Kč |
 | https://www.manvel.cz | 500 Kč |
-| http://www.skoda-dily.cz | 1 000 Kč |
+| https://www.skoda-dily.cz | 1 000 Kč |
 
 ## Screencasty
 
