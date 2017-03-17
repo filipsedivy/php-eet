@@ -114,6 +114,7 @@ V případě že se vám knihovna líbí a je vám užitečná, můžete mi zasl
 ### Přispěvatelé
 | Přispěvatel | Částka |
 |-------------|--------|
+| https://www.drento.cz | 1 000 Kč |
 | http://www.elektrahk.cz | 1 000 Kč |
 | http://www.nerosty.cz |500 Kč |
 | https://www.manvel.cz | 500 Kč |
