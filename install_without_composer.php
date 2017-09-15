@@ -217,12 +217,12 @@ $eetExample = ob_get_clean();
 $startPhp = '<?php'.PHP_EOL;
 
 // Detekce existence autoloaderu
-if(file_exists(__DIR__."/EETLib/Autoloader.php"))
 write('Creating an autoloader');
+if(file_exists(__DIR__.'/EETLib/Autoloader.php'))
 {
-  unlink(__DIR__."/EETLib/Autoloader.php");
+    unlink(__DIR__.'/EETLib/Autoloader.php');
 }
-file_put_contents(__DIR__."/EETLib/Autoloader.php", $startPhp . $autoloader);
+file_put_contents(__DIR__.'/EETLib/Autoloader.php', $startPhp . $autoloader);
 
 // Detekce existence ukázky
 if(file_exists(__DIR__."/EET_Example.php"))
