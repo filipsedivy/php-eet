@@ -225,12 +225,12 @@ if(file_exists(__DIR__.'/EETLib/Autoloader.php'))
 file_put_contents(__DIR__.'/EETLib/Autoloader.php', $startPhp . $autoloader);
 
 // Detekce existence ukázky
-if(file_exists(__DIR__."/EET_Example.php"))
 write('Export samples');
+if(file_exists(__DIR__.'/EET_Example.php'))
 {
-  unlink(__DIR__."/EET_Example.php");
+    unlink(__DIR__.'/EET_Example.php');
 }
-file_put_contents(__DIR__."/EET_Example.php", $startPhp . $eetExample);
+file_put_contents(__DIR__.'/EET_Example.php', $startPhp . $eetExample);
 
 // Zkopírování příkladu
 $certExample = __DIR__."/EETLib/".(basename(glob(__DIR__."/EETLib/filipsedivy-PHP-EET*")[0]))."/examples/EET_CA1_Playground-CZ00000019.p12";
