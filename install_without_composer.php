@@ -33,7 +33,8 @@ function write($text)
 // Kontrola minimálních požadavků
 if(!file_exists(__DIR__.'/composer.json'))
 {
-    copy(__DIR__.'/composer.json', 'https://raw.githubusercontent.com/filipsedivy/PHP-EET/master/composer.json');
+    write('File composer.json is not exists');
+    copy( 'https://raw.githubusercontent.com/filipsedivy/PHP-EET/master/composer.json', __DIR__.'/composer.json');
 }
 $composerJson = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
 $minimalPhpVersion = $composerJson['require']['php'];
