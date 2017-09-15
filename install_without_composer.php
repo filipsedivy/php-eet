@@ -68,13 +68,14 @@ $dependency = array(
   "XMLSecLibs"  => "https://github.com/robrichards/xmlseclibs/zipball/master"
 );
 
+
 // Kontrola existence tříd
-foreach($needClass as $class)
+foreach($necessaryClasses as $class)
 {
-  if(!class_exists($class))
-  {
-    throw new Exception("Class {$class} not exists");
-  }
+    if(!class_exists($class))
+    {
+        throw new Exception('This bundle needs the '.$class.' PHP extension.');
+    }
 }
 
 // Stažení závislostí
