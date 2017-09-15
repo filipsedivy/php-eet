@@ -11,12 +11,23 @@
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
 
+/**
+ * @var bool Zapnutí nebo vypnutí ladícího prostředí
+*/
+define('DEBUG', true);
 
-define("showError", true);
-function showInfo($text)
+/**
+ * Výpis textu do konzole nebo do prohlížeče
+ * @param string $text Vstupní text
+*/
+function write($text)
 {
-  if(showError == false){ return; }
-  echo sprintf("%s <br>", $text);
+    if(!DEBUG) { return; }
+    if (php_sapi_name() == 'cli') {
+        print($text.PHP_EOL);
+    } else {
+        echo $text."<br>";
+    }
 }
 
 $needClass = array('ZipArchive');
