@@ -81,40 +81,37 @@ foreach($necessaryClasses as $class)
 // Stažení závislostí
 foreach($dependency as $name => $url)
 {
-  if(file_exists(__DIR__."/{$name}.zip"))
-  {
-    // Soubor existuje - smazat
-    showInfo("Existující závislost s názvem ".$name." byla smazána");
-    unlink(__DIR__."/{$name}.zip");
-  }
+    $dependencyPath = __DIR__.'/'.$name.'.zip';
     write('Check dependence '.$name);
+    if(file_exists($dependencyPath))
+    {
+        unlink($dependencyPath);
+        write('Existing dependency '.$name.' was removed');
+    }
 
-  copy($url, __DIR__."/{$name}.zip");
-  showInfo("Závislost ".$name." byla stažena");
+    copy($url, $dependencyPath);
     write('Dependency '.$name.' has been downloaded');
 
 
-  // V případě neexistence složky EETLib se vytvoří
-  if(!file_exists(__DIR__."/EETLib") || !is_dir(__DIR__."/EETLib"))
-  {
-    mkdir(__DIR__."/EETLib", 0777);
-  }
+    // V případě neexistence složky EETLib se vytvoří
+    if(!file_exists(__DIR__.'/EETLib') || !is_dir(__DIR__.'/EETLib'))
+    {
+        mkdir(__DIR__.'/EETLib', 0777);
         write('The EETLib folder was created');
+    }
 
 
-  // Do této složky se rozzipují soubory
-  $ZipObject = new ZipArchive;
-  if($ZipObject->open(__DIR__."/{$name}.zip") === TRUE){
-    showInfo("Byl otevřen ZIP s názvem ".$name);
-    $ZipObject->extractTo(__DIR__."/EETLib");
-    $ZipObject->close();
-  }else{
-  }
+    // Do této složky se rozzipují soubory
+    $ZipObject = new ZipArchive;
+    if($ZipObject->open($dependencyPath) === TRUE){
+        $ZipObject->extractTo(__DIR__.'/EETLib');
+        $ZipObject->close();
         write('Dependency '.$name.' has been unpacked');
+    }else{
         write('Dependency '.$name.' can not be opened');
+    }
 
-  showInfo("Byl odstraněn ZIP s názvem ".$name);
-  unlink(__DIR__."/{$name}.zip");
+    unlink($dependencyPath);
     write('The '.$name.' file has been removed');
 }
 
