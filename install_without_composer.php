@@ -81,25 +81,25 @@ foreach($necessaryClasses as $class)
 // Stažení závislostí
 foreach($dependency as $name => $url)
 {
-  showInfo("Kontrola závislosti s názvem ".$name);
   if(file_exists(__DIR__."/{$name}.zip"))
   {
     // Soubor existuje - smazat
     showInfo("Existující závislost s názvem ".$name." byla smazána");
     unlink(__DIR__."/{$name}.zip");
   }
+    write('Check dependence '.$name);
 
-  showInfo("Probíhá stahování závislosti s názvem ".$name);
   copy($url, __DIR__."/{$name}.zip");
   showInfo("Závislost ".$name." byla stažena");
+    write('Dependency '.$name.' has been downloaded');
 
 
   // V případě neexistence složky EETLib se vytvoří
   if(!file_exists(__DIR__."/EETLib") || !is_dir(__DIR__."/EETLib"))
   {
-    showInfo("Složka EETLib neexistuje a byla vytvořena");
     mkdir(__DIR__."/EETLib", 0777);
   }
+        write('The EETLib folder was created');
 
 
   // Do této složky se rozzipují soubory
@@ -108,13 +108,14 @@ foreach($dependency as $name => $url)
     showInfo("Byl otevřen ZIP s názvem ".$name);
     $ZipObject->extractTo(__DIR__."/EETLib");
     $ZipObject->close();
-    showInfo("Rozzipování ZIP souboru s názvem ".$name." bylo dokončeno");
   }else{
-    showInfo("Nelze otevřít ZIP s názvem ".$name);
   }
+        write('Dependency '.$name.' has been unpacked');
+        write('Dependency '.$name.' can not be opened');
 
   showInfo("Byl odstraněn ZIP s názvem ".$name);
   unlink(__DIR__."/{$name}.zip");
+    write('The '.$name.' file has been removed');
 }
 
 // Vytvoření autoloaderu
@@ -219,24 +220,24 @@ $eetExample = ob_get_clean();
 $startPhp = "<?php\n";
 
 // Detekce existence autoloaderu
-showInfo("Tvorba autoloaderu");
 if(file_exists(__DIR__."/EETLib/Autoloader.php"))
+write('Creating an autoloader');
 {
   unlink(__DIR__."/EETLib/Autoloader.php");
 }
 file_put_contents(__DIR__."/EETLib/Autoloader.php", $startPhp . $autoloader);
 
 // Detekce existence ukázky
-showInfo("Probíhá export ukázky");
 if(file_exists(__DIR__."/EET_Example.php"))
+write('Export samples');
 {
   unlink(__DIR__."/EET_Example.php");
 }
 file_put_contents(__DIR__."/EET_Example.php", $startPhp . $eetExample);
 
 // Zkopírování příkladu
-showInfo("Probíhá export certifikátu");
 $certExample = __DIR__."/EETLib/".(basename(glob(__DIR__."/EETLib/filipsedivy-PHP-EET*")[0]))."/examples/EET_CA1_Playground-CZ00000019.p12";
+write('Export certificate');
 if(file_exists($certExample))
 {
   if(file_exists(__DIR__."/".basename($certExample)))
