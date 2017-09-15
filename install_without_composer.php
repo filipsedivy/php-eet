@@ -233,14 +233,16 @@ if(file_exists(__DIR__.'/EET_Example.php'))
 file_put_contents(__DIR__.'/EET_Example.php', $startPhp . $eetExample);
 
 // Zkopírování příkladu
-$certExample = __DIR__."/EETLib/".(basename(glob(__DIR__."/EETLib/filipsedivy-PHP-EET*")[0]))."/examples/EET_CA1_Playground-CZ00000019.p12";
 write('Export certificate');
+$phpEetFolder = glob(__DIR__.'/EETLib/filipsedivy-PHP-EET*');
+$eetFolderName = basename($phpEetFolder[0]);
+$certExample = __DIR__.'/EETLib/'.$eetFolderName.'/examples/EET_CA1_Playground-CZ00000019.p12';
 if(file_exists($certExample))
 {
-  if(file_exists(__DIR__."/".basename($certExample)))
-  {
-    unlink(__DIR__."/".basename($certExample));
-  }
+    if(file_exists(__DIR__.'/'.basename($certExample)))
+    {
+        unlink(__DIR__.'/'.basename($certExample));
+    }
 
-  copy($certExample, __DIR__."/".basename($certExample));
+    copy($certExample, __DIR__.'/'.basename($certExample));
 }
