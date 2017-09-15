@@ -61,6 +61,7 @@ foreach($composerJson['require'] as $bundle => $version)
 /** @var array Potřebné třídy */
 $necessaryClasses = array('ZipArchive');
 
+/** @var array Závislosti */
 $dependency = array(
   "PHP-EET"     => "http://github.com/filipsedivy/PHP-EET/zipball/master/",
   "WSE-PHP"     => "http://github.com/robrichards/wse-php/zipball/master/",
