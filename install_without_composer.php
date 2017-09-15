@@ -30,7 +30,6 @@ function write($text)
     }
 }
 
-$needClass = array('ZipArchive');
 // Kontrola minimálních požadavků
 $composerJson = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
 $minimalPhpVersion = $composerJson['require']['php'];
@@ -58,6 +57,10 @@ foreach($composerJson['require'] as $bundle => $version)
         }
     }
 }
+
+/** @var array Potřebné třídy */
+$necessaryClasses = array('ZipArchive');
+
 $dependency = array(
   "PHP-EET"     => "http://github.com/filipsedivy/PHP-EET/zipball/master/",
   "WSE-PHP"     => "http://github.com/robrichards/wse-php/zipball/master/",
