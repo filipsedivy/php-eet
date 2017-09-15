@@ -214,7 +214,7 @@ try {
 <?php
 $eetExample = ob_get_clean();
 
-$startPhp = "<?php\n";
+$startPhp = '<?php'.PHP_EOL;
 
 // Detekce existence autoloaderu
 if(file_exists(__DIR__."/EETLib/Autoloader.php"))
