@@ -1,71 +1,123 @@
 <?php
+/**
+ * This file is part of the PHP-EET package.
+ *
+ * (c) Filip Sedivy <mail@filipsedivy.cz>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license MIT
+ * @author Filip Sedivy <mail@filipsedivy.cz>
+ */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/**
+ * @var bool Zapnutí nebo vypnutí ladícího prostředí
+*/
+define('DEBUG', true);
 
-define("showError", true);
-function showInfo($text)
+/**
+ * Výpis textu do konzole nebo do prohlížeče
+ * @param string $text Vstupní text
+*/
+function write($text)
 {
-  if(showError == false){ return; }
-  echo sprintf("%s <br>", $text);
+    if(!DEBUG) { return; }
+    if (php_sapi_name() == 'cli') {
+        print($text.PHP_EOL);
+    } else {
+        echo $text."<br>";
+    }
 }
 
-$needClass = array('ZipArchive');
+// Kontrola minimálních požadavků
+if(!file_exists(__DIR__.'/composer.json'))
+{
+    write('File composer.json is not exists');
+    copy( 'https://raw.githubusercontent.com/filipsedivy/PHP-EET/master/composer.json', __DIR__.'/composer.json');
+}
+$composerJson = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
+$minimalPhpVersion = $composerJson['require']['php'];
 
-// Závislosti
+preg_match('/([\W]+)([0-9.]+)/', $minimalPhpVersion, $phpMatch);
+list($input, $operator, $version) = $phpMatch;
+
+if(!version_compare(PHP_VERSION, $version, $operator))
+{
+    write('Your version of PHP is not compatible with this library');
+    write('The minimum version is: ');
+    write('Current version of PHP: '.PHP_VERSION);
+    exit();
+}
+
+foreach($composerJson['require'] as $bundle => $version)
+{
+    if(substr($bundle, 0, 3) == 'ext')
+    {
+        $bundleExt = substr($bundle, 4);
+        if(!in_array($bundleExt, get_loaded_extensions()))
+        {
+            write($bundleExt.' is not available on your web server');
+            exit(0);
+        }
+    }
+}
+
+/** @var array Potřebné třídy */
+$necessaryClasses = array('ZipArchive');
+
+/** @var array Závislosti */
 $dependency = array(
   "PHP-EET"     => "http://github.com/filipsedivy/PHP-EET/zipball/master/",
   "WSE-PHP"     => "http://github.com/robrichards/wse-php/zipball/master/",
   "XMLSecLibs"  => "https://github.com/robrichards/xmlseclibs/zipball/master"
 );
 
+
 // Kontrola existence tříd
-foreach($needClass as $class)
+foreach($necessaryClasses as $class)
 {
-  if(!class_exists($class))
-  {
-    throw new Exception("Class {$class} not exists");
-  }
+    if(!class_exists($class))
+    {
+        throw new Exception('This bundle needs the '.$class.' PHP extension.');
+    }
 }
 
 // Stažení závislostí
 foreach($dependency as $name => $url)
 {
-  showInfo("Kontrola závislosti s názvem ".$name);
-  if(file_exists(__DIR__."/{$name}.zip"))
-  {
-    // Soubor existuje - smazat
-    showInfo("Existující závislost s názvem ".$name." byla smazána");
-    unlink(__DIR__."/{$name}.zip");
-  }
+    $dependencyPath = __DIR__.'/'.$name.'.zip';
+    write('Check dependence '.$name);
+    if(file_exists($dependencyPath))
+    {
+        unlink($dependencyPath);
+        write('Existing dependency '.$name.' was removed');
+    }
 
-  showInfo("Probíhá stahování závislosti s názvem ".$name);
-  copy($url, __DIR__."/{$name}.zip");
-  showInfo("Závislost ".$name." byla stažena");
-
-
-  // V případě neexistence složky EETLib se vytvoří
-  if(!file_exists(__DIR__."/EETLib") || !is_dir(__DIR__."/EETLib"))
-  {
-    showInfo("Složka EETLib neexistuje a byla vytvořena");
-    mkdir(__DIR__."/EETLib", 0777);
-  }
+    copy($url, $dependencyPath);
+    write('Dependency '.$name.' has been downloaded');
 
 
-  // Do této složky se rozzipují soubory
-  $ZipObject = new ZipArchive;
-  if($ZipObject->open(__DIR__."/{$name}.zip") === TRUE){
-    showInfo("Byl otevřen ZIP s názvem ".$name);
-    $ZipObject->extractTo(__DIR__."/EETLib");
-    $ZipObject->close();
-    showInfo("Rozzipování ZIP souboru s názvem ".$name." bylo dokončeno");
-  }else{
-    showInfo("Nelze otevřít ZIP s názvem ".$name);
-  }
+    // V případě neexistence složky EETLib se vytvoří
+    if(!file_exists(__DIR__.'/EETLib') || !is_dir(__DIR__.'/EETLib'))
+    {
+        mkdir(__DIR__.'/EETLib', 0777);
+        write('The EETLib folder was created');
+    }
 
-  showInfo("Byl odstraněn ZIP s názvem ".$name);
-  unlink(__DIR__."/{$name}.zip");
+
+    // Do této složky se rozzipují soubory
+    $ZipObject = new ZipArchive;
+    if($ZipObject->open($dependencyPath) === TRUE){
+        $ZipObject->extractTo(__DIR__.'/EETLib');
+        $ZipObject->close();
+        write('Dependency '.$name.' has been unpacked');
+    }else{
+        write('Dependency '.$name.' can not be opened');
+    }
+
+    unlink($dependencyPath);
+    write('The '.$name.' file has been removed');
 }
 
 // Vytvoření autoloaderu
@@ -167,33 +219,35 @@ try {
 <?php
 $eetExample = ob_get_clean();
 
-$startPhp = "<?php\n";
+$startPhp = '<?php'.PHP_EOL;
 
 // Detekce existence autoloaderu
-showInfo("Tvorba autoloaderu");
-if(file_exists(__DIR__."/EETLib/Autoloader.php"))
+write('Creating an autoloader');
+if(file_exists(__DIR__.'/EETLib/Autoloader.php'))
 {
-  unlink(__DIR__."/EETLib/Autoloader.php");
+    unlink(__DIR__.'/EETLib/Autoloader.php');
 }
-file_put_contents(__DIR__."/EETLib/Autoloader.php", $startPhp . $autoloader);
+file_put_contents(__DIR__.'/EETLib/Autoloader.php', $startPhp . $autoloader);
 
 // Detekce existence ukázky
-showInfo("Probíhá export ukázky");
-if(file_exists(__DIR__."/EET_Example.php"))
+write('Export samples');
+if(file_exists(__DIR__.'/EET_Example.php'))
 {
-  unlink(__DIR__."/EET_Example.php");
+    unlink(__DIR__.'/EET_Example.php');
 }
-file_put_contents(__DIR__."/EET_Example.php", $startPhp . $eetExample);
+file_put_contents(__DIR__.'/EET_Example.php', $startPhp . $eetExample);
 
 // Zkopírování příkladu
-showInfo("Probíhá export certifikátu");
-$certExample = __DIR__."/EETLib/".(basename(glob(__DIR__."/EETLib/filipsedivy-PHP-EET*")[0]))."/examples/EET_CA1_Playground-CZ00000019.p12";
+write('Export certificate');
+$phpEetFolder = glob(__DIR__.'/EETLib/filipsedivy-PHP-EET*');
+$eetFolderName = basename($phpEetFolder[0]);
+$certExample = __DIR__.'/EETLib/'.$eetFolderName.'/examples/EET_CA1_Playground-CZ00000019.p12';
 if(file_exists($certExample))
 {
-  if(file_exists(__DIR__."/".basename($certExample)))
-  {
-    unlink(__DIR__."/".basename($certExample));
-  }
+    if(file_exists(__DIR__.'/'.basename($certExample)))
+    {
+        unlink(__DIR__.'/'.basename($certExample));
+    }
 
-  copy($certExample, __DIR__."/".basename($certExample));
+    copy($certExample, __DIR__.'/'.basename($certExample));
 }
