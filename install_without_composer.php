@@ -31,8 +31,33 @@ function write($text)
 }
 
 $needClass = array('ZipArchive');
+// Kontrola minimálních požadavků
+$composerJson = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
+$minimalPhpVersion = $composerJson['require']['php'];
 
-// Závislosti
+preg_match('/([\W]+)([0-9.]+)/', $minimalPhpVersion, $phpMatch);
+list($input, $operator, $version) = $phpMatch;
+
+if(!version_compare(PHP_VERSION, $version, $operator))
+{
+    write('Your version of PHP is not compatible with this library');
+    write('The minimum version is: ');
+    write('Current version of PHP: '.PHP_VERSION);
+    exit();
+}
+
+foreach($composerJson['require'] as $bundle => $version)
+{
+    if(substr($bundle, 0, 3) == 'ext')
+    {
+        $bundleExt = substr($bundle, 4);
+        if(!in_array($bundleExt, get_loaded_extensions()))
+        {
+            write($bundleExt.' is not available on your web server');
+            exit(0);
+        }
+    }
+}
 $dependency = array(
   "PHP-EET"     => "http://github.com/filipsedivy/PHP-EET/zipball/master/",
   "WSE-PHP"     => "http://github.com/robrichards/wse-php/zipball/master/",
