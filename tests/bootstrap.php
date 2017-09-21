@@ -11,18 +11,16 @@
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
 
-namespace Tests;
+use Tester\Environment;
+use Tester\Helpers;
 
-use FilipSedivy\EET\Utils\UUID;
-
-class UtilsTest extends \PHPUnit_Framework_TestCase
+if(!file_exists(__DIR__.'/../vendor/autoload.php'))
 {
-
-    public function testMinimumUUIDLength()
-    {
-        $uuid = UUID::v4();
-        $lengthAssert = strlen($uuid) > 35;
-        $this->assertTrue($lengthAssert);
-    }
-
+    echo 'Install Nette Tester using `composer update --dev`';
+    die(0);
 }
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+Environment::setup();
+date_default_timezone_set('Europe/Prague');

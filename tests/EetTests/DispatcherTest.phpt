@@ -1,29 +1,27 @@
 <?php
 /**
- * This file is part of the PHP-EET package.
+ * Test: FilipSedivy\EET\Dispatcher.
  *
- * (c) Filip Sedivy <mail@filipsedivy.cz>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @license MIT
- * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @testCase
  */
 
-namespace Tests;
+namespace EetTest\Dispatcher;
 
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Exceptions\EetException;
 use FilipSedivy\EET\Receipt;
 use FilipSedivy\EET\Utils\UUID;
+use Tester\Assert;
+use Tester\TestCase;
 
-class DispatcherTest extends \PHPUnit_Framework_TestCase
+require_once __DIR__.'/../bootstrap.php';
+
+class DispatcherTest extends TestCase
 {
     public function testSendReceipt()
     {
-        $certificate = new Certificate(__DIR__."/../examples/EET_CA1_Playground-CZ00000019.p12", "eet");
+        $certificate = new Certificate(__DIR__.'/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
@@ -46,20 +44,19 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             $dispatcher->send($r);
             print "FIK: ".$dispatcher->getFik()."\n";
             print "BKP: ".$dispatcher->getBkp()."\n";
-            $this->assertTrue( is_string($dispatcher->getFik()) && is_string($dispatcher->getBkp()) );
+            Assert::true(is_string($dispatcher->getFik()) && is_string($dispatcher->getBkp()));
         }catch(EetException $ex){
             print "PKP: ".$dispatcher->getPkp()."\n";
             print "BKP: ".$dispatcher->getBkp()."\n";
-            $this->assertTrue( is_string($dispatcher->getPkp()) && is_string($dispatcher->getBkp()) );
+            Assert::true(is_string($dispatcher->getPkp()) && is_string($dispatcher->getBkp()));
         }catch(\Exception $ex){
-            $this->fail();
+            Assert::fail('Pri odesilani EET zpravy nastala chyba: '.$ex->getMessage());
         }
     }
 
-
     public function testSendReceipts()
     {
-        $certificate = new Certificate(__DIR__."/../examples/EET_CA1_Playground-CZ00000019.p12", "eet");
+        $certificate = new Certificate(__DIR__.'/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
@@ -91,12 +88,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
                 print "PKP: ".$dispatcher->getPkp()."\n";
                 print "BKP: ".$dispatcher->getBkp()."\n";
             }catch(\Exception $ex){
-                $this->fail();
+                Assert::fail('Pri odesilani '.$i.' platby nastala chyba: '.$ex->getMessage());
             }
         }
 
-        $this->assertTrue(true);
+        Assert::true(true);
     }
 
-
 }
+
+(new DispatcherTest())->run();
