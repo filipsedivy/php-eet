@@ -113,11 +113,11 @@ class SoapClient extends \SoapClient {
 
     /**
      *
-     * @param   string      $request
-     * @param   string      $location
-     * @param   string      $saction
-     * @param   int         $version
-     * @param   null|string $one_way
+     * @param   string           $request
+     * @param   string           $location
+     * @param   string           $saction
+     * @param   int              $version
+     * @param   null|string|bool $one_way
      * @return  null|string
      */
     public function __doRequest($request, $location, $saction, $version, $one_way = NULL)
@@ -222,7 +222,7 @@ class SoapClient extends \SoapClient {
                 continue;
             }
             throw new ClientException(
-                sprintf('Failed setting CURL option %d (%s) to %s', $option, $this->__getCurlOptionName($option), var_export($value, true))
+                sprintf('Failed setting CURL option %d to %s', $option, var_export($value, true))
             );
         }
     }

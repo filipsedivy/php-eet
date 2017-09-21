@@ -313,7 +313,7 @@ class Dispatcher
     public function getPkp($encoded = true)
     {
         if($encoded){
-            return base64_encode((string)$this->pkp);
+            return base64_encode($this->pkp);
         }
         return $this->pkp;
     }
