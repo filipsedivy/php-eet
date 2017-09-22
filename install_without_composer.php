@@ -24,10 +24,11 @@ function write($text)
 {
     if(!DEBUG) { return; }
     if (php_sapi_name() == 'cli') {
-        print($text.PHP_EOL);
-    } else {
-        echo $text."<br>";
+        print(addslashes($text).PHP_EOL);
+        return;
     }
+
+    echo addslashes($text)."<br>";
 }
 
 // Kontrola minimálních požadavků

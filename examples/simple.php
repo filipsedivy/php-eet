@@ -41,14 +41,14 @@ try {
     $dispatcher->send($r);
 
     // Tržba byla úspěšně odeslána
-    echo sprintf("FIK: %s <br>", $dispatcher->getFik());
-    echo sprintf("BKP: %s <br>", $dispatcher->getBkp());
+    echo sprintf("FIK: %s <br>", addslashes($dispatcher->getFik()));
+    echo sprintf("BKP: %s <br>", addslashes($dispatcher->getBkp()));
 
 }catch(\FilipSedivy\EET\Exceptions\EetException $ex){
     // Tržba nebyla odeslána
 
-    echo sprintf("BKP: %s <br>", $dispatcher->getBkp());
-    echo sprintf("PKP: %s <br>", $dispatcher->getPkp());
+    echo sprintf("BKP: %s <br>", addslashes($dispatcher->getBkp()));
+    echo sprintf("PKP: %s <br>", addslashes($dispatcher->getPkp()));
 
 }catch(Exception $ex){
     // Obecná chyba
