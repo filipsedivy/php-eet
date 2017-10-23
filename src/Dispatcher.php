@@ -251,27 +251,24 @@ class Dispatcher
 
         $body = [
             'dic_popl' => $receipt->dic_popl,
-            'dic_poverujiciho' => $receipt->dic_poverujiciho,
             'id_provoz' => $receipt->id_provoz,
             'id_pokl' => $receipt->id_pokl,
             'porad_cis' => $receipt->porad_cis,
             'dat_trzby' => $receipt->dat_trzby->format('c'),
-            'celk_trzba' => Format::price($receipt->celk_trzba),
-            'zakl_nepodl_dph' => Format::price($receipt->zakl_nepodl_dph),
-            'zakl_dan1' => Format::price($receipt->zakl_dan1),
-            'dan1' => Format::price($receipt->dan1),
-            'zakl_dan2' => Format::price($receipt->zakl_dan2),
-            'dan2' => Format::price($receipt->dan2),
-            'zakl_dan3' => Format::price($receipt->zakl_dan3),
-            'dan3' => Format::price($receipt->dan3),
-            'cest_sluz' => Format::price($receipt->cest_sluz),
-            'pouzit_zboz1' => Format::price($receipt->pouzit_zboz1),
-            'pouzit_zboz2' => Format::price($receipt->pouzit_zboz2),
-            'pouzit_zboz3' => Format::price($receipt->pouzit_zboz3),
-            'urceno_cerp_zuct' => Format::price($receipt->urceno_cerp_zuct),
-            'cerp_zuct' => Format::price($receipt->cerp_zuct),
-            'rezim' => $receipt->rezim
+            'celk_trzba' => Format::price($receipt->celk_trzba)
         ];
+
+        if ($receipt->dic_poverujiciho !== \null){
+          $body['dic_poverujiciho'] = $receipt->dic_poverujiciho;
+        }
+
+        foreach ($receipt->nepov_polozky as $polozka){
+          if ($receipt->$polozka !== \null){
+            $body[$polozka] = Format::price($receipt->$polozka);
+          }
+        }
+
+        $body ['rezim'] = $receipt->rezim;
 
         $this->lastReceipt = $receipt;
 
@@ -282,6 +279,9 @@ class Dispatcher
         ];
     }
 
+    public function viewData($receipt){
+      return $this->prepareData($receipt);
+    }
 
     /**
      *
