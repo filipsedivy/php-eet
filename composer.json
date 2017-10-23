@@ -24,7 +24,7 @@
     },
     "require": {
         "php": ">=5.6.0",
-        "robrichards/wse-php": "2.0.0",
+        "robrichards/wse-php": "2.0.2",
         "ext-curl": "*",
         "ext-openssl": "*"
     },
