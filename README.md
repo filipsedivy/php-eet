@@ -1,6 +1,7 @@
 # PHP knihovna pro EET
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/07f653430c254d0bbf3f40c8595f0c89)](https://www.codacy.com/app/mail_72/PHP-EET?utm_source=github.com&utm_medium=referral&utm_content=filipsedivy/PHP-EET&utm_campaign=badger)
+[![Dependency Status](https://gemnasium.com/badges/github.com/filipsedivy/PHP-EET.svg)](https://gemnasium.com/github.com/filipsedivy/PHP-EET)
 [![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![Latest Stable Version](https://poser.pugx.org/filipsedivy/php-eet/v/stable)](https://packagist.org/packages/filipsedivy/php-eet) [![Total Downloads](https://poser.pugx.org/filipsedivy/php-eet/downloads)](https://packagist.org/packages/filipsedivy/php-eet) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://packagist.org/packages/filipsedivy/php-eet)
 
 **Koukněte se na [přispěvatelé](#př%C3%ADspěvek), a příspějte taktéž na vývoj.** Díky těmto lidem je knihovna dále udržována a šířena zdarma jako open source.
