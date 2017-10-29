@@ -110,4 +110,10 @@ class Receipt {
 
     /** @var int */
     public $rezim = 0;
+
+    /** @var string */
+    public $bkp;
+
+    /** @var string */
+    public $pkp;
 }

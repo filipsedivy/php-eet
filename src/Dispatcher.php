@@ -119,20 +119,28 @@ class Dispatcher
      */
     public function getCheckCodes(Receipt $receipt)
     {
-        $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
-        $objKey->loadKey($this->cert->getPrivateKey());
+        if(isset($receipt->bkp, $receipt->pkp))
+        {
+            $this->pkp = $receipt->pkp;
+            $this->bkp = $receipt->bkp;
+        }
+        else
+        {
+            $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
+            $objKey->loadKey($this->cert->getPrivateKey());
 
-        $arr = [
-            $receipt->dic_popl,
-            $receipt->id_provoz,
-            $receipt->id_pokl,
-            $receipt->porad_cis,
-            $receipt->dat_trzby->format('c'),
-            Format::price($receipt->celk_trzba)
-        ];
+            $arr = [
+                $receipt->dic_popl,
+                $receipt->id_provoz,
+                $receipt->id_pokl,
+                $receipt->porad_cis,
+                $receipt->dat_trzby->format('c'),
+                Format::price($receipt->celk_trzba)
+            ];
 
-        $this->pkp = $objKey->signData(implode('|', $arr));
-        $this->bkp = Format::BKB(sha1($this->pkp));
+            $this->pkp = $objKey->signData(implode('|', $arr));
+            $this->bkp = Format::BKB(sha1($this->pkp));
+        }
 
         return [
             'pkp' => [
