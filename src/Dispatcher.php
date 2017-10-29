@@ -16,7 +16,6 @@ namespace FilipSedivy\EET;
 use FilipSedivy\EET\Exceptions\ClientException;
 use FilipSedivy\EET\Exceptions\RequirementsException;
 use FilipSedivy\EET\Exceptions\ServerException;
-use FilipSedivy\EET\SoapClient;
 use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
