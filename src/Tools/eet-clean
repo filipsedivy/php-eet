@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This file is part of the PHP-EET package.
+ *
+ * (c) Filip Sedivy <mail@filipsedivy.cz>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license MIT
+ * @author Filip Sedivy <mail@filipsedivy.cz>
+ */
+
+class Clean
+{
+    /** @var $this $instance */
+    private static $instance;
+
+    /**
+     * Získání instance
+    */
+    public static function getInstance()
+    {
+        if(!self::$instance instanceof Clean)
+        {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Odstranění složky vč. souborů
+    */
+    public function delete($path)
+    {
+        if (is_dir($path) === true)
+        {
+            $files = array_diff(scandir($path), array('.', '..'));
+
+            foreach ($files as $file)
+            {
+                $this->delete(realpath($path) . '/' . $file);
+            }
+
+            return rmdir($path);
+        }
+
+        else if (is_file($path) === true)
+        {
+            return unlink($path);
+        }
+
+        return false;
+    }
+}
+
+define('ROOT', dirname(__FILE__).'/../..');
+
+$clear = new ArrayObject();
+$clear->append('examples/');
+$clear->append('tests/');
+$clear->append('.gitignore');
+$clear->append('.travis.yml');
+$clear->append('install_without_composer.php');
+$clear->append('phpstan.neon');
+$clear->append('phpunit.xml.dist');
+
+foreach($clear as $key => $value)
+{
+    Clean::getInstance()->delete(ROOT.'/'.$value);
+}
