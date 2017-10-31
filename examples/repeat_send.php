@@ -42,7 +42,7 @@ $r->prvni_zaslani = false; // Mění se hodnota prvního zaslání z TRUE na FAL
 
 // Předává se původně vygenerovaný BKP a PKP kód
 $r->bkp = 'e245f2ac-52d74aef-50a9334b-dc0bcdf9-f676113f';
-$r->pkp = 'TGUBKTLy5Fmq32yNlKUyTuQ7F5kKAL2nSbtu71tufYqQU7QE8RAAv63xGrUiOMtfPidFLrMfrVzRn1WF7RFDiOxIGPahVOX6j4ZdBXQx67OMhCCmeAsZM4wnVDFLq+25VlhoM7cENRg0n7JXdvRGUu3zrDD7jqgSr6RJYcilicLDR20pJVF4ML5fY\/rs7naGmh\/ZloNT2kU6LXWfsnilbz4esizfYubZBULHAoeNUfObxRkPmfMR+7KY3LwRsNFISAS+SS2lEAhMNrlJdvNHZNjL1770izMsjqIPMBJNRS+NtqjICHdXhFYb8ukU1sKaq9FaFX4sQ0bvCPMKcIlgrw==';
+$r->pkp = base64_decode('TGUBKTLy5Fmq32yNlKUyTuQ7F5kKAL2nSbtu71tufYqQU7QE8RAAv63xGrUiOMtfPidFLrMfrVzRn1WF7RFDiOxIGPahVOX6j4ZdBXQx67OMhCCmeAsZM4wnVDFLq+25VlhoM7cENRg0n7JXdvRGUu3zrDD7jqgSr6RJYcilicLDR20pJVF4ML5fY\/rs7naGmh\/ZloNT2kU6LXWfsnilbz4esizfYubZBULHAoeNUfObxRkPmfMR+7KY3LwRsNFISAS+SS2lEAhMNrlJdvNHZNjL1770izMsjqIPMBJNRS+NtqjICHdXhFYb8ukU1sKaq9FaFX4sQ0bvCPMKcIlgrw==');
 
 echo '<h2>---REQUEST---</h2>';
 echo "<pre>";
