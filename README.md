@@ -90,19 +90,6 @@ try {
 }
 ```
 
-## Aktualizace
-
-- 3.0.0
-  - Vytvoření [wiki](https://github.com/filipsedivy/PHP-EET/wiki) systému  
-  - Úprava licence z GNU GPL 3 na MIT
-  - Code review
-  - Úprava issues (_počeštění_)
-  - Vytvoření standardu pro issues, pull requesty, vývoj,...
-  - Opravení BKP a PKP kódu
-  - Oprava PhpDoc bloků
-- 2.0.0
-  - Úprava načítání certifikátu (*nyní není třeba certifikát převádět, třída jej převede sama*)
-
 ## Pomoc a řešní chyb
 V případě že potřebujete poradit, nebo při implementaci Vám třída zobrazuje chybu můžete využít následujících kontaktů.
 Základní pomoc je poskytována zcela zdarma. V ostatních případech se řídí dle aktuální ceny, kterou naleznete ve [wiki](https://github.com/filipsedivy/PHP-EET/wiki/Zasl%C3%A1n%C3%AD-p%C5%99%C3%ADsp%C4%9Bvku#co-z-toho-nebudu-m%C3%ADt).
