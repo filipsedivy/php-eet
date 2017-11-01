@@ -22,8 +22,10 @@ $certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'ee
 $dispatcher = new Dispatcher($certificate);
 $dispatcher->setPlaygroundService();
 
+// Generování UUID
 $uuid = UUID::v4();
 
+// Vytvoření receiptu
 $r = new Receipt;
 $r->uuid_zpravy = $uuid;
 $r->id_provoz = '11';
@@ -33,25 +35,23 @@ $r->porad_cis = '1';
 $r->dat_trzby = new \DateTime();
 $r->celk_trzba = 500;
 
-echo '<h2>---REQUEST---</h2>';
-echo "<pre>";
+echo '-= REQUEST =-'.PHP_EOL;
 
 try {
+    // Unikátní ID
+    echo sprintf('UUID: %s', addslashes($uuid)).PHP_EOL;
 
+    // Tržbu klasicky odešleme
     $dispatcher->send($r);
 
     // Tržba byla úspěšně odeslána
-    echo sprintf("FIK: %s <br>", addslashes($dispatcher->getFik()));
-    echo sprintf("BKP: %s <br>", addslashes($dispatcher->getBkp()));
-
+    echo sprintf('FIK: %s', addslashes($dispatcher->getFik())).PHP_EOL;
+    echo sprintf('BKP: %s', addslashes($dispatcher->getBkp())).PHP_EOL;
 }catch(\FilipSedivy\EET\Exceptions\EetException $ex){
     // Tržba nebyla odeslána
-
-    echo sprintf("BKP: %s <br>", addslashes($dispatcher->getBkp()));
-    echo sprintf("PKP: %s <br>", addslashes($dispatcher->getPkp()));
-
+    echo sprintf('BKP: %s', addslashes($dispatcher->getBkp())).PHP_EOL;
+    echo sprintf('PKP: %s', addslashes($dispatcher->getPkp())).PHP_EOL;
 }catch(Exception $ex){
     // Obecná chyba
     var_dump($ex);
-
 }
