@@ -11,6 +11,9 @@
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 use FilipSedivy\EET\Dispatcher;
@@ -22,47 +25,42 @@ $certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'ee
 $dispatcher = new Dispatcher($certificate);
 $dispatcher->setPlaygroundService();
 
-// UUID se generuje nové
+/* Uložený poslední request request */
+$file = file_get_contents(__DIR__.'/Receipt.json');
+$json = json_decode($file, true);
+
+/* BKP a PKP kód z posledního requestu */
+$bkp = $json['codes']['bkp'];
+$pkp = $json['codes']['pkp'];
+
+/* Vygeneruje se nové UUID, kterým se přepíše původní */
 $uuid = UUID::v4();
 
-// Předává se původní datum
-$dat_trzby = (new DateTime())
-    ->setDate(2017, 5, 1)
-    ->setTime(12, 33, 30);
+/** @var Receipt $r */
+$r = unserialize($json['receipt']);
 
-$r = new Receipt;
-$r->uuid_zpravy = $uuid;    // UUID se generuje nové
-$r->id_provoz = '11';
-$r->id_pokl = 'IP105';
-$r->dic_popl = 'CZ1212121218';
-$r->porad_cis = '1';
-$r->dat_trzby = $dat_trzby;
-$r->celk_trzba = 500;
-$r->prvni_zaslani = false; // Mění se hodnota prvního zaslání z TRUE na FALSE
+$r->uuid_zpravy = $uuid;
+$r->prvni_zaslani = false;      // Jelikož se zpráva zasílá opakovaně, nastavíme (bool) false
+$r->bkp = $bkp;                 // Nastavení původního BKP, provážeme offline účtenku
+$r->pkp = base64_decode($pkp);  // Nastavení původního podpisu, je nutné jej převést do binární podoby
 
-// Předává se původně vygenerovaný BKP a PKP kód
-$r->bkp = 'e245f2ac-52d74aef-50a9334b-dc0bcdf9-f676113f';
-$r->pkp = base64_decode('TGUBKTLy5Fmq32yNlKUyTuQ7F5kKAL2nSbtu71tufYqQU7QE8RAAv63xGrUiOMtfPidFLrMfrVzRn1WF7RFDiOxIGPahVOX6j4ZdBXQx67OMhCCmeAsZM4wnVDFLq+25VlhoM7cENRg0n7JXdvRGUu3zrDD7jqgSr6RJYcilicLDR20pJVF4ML5fY\/rs7naGmh\/ZloNT2kU6LXWfsnilbz4esizfYubZBULHAoeNUfObxRkPmfMR+7KY3LwRsNFISAS+SS2lEAhMNrlJdvNHZNjL1770izMsjqIPMBJNRS+NtqjICHdXhFYb8ukU1sKaq9FaFX4sQ0bvCPMKcIlgrw==');
-
-echo '<h2>---REQUEST---</h2>';
-echo "<pre>";
+echo '-= REQUEST =-'.PHP_EOL;
 
 try {
+    // Unikátní ID
+    echo sprintf('UUID: %s', addslashes($uuid)).PHP_EOL;
 
+    // Tržbu klasicky odešleme
     $dispatcher->send($r);
 
     // Tržba byla úspěšně odeslána
-    echo sprintf("FIK: %s <br>", addslashes($dispatcher->getFik()));
-    echo sprintf("BKP: %s <br>", addslashes($dispatcher->getBkp()));
-
+    echo sprintf('FIK: %s', addslashes($dispatcher->getFik())).PHP_EOL;
+    echo sprintf('BKP: %s', addslashes($dispatcher->getBkp())).PHP_EOL;
 }catch(\FilipSedivy\EET\Exceptions\EetException $ex){
     // Tržba nebyla odeslána
-
-    echo sprintf("BKP: %s <br>", addslashes($dispatcher->getBkp()));
-    echo sprintf("PKP: %s <br>", addslashes($dispatcher->getPkp()));
-
+    echo sprintf('BKP: %s', addslashes($dispatcher->getBkp())).PHP_EOL;
+    echo sprintf('PKP: %s', addslashes($dispatcher->getPkp())).PHP_EOL;
 }catch(Exception $ex){
     // Obecná chyba
     var_dump($ex);
-
 }
