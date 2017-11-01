@@ -11,6 +11,11 @@
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
 
+/*
+ * -= Základní ukázka kódu =-
+ * Základní kód, ukazuje jak odesílat platby do EET
+*/
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 use FilipSedivy\EET\Dispatcher;

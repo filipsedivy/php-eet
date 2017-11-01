@@ -11,8 +11,11 @@
  * @author Filip Sedivy <mail@filipsedivy.cz>
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+/*
+ * -= Základní ukázka kódu =-
+ * Základní kód, ukazuje jak odesílat opakované platby, v případě
+ * výpadku internetu a vystavení BKP a PKP kódu
+*/
 
 require_once __DIR__.'/../vendor/autoload.php';
 
