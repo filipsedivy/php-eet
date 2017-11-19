@@ -58,5 +58,5 @@ try {
     echo sprintf('PKP: %s', addslashes($dispatcher->getPkp())).PHP_EOL;
 }catch(Exception $ex){
     // Obecná chyba
-    var_dump($ex);
+    echo $ex->getMessage();
 }
