@@ -9,32 +9,63 @@
  *
  * @license MIT
  * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @deprecated
+ *  Od verze 3.1.* přestane být instalace bez composeru podporovaná, protože není možné
+ *  udržovat kód instalatoru soudružný spolu s balíčky Composeru
  */
 
-/**
- * @var bool Zapnutí nebo vypnutí ladícího prostředí
-*/
-define('DEBUG', true);
 
-/**
- * Výpis textu do konzole nebo do prohlížeče
- * @param string $text Vstupní text
-*/
-function write($text)
+class InstallWithoutComposer
 {
-    if(!DEBUG) { return; }
-    if (php_sapi_name() == 'cli') {
-        print(addslashes($text).PHP_EOL);
-        return;
+    const DEBUG_ENABLE = true,
+        DEBUG_DISABLE = false;
+
+    private $debug;
+
+    public static $instance;
+
+    public static function getInstance()
+    {
+        if(!self::$instance instanceof InstallWithoutComposer)
+        {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    echo addslashes($text)."<br>";
+    private function __construct($debug = self::DEBUG_ENABLE)
+    {
+        $this->setDebug($debug);
+    }
+
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
+    }
+
+    public function write($input)
+    {
+        if($this->debug == self::DEBUG_ENABLE)
+        {
+            if(php_sapi_name() == 'cli')
+            {
+                print($input . PHP_EOL);
+            }
+            else
+            {
+                echo print($input . '<br>');
+            }
+        }
+    }
 }
+
+$install = InstallWithoutComposer::getInstance();
+
 
 // Kontrola minimálních požadavků
 if(!file_exists(__DIR__.'/composer.json'))
 {
-    write('File composer.json is not exists');
+    $install->write('File composer.json is not exists');
     copy( 'https://raw.githubusercontent.com/filipsedivy/PHP-EET/master/composer.json', __DIR__.'/composer.json');
 }
 $composerJson = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
@@ -45,8 +76,8 @@ list($input, $operator, $version) = $phpMatch;
 
 if(!version_compare(PHP_VERSION, $version, $operator))
 {
-    write('The minimum version is: '.$version);
-    write('Current version of PHP: '.PHP_VERSION);
+    $install->write('The minimum version is: '.$version);
+    $install->write('Current version of PHP: '.PHP_VERSION);
     trigger_error('Your version of PHP is not compatible with this library', E_CORE_ERROR);
 }
 
@@ -86,22 +117,22 @@ foreach($necessaryClasses as $class)
 foreach($dependency as $name => $url)
 {
     $dependencyPath = __DIR__.'/'.$name.'.zip';
-    write('Check dependence '.$name);
+    $install->write('Check dependence '.$name);
     if(file_exists($dependencyPath))
     {
         unlink($dependencyPath);
-        write('Existing dependency '.$name.' was removed');
+        $install->write('Existing dependency '.$name.' was removed');
     }
 
     copy($url, $dependencyPath);
-    write('Dependency '.$name.' has been downloaded');
+    $install->write('Dependency '.$name.' has been downloaded');
 
 
     // V případě neexistence složky EETLib se vytvoří
     if(!file_exists(__DIR__.'/EETLib') || !is_dir(__DIR__.'/EETLib'))
     {
         mkdir(__DIR__.'/EETLib', 0777);
-        write('The EETLib folder was created');
+        $install->write('The EETLib folder was created');
     }
 
 
@@ -110,13 +141,13 @@ foreach($dependency as $name => $url)
     if($ZipObject->open($dependencyPath) === TRUE){
         $ZipObject->extractTo(__DIR__.'/EETLib');
         $ZipObject->close();
-        write('Dependency '.$name.' has been unpacked');
+        $install->write('Dependency '.$name.' has been unpacked');
     }else{
-        write('Dependency '.$name.' can not be opened');
+        $install->write('Dependency '.$name.' can not be opened');
     }
 
     unlink($dependencyPath);
-    write('The '.$name.' file has been removed');
+    $install->write('The '.$name.' file has been removed');
 }
 
 // Vytvoření autoloaderu
@@ -221,7 +252,7 @@ $eetExample = ob_get_clean();
 $startPhp = '<?php'.PHP_EOL;
 
 // Detekce existence autoloaderu
-write('Creating an autoloader');
+$install->write('Creating an autoloader');
 if(file_exists(__DIR__.'/EETLib/Autoloader.php'))
 {
     unlink(__DIR__.'/EETLib/Autoloader.php');
@@ -229,7 +260,7 @@ if(file_exists(__DIR__.'/EETLib/Autoloader.php'))
 file_put_contents(__DIR__.'/EETLib/Autoloader.php', $startPhp . $autoloader);
 
 // Detekce existence ukázky
-write('Export samples');
+$install->write('Export samples');
 if(file_exists(__DIR__.'/EET_Example.php'))
 {
     unlink(__DIR__.'/EET_Example.php');
@@ -237,7 +268,7 @@ if(file_exists(__DIR__.'/EET_Example.php'))
 file_put_contents(__DIR__.'/EET_Example.php', $startPhp . $eetExample);
 
 // Zkopírování příkladu
-write('Export certificate');
+$install->write('Export certificate');
 $phpEetFolder = glob(__DIR__.'/EETLib/filipsedivy-PHP-EET*');
 $eetFolderName = basename($phpEetFolder[0]);
 $certExample = __DIR__.'/EETLib/'.$eetFolderName.'/examples/EET_CA1_Playground-CZ00000019.p12';
