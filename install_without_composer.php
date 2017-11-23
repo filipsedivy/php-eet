@@ -45,10 +45,9 @@ list($input, $operator, $version) = $phpMatch;
 
 if(!version_compare(PHP_VERSION, $version, $operator))
 {
-    write('Your version of PHP is not compatible with this library');
-    write('The minimum version is: ');
+    write('The minimum version is: '.$version);
     write('Current version of PHP: '.PHP_VERSION);
-    exit();
+    trigger_error('Your version of PHP is not compatible with this library', E_CORE_ERROR);
 }
 
 foreach($composerJson['require'] as $bundle => $version)
@@ -58,8 +57,7 @@ foreach($composerJson['require'] as $bundle => $version)
         $bundleExt = substr($bundle, 4);
         if(!in_array($bundleExt, get_loaded_extensions()))
         {
-            write($bundleExt.' is not available on your web server');
-            exit(0);
+            trigger_error($bundleExt.' is not available on your web server', E_CORE_ERROR);
         }
     }
 }
