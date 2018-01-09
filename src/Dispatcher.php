@@ -227,7 +227,7 @@ class Dispatcher
      */
     public function enableDebug()
     {
-        unset($this->trace);
+        $this->trace = true;
     }
 
 
