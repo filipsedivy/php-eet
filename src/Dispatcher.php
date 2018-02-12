@@ -51,6 +51,9 @@ class Dispatcher
     /** @var Receipt Last Receipt */
     protected $lastReceipt;
 
+    /** @var array of last warnings */
+    protected $lastWarnings;
+
 
     /**
      * Initialization
@@ -172,6 +175,7 @@ class Dispatcher
         $response = $this->processData($receipt, $check);
 
         isset($response->Chyba) && $this->processError($response->Chyba);
+        isset($response->Varovani) && $this->processWarnings($response->Varovani);
 
         $this->fik = $check ? TRUE : $response->Potvrzeni->fik;
         return $this->fik;
@@ -365,6 +369,38 @@ class Dispatcher
             $msg = isset($msgs[$error->kod]) ? $msgs[$error->kod] : '';
             throw new ServerException($msg, $error->kod);
         }
+    }
+
+    /**
+     * @param $warnings
+     */
+    private function processWarnings($warnings)
+    {
+        $msgs = [
+            1 => 'DIC poplatnika v datove zprave se neshoduje s DIC v certifikatu',
+            2 => 'Chybny format DIC poverujiciho poplatnika',
+            3 => 'Chybna hodnota PKP',
+            4 => 'Datum a cas prijeti trzby je novejsi nez datum a cas prijeti zpravy',
+            5 => 'Datum a cas prijeti trzby je vyrazne v minulosti '
+        ];
+
+        //Reset last warnings
+        $this->lastWarnings = null;
+
+        foreach ($warnings as $warning){
+            $this->lastWarnings[] = [
+                'code' => $warning->kod_varov,
+                'message' => isset($msgs[$warning->kod_varov]) ? $msgs[$warning->kod_varov] : ''
+            ];
+        }
+    }
+
+    /**
+     * @return array of warnings
+     */
+    public function getWarnings()
+    {
+        return $this->lastWarnings;
     }
 
 
