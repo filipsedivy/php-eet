@@ -52,7 +52,7 @@ class Dispatcher
     protected $lastReceipt;
 
     /** @var array of last warnings */
-    protected $lastWarnings;
+    protected $lastWarnings  = array();
 
 
     /**
@@ -372,7 +372,8 @@ class Dispatcher
     }
 
     /**
-     * @param $warnings
+     * Convert warning codes from response to array with messages.
+     * @param array|\stdClass $warnings
      */
     private function processWarnings($warnings)
     {
@@ -385,14 +386,22 @@ class Dispatcher
         ];
 
         //Reset last warnings
-        $this->lastWarnings = null;
+        $this->lastWarnings = array();
 
-        foreach ($warnings as $warning){
+        if (is_array($warnings)){
+            foreach ($warnings as $warning){
+                $this->lastWarnings[] = [
+                    'code' => $warning->kod_varov,
+                    'message' => isset($msgs[$warning->kod_varov]) ? $msgs[$warning->kod_varov] : ''
+                ];
+            }
+        }else{
             $this->lastWarnings[] = [
-                'code' => $warning->kod_varov,
-                'message' => isset($msgs[$warning->kod_varov]) ? $msgs[$warning->kod_varov] : ''
+                'code' => $warnings->kod_varov,
+                'message' => isset($msgs[$warnings->kod_varov]) ? $msgs[$warnings->kod_varov] : ''
             ];
         }
+
     }
 
     /**
