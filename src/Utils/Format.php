@@ -31,14 +31,17 @@ class Format
     }
 
     /**
-     * @param   string  $code
+     * @param   string $code
+     *
      * @return  string
      */
     public static function BKB($code)
     {
         $r = '';
-        for ($i = 0; $i < 40; $i++) {
-            if ($i % 8 == 0 && $i != 0) {
+        for ($i = 0; $i < 40; $i++)
+        {
+            if ($i % 8 == 0 && $i != 0)
+            {
                 $r .= '-';
             }
             $r .= $code[$i];
