@@ -18,18 +18,19 @@
 */
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/helpers.php';
 
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
 use FilipSedivy\EET\Utils\UUID;
 use FilipSedivy\EET\Certificate;
 
-$certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'eet');
+$certificate = new Certificate(__DIR__ . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 $dispatcher = new Dispatcher($certificate);
 $dispatcher->setPlaygroundService();
 
 /* Uložený poslední request request */
-$file = file_get_contents(__DIR__.'/Receipt.json');
+$file = file_get_contents(__DIR__ . '/Receipt.json');
 $json = json_decode($file, true);
 
 /* BKP a PKP kód z posledního requestu */
@@ -47,23 +48,22 @@ $r->prvni_zaslani = false;      // Jelikož se zpráva zasílá opakovaně, nast
 $r->bkp = $bkp;                 // Nastavení původního BKP, provážeme offline účtenku
 $r->pkp = base64_decode($pkp);  // Nastavení původního podpisu, je nutné jej převést do binární podoby
 
-echo '-= REQUEST =-'.PHP_EOL;
+try
+{
+    output('UUID: ', $uuid);
 
-try {
-    // Unikátní ID
-    echo sprintf('UUID: %s', addslashes($uuid)).PHP_EOL;
-
-    // Tržbu klasicky odešleme
     $dispatcher->send($r);
 
-    // Tržba byla úspěšně odeslána
-    echo sprintf('FIK: %s', addslashes($dispatcher->getFik())).PHP_EOL;
-    echo sprintf('BKP: %s', addslashes($dispatcher->getBkp())).PHP_EOL;
-}catch(\FilipSedivy\EET\Exceptions\EetException $ex){
-    // Tržba nebyla odeslána
-    echo sprintf('BKP: %s', addslashes($dispatcher->getBkp())).PHP_EOL;
-    echo sprintf('PKP: %s', addslashes($dispatcher->getPkp())).PHP_EOL;
-}catch(Exception $ex){
-    // Obecná chyba
-    echo $ex->getMessage();
+    output('FIK: ', $dispatcher->getFik());
+    output('BKP: ', $dispatcher->getBkp());
+}
+catch (\FilipSedivy\EET\Exceptions\EetException $e)
+{
+    output('Error: ', $e->getMessage());
+    output('FIK: ', $dispatcher->getFik());
+    output('BKP: ', $dispatcher->getBkp());
+}
+catch (Exception $e)
+{
+    output('Error: ', $e->getMessage());
 }
