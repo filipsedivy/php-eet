@@ -101,21 +101,6 @@ class SoapClient extends \SoapClient
 
     /**
      *
-     * @param  string  $method
-     * @param  string  $data
-     * @return string
-     */
-    public function getXMLforMethod($method, $data)
-    {
-        $this->returnRequest = TRUE;
-        $this->$method($data);
-        $this->returnRequest = FALSE;
-        return $this->lastRequest;
-    }
-
-
-    /**
-     *
      * @param   string           $request
      * @param   string           $location
      * @param   string           $saction
