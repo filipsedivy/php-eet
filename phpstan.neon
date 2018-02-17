@@ -1,3 +1,1 @@
 parameters:
-    ignoreErrors:
-        - '#Call to an undefined method FilipSedivy\\EET\\SoapClient#'
