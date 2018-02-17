@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  *
  * @license MIT
- * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @author  Filip Sedivy <mail@filipsedivy.cz>
  */
 
 namespace FilipSedivy\EET\Utils;

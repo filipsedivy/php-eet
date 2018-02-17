@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  *
  * @license MIT
- * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @author  Filip Sedivy <mail@filipsedivy.cz>
  */
 
 namespace FilipSedivy\EET;
@@ -17,7 +17,8 @@ namespace FilipSedivy\EET;
  * Class Receipt
  * @package FilipSedivy\EET
  */
-class Receipt {
+class Receipt
+{
     /**
      * @var string
      * @require
@@ -28,7 +29,7 @@ class Receipt {
      * @var boolean
      * @require
      */
-    public $prvni_zaslani = TRUE;
+    public $prvni_zaslani = true;
 
     /**
      * @var string
