@@ -56,6 +56,8 @@ try
 
     output('FIK: ', $dispatcher->getFik());
     output('BKP: ', $dispatcher->getBkp());
+
+    output('Warnings: ', $dispatcher->getWarnings());
 }
 catch (\FilipSedivy\EET\Exceptions\EetException $e)
 {
