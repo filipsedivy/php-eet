@@ -15,20 +15,18 @@ use FilipSedivy\EET\Utils\UUID;
 use Tester\Assert;
 use Tester\TestCase;
 
-require_once __DIR__.'/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 class DispatcherTest extends TestCase
 {
     public function testSendReceipt()
     {
-        $certificate = new Certificate(__DIR__.'/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
-        $uuid = UUID::v4();
-
         $r = new Receipt();
-        $r->uuid_zpravy = $uuid;
+        $r->uuid_zpravy = UUID::v4();
         $r->id_provoz = '11';
         $r->id_pokl = 'IP105';
         $r->dic_popl = 'CZ1212121218';
