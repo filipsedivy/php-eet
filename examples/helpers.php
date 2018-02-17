@@ -18,7 +18,18 @@ function output()
 
     foreach ($fargs as $farg)
     {
-        $output .= $farg;
+        if (is_scalar($farg))
+        {
+            $output .= $farg;
+        }
+        elseif (is_array($farg))
+        {
+            $output .= '<pre>' . print_r($farg, true) . '</pre>';
+        }
+        else
+        {
+            $output .= '<pre>' . var_export($farg, true) . '</pre>';
+        }
     }
 
     if (php_sapi_name() === 'cli')
