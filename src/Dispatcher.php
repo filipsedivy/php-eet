@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  *
  * @license MIT
- * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @author  Filip Sedivy <mail@filipsedivy.cz>
  */
 
 namespace FilipSedivy\EET;
@@ -52,7 +52,7 @@ class Dispatcher
     protected $lastReceipt;
 
     /** @var array of last warnings */
-    protected $lastWarnings  = array();
+    protected $lastWarnings = array();
 
 
     /**
@@ -83,7 +83,7 @@ class Dispatcher
      */
     public function setPlaygroundService()
     {
-        $this->setService(__DIR__."/Schema/PlaygroundService.wsdl");
+        $this->setService(__DIR__ . "/Schema/PlaygroundService.wsdl");
     }
 
 
@@ -92,7 +92,7 @@ class Dispatcher
      */
     public function setProductionService()
     {
-        $this->setService(__DIR__."/Schema/ProductionService.wsdl");
+        $this->setService(__DIR__ . "/Schema/ProductionService.wsdl");
     }
 
 
@@ -100,29 +100,32 @@ class Dispatcher
      * Checking the accuracy of data sent
      *
      * @param Receipt $receipt
+     *
      * @return boolean|string
      */
     public function check(Receipt $receipt)
     {
         try
         {
-            return $this->send($receipt, TRUE);
-        } catch (ServerException $e) {
-            return FALSE;
+            return $this->send($receipt, true);
+        }
+        catch (ServerException $e)
+        {
+            return false;
         }
     }
-
 
 
     /**
      * Check codes
      *
      * @param Receipt $receipt
+     *
      * @return array
      */
     public function getCheckCodes(Receipt $receipt)
     {
-        if(isset($receipt->bkp, $receipt->pkp))
+        if (isset($receipt->bkp, $receipt->pkp))
         {
             $this->pkp = $receipt->pkp;
             $this->bkp = $receipt->bkp;
@@ -147,14 +150,14 @@ class Dispatcher
 
         return [
             'pkp' => [
-                '_' => $this->pkp,
-                'digest' => 'SHA256',
-                'cipher' => 'RSA2048',
+                '_'        => $this->pkp,
+                'digest'   => 'SHA256',
+                'cipher'   => 'RSA2048',
                 'encoding' => 'base64'
             ],
             'bkp' => [
-                '_' => $this->bkp,
-                'digest' => 'SHA1',
+                '_'        => $this->bkp,
+                'digest'   => 'SHA1',
                 'encoding' => 'base16'
             ]
         ];
@@ -166,9 +169,10 @@ class Dispatcher
      *
      * @param Receipt $receipt
      * @param boolean $check
+     *
      * @return boolean|string
      */
-    public function send(Receipt $receipt, $check = FALSE)
+    public function send(Receipt $receipt, $check = false)
     {
         $this->initSoapClient();
 
@@ -177,7 +181,7 @@ class Dispatcher
         isset($response->Chyba) && $this->processError($response->Chyba);
         isset($response->Varovani) && $this->processWarnings($response->Varovani);
 
-        $this->fik = $check ? TRUE : $response->Potvrzeni->fik;
+        $this->fik = $check ? true : $response->Potvrzeni->fik;
         return $this->fik;
     }
 
@@ -214,12 +218,12 @@ class Dispatcher
      */
     private function initSoapClient()
     {
-        if(!isset($this->service))
+        if (!isset($this->service))
         {
             throw new ClientException("Not set service");
         }
 
-        if ($this->soapClient === NULL)
+        if ($this->soapClient === null)
         {
             $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace);
         }
@@ -247,48 +251,49 @@ class Dispatcher
 
 
     /**
-     * @param  Receipt   $receipt
-     * @param  bool      $check
+     * @param  Receipt $receipt
+     * @param  bool    $check
+     *
      * @return array
      */
-    public function prepareData($receipt, $check = FALSE)
+    public function prepareData($receipt, $check = false)
     {
         $head = [
-            'uuid_zpravy' => $receipt->uuid_zpravy,
-            'dat_odesl' => time(),
+            'uuid_zpravy'   => $receipt->uuid_zpravy,
+            'dat_odesl'     => time(),
             'prvni_zaslani' => $receipt->prvni_zaslani,
-            'overeni' => $check
+            'overeni'       => $check
         ];
 
         $body = [
-            'dic_popl' => $receipt->dic_popl,
+            'dic_popl'         => $receipt->dic_popl,
             'dic_poverujiciho' => $receipt->dic_poverujiciho,
-            'id_provoz' => $receipt->id_provoz,
-            'id_pokl' => $receipt->id_pokl,
-            'porad_cis' => $receipt->porad_cis,
-            'dat_trzby' => $receipt->dat_trzby->format('c'),
-            'celk_trzba' => Format::price($receipt->celk_trzba),
-            'zakl_nepodl_dph' => Format::price($receipt->zakl_nepodl_dph),
-            'zakl_dan1' => Format::price($receipt->zakl_dan1),
-            'dan1' => Format::price($receipt->dan1),
-            'zakl_dan2' => Format::price($receipt->zakl_dan2),
-            'dan2' => Format::price($receipt->dan2),
-            'zakl_dan3' => Format::price($receipt->zakl_dan3),
-            'dan3' => Format::price($receipt->dan3),
-            'cest_sluz' => Format::price($receipt->cest_sluz),
-            'pouzit_zboz1' => Format::price($receipt->pouzit_zboz1),
-            'pouzit_zboz2' => Format::price($receipt->pouzit_zboz2),
-            'pouzit_zboz3' => Format::price($receipt->pouzit_zboz3),
+            'id_provoz'        => $receipt->id_provoz,
+            'id_pokl'          => $receipt->id_pokl,
+            'porad_cis'        => $receipt->porad_cis,
+            'dat_trzby'        => $receipt->dat_trzby->format('c'),
+            'celk_trzba'       => Format::price($receipt->celk_trzba),
+            'zakl_nepodl_dph'  => Format::price($receipt->zakl_nepodl_dph),
+            'zakl_dan1'        => Format::price($receipt->zakl_dan1),
+            'dan1'             => Format::price($receipt->dan1),
+            'zakl_dan2'        => Format::price($receipt->zakl_dan2),
+            'dan2'             => Format::price($receipt->dan2),
+            'zakl_dan3'        => Format::price($receipt->zakl_dan3),
+            'dan3'             => Format::price($receipt->dan3),
+            'cest_sluz'        => Format::price($receipt->cest_sluz),
+            'pouzit_zboz1'     => Format::price($receipt->pouzit_zboz1),
+            'pouzit_zboz2'     => Format::price($receipt->pouzit_zboz2),
+            'pouzit_zboz3'     => Format::price($receipt->pouzit_zboz3),
             'urceno_cerp_zuct' => Format::price($receipt->urceno_cerp_zuct),
-            'cerp_zuct' => Format::price($receipt->cerp_zuct),
-            'rezim' => $receipt->rezim
+            'cerp_zuct'        => Format::price($receipt->cerp_zuct),
+            'rezim'            => $receipt->rezim
         ];
 
         $this->lastReceipt = $receipt;
 
         return [
-            'Hlavicka' => $head,
-            'Data' => $body,
+            'Hlavicka'      => $head,
+            'Data'          => $body,
             'KontrolniKody' => $this->getCheckCodes($receipt)
         ];
     }
@@ -296,11 +301,12 @@ class Dispatcher
 
     /**
      *
-     * @param   Receipt     $receipt
-     * @param   boolean     $check
+     * @param   Receipt $receipt
+     * @param   boolean $check
+     *
      * @return  object
      */
-    private function processData(Receipt $receipt, $check = FALSE)
+    private function processData(Receipt $receipt, $check = false)
     {
         $data = $this->prepareData($receipt, $check);
 
@@ -319,11 +325,13 @@ class Dispatcher
 
     /**
      * @param   bool $encoded
+     *
      * @return  string
      */
     public function getPkp($encoded = true)
     {
-        if($encoded){
+        if ($encoded)
+        {
             return base64_encode($this->pkp);
         }
         return $this->pkp;
@@ -350,6 +358,7 @@ class Dispatcher
 
     /**
      * @param $error
+     *
      * @throws ServerException
      */
     private function processError($error)
@@ -358,13 +367,13 @@ class Dispatcher
         {
             $msgs = [
                 -1 => 'Docasna technicka chyba zpracovani – odeslete prosim datovou zpravu pozdeji',
-                2 => 'Kodovani XML neni platne',
-                3 => 'XML zprava nevyhovela kontrole XML schematu',
-                4 => 'Neplatny podpis SOAP zpravy',
-                5 => 'Neplatny kontrolni bezpecnostni kod poplatnika (BKP)',
-                6 => 'DIC poplatnika ma chybnou strukturu',
-                7 => 'Datova zprava je prilis velka',
-                8 => 'Datova zprava nebyla zpracovana kvuli technicke chybe nebo chybe dat',
+                2  => 'Kodovani XML neni platne',
+                3  => 'XML zprava nevyhovela kontrole XML schematu',
+                4  => 'Neplatny podpis SOAP zpravy',
+                5  => 'Neplatny kontrolni bezpecnostni kod poplatnika (BKP)',
+                6  => 'DIC poplatnika ma chybnou strukturu',
+                7  => 'Datova zprava je prilis velka',
+                8  => 'Datova zprava nebyla zpracovana kvuli technicke chybe nebo chybe dat',
             ];
             $msg = isset($msgs[$error->kod]) ? $msgs[$error->kod] : '';
             throw new ServerException($msg, $error->kod);
@@ -373,6 +382,7 @@ class Dispatcher
 
     /**
      * Convert warning codes from response to array with messages.
+     *
      * @param array|\stdClass $warnings
      */
     private function processWarnings($warnings)
@@ -388,16 +398,20 @@ class Dispatcher
         //Reset last warnings
         $this->lastWarnings = array();
 
-        if (is_array($warnings)){
-            foreach ($warnings as $warning){
+        if (is_array($warnings))
+        {
+            foreach ($warnings as $warning)
+            {
                 $this->lastWarnings[] = [
-                    'code' => $warning->kod_varov,
+                    'code'    => $warning->kod_varov,
                     'message' => isset($msgs[$warning->kod_varov]) ? $msgs[$warning->kod_varov] : ''
                 ];
             }
-        }else{
+        }
+        else
+        {
             $this->lastWarnings[] = [
-                'code' => $warnings->kod_varov,
+                'code'    => $warnings->kod_varov,
                 'message' => isset($msgs[$warnings->kod_varov]) ? $msgs[$warnings->kod_varov] : ''
             ];
         }

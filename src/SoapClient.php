@@ -8,13 +8,12 @@
  * file that was distributed with this source code.
  *
  * @license MIT
- * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @author  Filip Sedivy <mail@filipsedivy.cz>
  */
 
 namespace FilipSedivy\EET;
 
 use FilipSedivy\EET\Exceptions\ClientException;
-use FilipSedivy\EET\Exceptions\EetException;
 use RobRichards\WsePhp\WSSESoap;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
@@ -22,8 +21,11 @@ use RobRichards\XMLSecLibs\XMLSecurityKey;
 /**
  * Class SoapClient
  * @package FilipSedivy\EET
+ *
+ * @method OdeslaniTrzby(array $data)
  */
-class SoapClient extends \SoapClient {
+class SoapClient extends \SoapClient
+{
 
     /** @var Certificate */
     private $cert;
@@ -44,7 +46,7 @@ class SoapClient extends \SoapClient {
     private $lastRequest;
 
     /** @var bool */
-    private $returnRequest = FALSE;
+    private $returnRequest = false;
 
     /** @var int timeout in milliseconds */
     private $timeout = 2500;
@@ -55,16 +57,16 @@ class SoapClient extends \SoapClient {
 
     /**
      *
-     * @param string        $service
-     * @param Certificate   $cert
-     * @param boolean       $trace
+     * @param string      $service
+     * @param Certificate $cert
+     * @param boolean     $trace
      */
-    public function __construct($service, Certificate $cert, $trace = FALSE)
+    public function __construct($service, Certificate $cert, $trace = false)
     {
-        $this->connectionStartTime = microtime(TRUE);
+        $this->connectionStartTime = microtime(true);
         parent::__construct($service, [
-            'exceptions' => TRUE,
-            'trace' => $trace
+            'exceptions' => true,
+            'trace'      => $trace
         ]);
         $this->cert = $cert;
         $this->traceRequired = $trace;
@@ -74,6 +76,7 @@ class SoapClient extends \SoapClient {
     /**
      *
      * @param string $request
+     *
      * @return mixed
      */
     public function getXML($request)
@@ -118,22 +121,24 @@ class SoapClient extends \SoapClient {
      * @param   string           $saction
      * @param   int              $version
      * @param   null|string|bool $one_way
+     *
      * @return  null|string
      */
-    public function __doRequest($request, $location, $saction, $version, $one_way = NULL)
+    public function __doRequest($request, $location, $saction, $version, $one_way = null)
     {
 
         $xml = $this->getXML($request);
         $this->lastRequest = $xml;
-        if ($this->returnRequest) {
+        if ($this->returnRequest)
+        {
             return '';
         }
 
-        $this->traceRequired && $this->lastResponseStartTime = microtime(TRUE);
+        $this->traceRequired && $this->lastResponseStartTime = microtime(true);
 
         $response = $this->__doRequestByCurl($xml, $location, $saction, $version, $one_way);
 
-        $this->traceRequired && $this->lastResponseEndTime = microtime(TRUE);
+        $this->traceRequired && $this->lastResponseEndTime = microtime(true);
 
         return $response;
     }
@@ -148,13 +153,13 @@ class SoapClient extends \SoapClient {
      *
      * @return string|null
      * @throws ClientException
-     * @throws EetException
      */
-    public function __doRequestByCurl($request, $location, $action, $version, $one_way = FALSE)
+    public function __doRequestByCurl($request, $location, $action, $version, $one_way = false)
     {
         // Call via Curl and use the timeout a
         $curl = curl_init($location);
-        if ($curl === false) {
+        if ($curl === false)
+        {
             throw new ClientException('Curl initialisation failed');
         }
         /** @var $headers array of headers to be sent with request */
@@ -181,7 +186,8 @@ class SoapClient extends \SoapClient {
         $this->__setCurlOptions($curl, $options);
         $response = curl_exec($curl);
 
-        if (curl_errno($curl)) {
+        if (curl_errno($curl))
+        {
             $errorMessage = curl_error($curl);
             $errorNumber  = curl_errno($curl);
             curl_close($curl);
@@ -207,9 +213,9 @@ class SoapClient extends \SoapClient {
 
 
     /**
-     *
      * @param           $curl
      * @param   array   $options
+     *
      * @throws  ClientException
      */
     private function __setCurlOptions($curl, array $options)
@@ -229,19 +235,23 @@ class SoapClient extends \SoapClient {
 
     /**
      *
-     * @param   array     $options
-     * @param   int       $milliseconds
-     * @param   string    $name
+     * @param   array  $options
+     * @param   int    $milliseconds
+     * @param   string $name
+     *
      * @return  mixed
      */
     private function __curlSetTimeoutOption($options, $milliseconds, $name)
     {
         if ($milliseconds > 0)
         {
-            if (defined("{$name}_MS")) {
+            if (defined("{$name}_MS"))
+            {
                 $options[constant("{$name}_MS")] = $milliseconds;
-            } else {
-                $seconds        = ceil($milliseconds / 1000);
+            }
+            else
+            {
+                $seconds = ceil($milliseconds / 1000);
                 $options[$name] = $seconds;
             }
             if ($milliseconds <= 1000)
@@ -266,9 +276,10 @@ class SoapClient extends \SoapClient {
     /**
      *
      * @param $tillLastRequest bool
+     *
      * @return float
      */
-    public function __getConnectionTime($tillLastRequest = FALSE)
+    public function __getConnectionTime($tillLastRequest = false)
     {
         return $tillLastRequest ? $this->getConnectionTimeTillLastRequest() : $this->getConnectionTimeTillNow();
     }
@@ -282,7 +293,7 @@ class SoapClient extends \SoapClient {
     {
         if (!$this->lastResponseEndTime || !$this->connectionStartTime)
         {
-            return NULL;
+            return null;
         }
         return $this->lastResponseEndTime - $this->connectionStartTime;
     }
@@ -296,9 +307,9 @@ class SoapClient extends \SoapClient {
     {
         if (!$this->connectionStartTime)
         {
-            return NULL;
+            return null;
         }
-        return microtime(TRUE) - $this->connectionStartTime;
+        return microtime(true) - $this->connectionStartTime;
     }
 
 
@@ -350,6 +361,5 @@ class SoapClient extends \SoapClient {
     {
         return $this->connectTimeout;
     }
-
 
 }
