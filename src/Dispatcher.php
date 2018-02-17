@@ -341,6 +341,7 @@ class Dispatcher
             return base64_encode($this->pkp);
         }
         return $this->pkp;
+        return $pkp;
     }
 
 
