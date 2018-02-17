@@ -22,8 +22,9 @@ class Format
 {
     /**
      *
-     * @param  double  $value
-     * @return string
+     * @param  double|float|null $value
+     *
+     * @return string|null
      */
     public static function price($value)
     {
