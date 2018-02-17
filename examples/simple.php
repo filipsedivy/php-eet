@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  *
  * @license MIT
- * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @author  Filip Sedivy <mail@filipsedivy.cz>
  */
 
 /*
@@ -16,14 +16,14 @@
  * Základní kód, ukazuje jak odesílat platby do EET
 */
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
 use FilipSedivy\EET\Utils\UUID;
 use FilipSedivy\EET\Certificate;
 
-$certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'eet');
+$certificate = new Certificate(__DIR__ . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 $dispatcher = new Dispatcher($certificate);
 $dispatcher->setPlaygroundService();
 

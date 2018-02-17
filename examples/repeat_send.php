@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  *
  * @license MIT
- * @author Filip Sedivy <mail@filipsedivy.cz>
+ * @author  Filip Sedivy <mail@filipsedivy.cz>
  */
 
 /*
@@ -17,7 +17,7 @@
  * výpadku internetu a vystavení BKP a PKP kódu
 */
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
