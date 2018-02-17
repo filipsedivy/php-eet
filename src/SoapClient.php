@@ -188,12 +188,8 @@ class SoapClient extends \SoapClient
         $body = substr($response, $header_len);
 
         curl_close($curl);
-        // Return?
-        if ($one_way) {
-            return null;
-        } else {
-            return $body;
-        }
+
+        return $one_way ? null : $body;
     }
 
 
