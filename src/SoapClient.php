@@ -174,12 +174,8 @@ class SoapClient extends \SoapClient
         if (curl_errno($curl))
         {
             $errorMessage = curl_error($curl);
-            $errorNumber  = curl_errno($curl);
+            $errorNumber = curl_errno($curl);
             curl_close($curl);
-
-            if(preg_match("~Couldn't resolve host~", $errorMessage)){
-                throw new EetException($errorMessage);
-            }
 
             throw new ClientException($errorMessage, $errorNumber);
         }
