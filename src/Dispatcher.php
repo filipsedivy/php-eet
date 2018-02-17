@@ -273,21 +273,27 @@ class Dispatcher
             'porad_cis'        => $receipt->porad_cis,
             'dat_trzby'        => $receipt->dat_trzby->format('c'),
             'celk_trzba'       => Format::price($receipt->celk_trzba),
-            'zakl_nepodl_dph'  => Format::price($receipt->zakl_nepodl_dph),
-            'zakl_dan1'        => Format::price($receipt->zakl_dan1),
-            'dan1'             => Format::price($receipt->dan1),
-            'zakl_dan2'        => Format::price($receipt->zakl_dan2),
-            'dan2'             => Format::price($receipt->dan2),
-            'zakl_dan3'        => Format::price($receipt->zakl_dan3),
-            'dan3'             => Format::price($receipt->dan3),
-            'cest_sluz'        => Format::price($receipt->cest_sluz),
-            'pouzit_zboz1'     => Format::price($receipt->pouzit_zboz1),
-            'pouzit_zboz2'     => Format::price($receipt->pouzit_zboz2),
-            'pouzit_zboz3'     => Format::price($receipt->pouzit_zboz3),
-            'urceno_cerp_zuct' => Format::price($receipt->urceno_cerp_zuct),
-            'cerp_zuct'        => Format::price($receipt->cerp_zuct),
-            'rezim'            => $receipt->rezim
+            'rezim' => $receipt->rezim
         ];
+
+        $nonRequireParameters = array(
+            'zakl_nepodl_dph',
+            'zakl_dan1', 'dan1',
+            'zakl_dan2', 'dan2',
+            'zakl_dan3', 'dan3',
+            'cest_sluz',
+            'pouzit_zboz1', 'pouzit_zboz2', 'pouzit_zboz3',
+            'urceno_cerp_zuct', 'cerp_zuct'
+        );
+
+        foreach ($nonRequireParameters as $nonRequireParameter)
+        {
+            $value = $receipt->{$nonRequireParameter};
+            if ($value !== null)
+            {
+                $body[$nonRequireParameter] = Format::price($value);
+            }
+        }
 
         $this->lastReceipt = $receipt;
 
