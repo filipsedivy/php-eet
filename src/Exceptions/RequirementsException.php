@@ -18,7 +18,7 @@ namespace FilipSedivy\EET\Exceptions;
  * Class RequirementsException
  * @package FilipSedivy\EET\Exceptions
  */
-class RequirementsException extends \Exception
+class RequirementsException extends EetException
 {
 
 }

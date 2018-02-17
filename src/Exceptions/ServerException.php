@@ -17,7 +17,7 @@ namespace FilipSedivy\EET\Exceptions;
  * Class ServerException
  * @package FilipSedivy\EET\Exceptions
  */
-class ServerException extends \Exception
+class ServerException extends EetException
 {
 
 }

@@ -18,7 +18,7 @@ namespace FilipSedivy\EET\Exceptions;
  * Class ClientException
  * @package FilipSedivy\EET\Exceptions
  */
-class CertificateException extends \Exception
+class CertificateException extends EetException
 {
 
 }
