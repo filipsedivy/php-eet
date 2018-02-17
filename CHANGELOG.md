@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.0.2
+   - **Nové funkce**
+      - Možnost zpracování propustných kontrol
    - **Dokumentace**
       - Vytvoření souboru `CHANGELOG.md`
    - **Testy**
       - Pokrytí testy v případě neplatné platby [#30](https://github.com/filipsedivy/PHP-EET/issues/30)
       - Odstranění souboru `phpunit.xml.dist`
+      - Refaktorování testů
+      - Přidání testů pro kontrolu propustné kontroly
    - **Oprava**
       - Typografie
       - `SoapClient`
