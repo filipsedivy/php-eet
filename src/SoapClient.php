@@ -161,7 +161,6 @@ class SoapClient extends \SoapClient
             CURLOPT_POSTFIELDS     => $request,
             CURLOPT_HEADER         => $headers,
             CURLOPT_HTTPHEADER     => array(sprintf('Content-Type: %s', $version == 2 ? 'application/soap+xml' : 'text/xml'), sprintf('SOAPAction: %s', $action)),
-            CURLOPT_SSL_VERIFYPEER => false
         );
         // Timeout in milliseconds
         $options = $this->__curlSetTimeoutOption($options, $this->timeout, 'CURLOPT_TIMEOUT');
