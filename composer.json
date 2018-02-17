@@ -2,7 +2,7 @@
     "name": "filipsedivy/php-eet",
     "description": "PHP knihovna pro elektronickou evidenci tržeb",
     "homepage": "https://github.com/filipsedivy/PHP-EET",
-    "license": "GNU GPL 3",
+    "license": "MIT",
     "keywords": ["EET", "elektronická evidence tržeb", "etrzby.cz"],
     "type": "library",
     "time": "2016-09-03",
