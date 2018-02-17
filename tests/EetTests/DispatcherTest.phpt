@@ -34,18 +34,11 @@ class DispatcherTest extends TestCase
         $r->dat_trzby = new \DateTime();
         $r->celk_trzba = 500;
 
-        print "\n--- EET - Jedna platba ---\n";
-        print sprintf("Castka: %s\n", 500);
-        print sprintf("UUID: %s\n", $uuid);
 
         try{
             $dispatcher->send($r);
-            print "FIK: ".$dispatcher->getFik()."\n";
-            print "BKP: ".$dispatcher->getBkp()."\n";
             Assert::true(is_string($dispatcher->getFik()) && is_string($dispatcher->getBkp()));
         }catch(EetException $ex){
-            print "PKP: ".$dispatcher->getPkp()."\n";
-            print "BKP: ".$dispatcher->getBkp()."\n";
             Assert::true(is_string($dispatcher->getPkp()) && is_string($dispatcher->getBkp()));
         }catch(\Exception $ex){
             Assert::fail('Pri odesilani EET zpravy nastala chyba: '.$ex->getMessage());
@@ -58,7 +51,6 @@ class DispatcherTest extends TestCase
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
-        print "\n--- EET - Rezim zcykleneho placeni ---\n";
 
         for($i = 0; $i < rand(4, 9); $i++)
         {
@@ -74,17 +66,10 @@ class DispatcherTest extends TestCase
             $r->dat_trzby = new \DateTime();
             $r->celk_trzba = $castka;
 
-            print "\n- Pokus cislo: ".($i + 1)."\n";
-            print sprintf("Castka: %s\n", $castka);
-            print sprintf("UUID: %s\n", $uuid);
 
             try{
                 $dispatcher->send($r);
-                print "FIK: ".$dispatcher->getFik()."\n";
-                print "BKP: ".$dispatcher->getBkp()."\n";
             }catch(EetException $ex){
-                print "PKP: ".$dispatcher->getPkp()."\n";
-                print "BKP: ".$dispatcher->getBkp()."\n";
             }catch(\Exception $ex){
                 Assert::fail('Pri odesilani '.$i.' platby nastala chyba: '.$ex->getMessage());
             }
