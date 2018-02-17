@@ -74,10 +74,47 @@ class DispatcherTest extends TestCase
                 Assert::fail('Pri odesilani '.$i.' platby nastala chyba: '.$ex->getMessage());
             }
         }
+    public function testPermeableErrors()
+    {
+        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new Dispatcher($certificate);
+        $dispatcher->setPlaygroundService();
 
-        Assert::true(true);
+        $r = new Receipt();
+        $r->uuid_zpravy = UUID::v4();
+        $r->id_provoz = '11';
+        $r->id_pokl = 'IP105';
+        $r->dic_popl = 'CZ1212121218';
+        $r->porad_cis = '1';
+        $r->dat_trzby = (new \DateTime())->setDate(2000, 1, 1);
+        $r->celk_trzba = 500;
+
+        $dispatcher->send($r);
+
+        Assert::type('array', $dispatcher->getWarnings());
+        Assert::count(2, $dispatcher->getWarnings());
     }
 
+    public function testNotPermeableErrors()
+    {
+        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new Dispatcher($certificate);
+        $dispatcher->setPlaygroundService();
+
+        $r = new Receipt();
+        $r->uuid_zpravy = UUID::v4();
+        $r->id_provoz = '11';
+        $r->id_pokl = 'IP105';
+        $r->dic_popl = 'CZ00000019';
+        $r->porad_cis = '1';
+        $r->dat_trzby = new \DateTime();
+        $r->celk_trzba = 500;
+
+        $dispatcher->send($r);
+
+        Assert::type('array', $dispatcher->getWarnings());
+        Assert::count(0, $dispatcher->getWarnings());
+    }
 }
 
 (new DispatcherTest())->run();
