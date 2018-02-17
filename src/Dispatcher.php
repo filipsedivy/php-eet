@@ -36,7 +36,7 @@ class Dispatcher
     /** @var SoapClient */
     private $soapClient;
 
-    /** @var string|bool */
+    /** @var bool */
     private $trace = false;
 
     /** @var string Generated PKP from Receipt */
@@ -181,7 +181,7 @@ class Dispatcher
         isset($response->Chyba) && $this->processError($response->Chyba);
         isset($response->Varovani) && $this->processWarnings($response->Varovani);
 
-        $this->fik = $check ? true : $response->Potvrzeni->fik;
+        $this->fik = $check ? null : $response->Potvrzeni->fik;
         return $this->fik;
     }
 

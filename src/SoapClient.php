@@ -48,10 +48,10 @@ class SoapClient extends \SoapClient
     /** @var bool */
     private $returnRequest = false;
 
-    /** @var int timeout in milliseconds */
+    /** @var int|null timeout in milliseconds */
     private $timeout = 2500;
 
-    /** @var int connection timeout in milliseconds */
+    /** @var int|null connection timeout in milliseconds */
     private $connectTimeout = 2000;
 
 
@@ -59,7 +59,7 @@ class SoapClient extends \SoapClient
      *
      * @param string      $service
      * @param Certificate $cert
-     * @param boolean     $trace
+     * @param bool        $trace
      */
     public function __construct($service, Certificate $cert, $trace = false)
     {
@@ -101,11 +101,11 @@ class SoapClient extends \SoapClient
 
     /**
      *
-     * @param   string           $request
-     * @param   string           $location
-     * @param   string           $saction
-     * @param   int              $version
-     * @param   null|string|bool $one_way
+     * @param   string    $request
+     * @param   string    $location
+     * @param   string    $saction
+     * @param   int       $version
+     * @param   null|bool $one_way
      *
      * @return  null|string
      */
@@ -130,11 +130,11 @@ class SoapClient extends \SoapClient
 
 
     /**
-     * @param string $request
-     * @param string $location
-     * @param string $action
-     * @param int    $version
-     * @param bool   $one_way
+     * @param string    $request
+     * @param string    $location
+     * @param string    $action
+     * @param int       $version
+     * @param bool|null $one_way
      *
      * @return string|null
      * @throws ClientException
@@ -212,9 +212,9 @@ class SoapClient extends \SoapClient
 
     /**
      *
-     * @param   array  $options
-     * @param   int    $milliseconds
-     * @param   string $name
+     * @param   array    $options
+     * @param   int|null $milliseconds
+     * @param   string   $name
      *
      * @return  mixed
      */
@@ -254,7 +254,7 @@ class SoapClient extends \SoapClient
      *
      * @param $tillLastRequest bool
      *
-     * @return float
+     * @return float|null
      */
     public function __getConnectionTime($tillLastRequest = false)
     {
@@ -278,7 +278,7 @@ class SoapClient extends \SoapClient
 
     /**
      *
-     * @return mixed|null
+     * @return float|null
      */
     private function getConnectionTimeTillNow()
     {
