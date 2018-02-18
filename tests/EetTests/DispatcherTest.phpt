@@ -9,7 +9,9 @@ namespace EetTest\Dispatcher;
 
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
+use FilipSedivy\EET\Exceptions\ClientException;
 use FilipSedivy\EET\Exceptions\EetException;
+use FilipSedivy\EET\Exceptions\ServerException;
 use FilipSedivy\EET\Receipt;
 use FilipSedivy\EET\Utils\UUID;
 use Tester\Assert;
@@ -104,6 +106,53 @@ class DispatcherTest extends TestCase
 
         Assert::type('array', $dispatcher->getWarnings());
         Assert::count(0, $dispatcher->getWarnings());
+    }
+
+    public function testRepeatSend()
+    {
+        static $proxy = array('127.0.0.1', 8888);
+
+        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+
+        $proxyDispatcher = new Dispatcher($certificate);
+        $proxyDispatcher->setPlaygroundService();
+
+        // Setting not valid proxy
+        $proxyDispatcher->setCurlOption(CURLOPT_PROXY, implode($proxy, ':'));
+
+        $dispatcher = new Dispatcher($certificate);
+        $dispatcher->setPlaygroundService();
+        
+        $r = new Receipt();
+        $r->uuid_zpravy = UUID::v4();
+        $r->id_provoz = '11';
+        $r->id_pokl = 'IP105';
+        $r->dic_popl = 'CZ00000019';
+        $r->porad_cis = '1';
+        $r->dat_trzby = new \DateTime();
+        $r->celk_trzba = 500;
+
+        Assert::type('null', $proxyDispatcher->getFik());
+
+        Assert::exception(function () use ($proxyDispatcher, $r) {
+            $proxyDispatcher->send($r);
+        }, ClientException::class, 'Failed to connect to ' . $proxy[0] . ' port ' . $proxy[1] . ': Connection refused');
+
+        Assert::type('string', $proxyDispatcher->getBkp());
+        Assert::type('null', $proxyDispatcher->getFik());
+
+        $r->pkp = $proxyDispatcher->getPkp(false);
+        $r->bkp = $proxyDispatcher->getBkp();
+        $r->prvni_zaslani = false;
+        $r->uuid_zpravy = UUID::v4();
+
+        Assert::type('null', $dispatcher->getFik());
+
+        $dispatcher->send($r);
+
+        Assert::type('string', $dispatcher->getFik());
+        Assert::type('string', $dispatcher->getBkp());
+        Assert::type('string', $dispatcher->getPkp());
     }
 }
 
