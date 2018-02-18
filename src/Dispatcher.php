@@ -51,8 +51,11 @@ class Dispatcher
     /** @var Receipt Last Receipt */
     protected $lastReceipt;
 
-    /** @var array of last warnings */
+    /** @var array List of last warnings */
     protected $lastWarnings = array();
+
+    /** @var array Curl options */
+    private $curlOptions = array();
 
 
     /**
@@ -273,7 +276,7 @@ class Dispatcher
             'porad_cis'        => $receipt->porad_cis,
             'dat_trzby'        => $receipt->dat_trzby->format('c'),
             'celk_trzba'       => Format::price($receipt->celk_trzba),
-            'rezim' => $receipt->rezim
+            'rezim'            => $receipt->rezim
         ];
 
         $nonRequireParameters = array(
