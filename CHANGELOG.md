@@ -3,6 +3,7 @@
 ## 3.1.0
    - **Nové funkce**
       - Možnost zpracování propustných kontrol
+      - Možnost v `Dispatcher` pomocí metody `setCurlOption($option, $value)` nastavit vlastní curl nastavení
    - **Dokumentace**
       - Vytvoření souboru `CHANGELOG.md`
    - **Testy**
