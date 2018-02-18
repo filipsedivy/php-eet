@@ -228,7 +228,7 @@ class Dispatcher
 
         if ($this->soapClient === null)
         {
-            $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace);
+            $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace, $this->curlOptions);
         }
     }
 
@@ -433,5 +433,23 @@ class Dispatcher
         return $this->lastWarnings;
     }
 
+    /**
+     * @param array|string $option
+     * @param null|string  $value
+     */
+    public function setCurlOption($option, $value = null)
+    {
+        if (is_array($option))
+        {
+            foreach ($option as $name => $value)
+            {
+                $this->setCurlOption($name, $value);
+            }
+        }
+        else
+        {
+            $this->curlOptions[$option] = $value;
+        }
+    }
 
 }

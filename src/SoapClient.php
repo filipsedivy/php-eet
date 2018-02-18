@@ -54,14 +54,18 @@ class SoapClient extends \SoapClient
     /** @var int|null connection timeout in milliseconds */
     private $connectTimeout = 2000;
 
+    /** @var array Curl options */
+    private $curlOptions = array();
+
 
     /**
      *
      * @param string      $service
      * @param Certificate $cert
      * @param bool        $trace
+     * @param array       $curlOptions
      */
-    public function __construct($service, Certificate $cert, $trace = false)
+    public function __construct($service, Certificate $cert, $trace = false, array $curlOptions = array())
     {
         $this->connectionStartTime = microtime(true);
         parent::__construct($service, [
@@ -70,6 +74,7 @@ class SoapClient extends \SoapClient
         ]);
         $this->cert = $cert;
         $this->traceRequired = $trace;
+        $this->curlOptions = $curlOptions;
     }
 
 
@@ -162,6 +167,9 @@ class SoapClient extends \SoapClient
             CURLOPT_HEADER         => $headers,
             CURLOPT_HTTPHEADER     => array(sprintf('Content-Type: %s', $version == 2 ? 'application/soap+xml' : 'text/xml'), sprintf('SOAPAction: %s', $action)),
         );
+
+        $options = $options + $this->curlOptions;
+
         // Timeout in milliseconds
         $options = $this->__curlSetTimeoutOption($options, $this->timeout, 'CURLOPT_TIMEOUT');
         // ConnectTimeout in milliseconds
