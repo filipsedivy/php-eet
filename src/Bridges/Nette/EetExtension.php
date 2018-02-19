@@ -51,5 +51,12 @@ class EetExtension extends Nette\DI\CompilerExtension
         {
             $dispatcher->addSetup('setService', $this->default['service']);
         }
+
+        if (class_exists('Tracy\Debugger'))
+        {
+            $panel = $builder->addDefinition($this->prefix('panel'))
+                ->setFactory('FilipSedivy\EET\Bridges\Tracy\Panel');
+            $dispatcher->addSetup([$panel, 'register'], [$dispatcher]);
+        }
     }
 }
