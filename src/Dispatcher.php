@@ -258,6 +258,7 @@ class Dispatcher
      * @param  bool    $check
      *
      * @return array
+     * @throws ClientException
      */
     public function prepareData($receipt, $check = false)
     {
@@ -274,10 +275,18 @@ class Dispatcher
             'id_provoz'        => $receipt->id_provoz,
             'id_pokl'          => $receipt->id_pokl,
             'porad_cis'        => $receipt->porad_cis,
-            'dat_trzby'        => $receipt->dat_trzby->format('c'),
             'celk_trzba'       => Format::price($receipt->celk_trzba),
             'rezim'            => $receipt->rezim
         ];
+
+        if ($receipt->dat_trzby instanceof \DateTime)
+        {
+            $body['dat_trzby'] = $receipt->dat_trzby->format('c');
+        }
+        else
+        {
+            throw new ClientException('Property \'dat_trzby\' is not instance of DateTime');
+        }
 
         $nonRequireParameters = array(
             'zakl_nepodl_dph',

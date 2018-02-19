@@ -122,7 +122,7 @@ class DispatcherTest extends TestCase
 
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
-        
+
         $r = new Receipt();
         $r->uuid_zpravy = UUID::v4();
         $r->id_provoz = '11';
@@ -153,6 +153,19 @@ class DispatcherTest extends TestCase
         Assert::type('string', $dispatcher->getFik());
         Assert::type('string', $dispatcher->getBkp());
         Assert::type('string', $dispatcher->getPkp());
+    }
+
+    public function testBaseReceipt()
+    {
+        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+
+        $dispatcher = new Dispatcher($certificate);
+        $dispatcher->setPlaygroundService();
+
+        Assert::exception(function () use ($dispatcher) {
+            $receipt = new Receipt();
+            $dispatcher->send($receipt);
+        }, ClientException::class, 'Property \'dat_trzby\' is not instance of DateTime');
     }
 }
 
