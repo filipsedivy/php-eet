@@ -89,7 +89,27 @@ try {
 }
 ```
 
+# Nette rozšíření
+
+Od verze **3.1.0** je k dispozici do Nette rozšíření pro implementaci EET knihovny.
+
+Pro registraci je třeba do konfiguračního souboru přidat následujcí řádky
+
+```yaml
+eet:
+	certificate: 
+		file: Cesta k certifikátu
+		password: Heslo certifikátu
+	service: playgroud, production nebo cesta k wsdl souboru
+
+extensions:
+	eet: FilipSedivy\EET\Bridges\Nette\EetExtension
+```
+
+
+
 ## Pomoc a řešní chyb
+
 V případě že potřebujete poradit, nebo při implementaci Vám třída zobrazuje chybu můžete využít následujících kontaktů.
 Základní pomoc je poskytována zcela zdarma. V ostatních případech se řídí dle aktuální ceny, kterou naleznete ve [wiki](https://github.com/filipsedivy/PHP-EET/wiki/Zasl%C3%A1n%C3%AD-p%C5%99%C3%ADsp%C4%9Bvku#co-z-toho-nebudu-m%C3%ADt).
 
