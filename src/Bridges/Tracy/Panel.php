@@ -16,7 +16,6 @@ namespace FilipSedivy\EET\Bridges\Tracy;
 
 use FilipSedivy\EET\Dispatcher;
 use Tracy\Debugger;
-use Tracy\Dumper;
 use Tracy\IBarPanel;
 
 class Panel implements IBarPanel
