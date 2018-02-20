@@ -30,21 +30,15 @@ class Panel implements IBarPanel
         Debugger::getBar()->addPanel($this);
     }
 
-    /**
-     * Renders HTML code for custom tab.
-     * @return string
-     */
-    function getTab()
+    public function getTab()
     {
         return 'EET';
     }
 
-    /**
-     * Renders HTML code for custom panel.
-     * @return string
-     */
-    function getPanel()
+    public function getPanel()
     {
+
+
         $result = '<h1>EET</h1>';
 
         $result .= '<div class="tracy-inner">
@@ -54,42 +48,50 @@ class Panel implements IBarPanel
                     <tr><th>Property</th><th>Value</th></tr>
                     <tr>
                         <td>FIK</td>
-                        <td>' . Debugger::dump($this->dispatcher->getFik(), true) . '</td>
+                        <td>' . $this->dump($this->dispatcher->getFik()). '</td>
                     </tr>
                     
                     <tr>
                         <td>BKP</td>
-                        <td>' . Debugger::dump($this->dispatcher->getBkp(), true) . '</td>
+                        <td>' . $this->dump($this->dispatcher->getBkp()) . '</td>
                     </tr>
                     
                     <tr>
                         <td>PKP</td>
-                        <td>' . Debugger::dump($this->dispatcher->getPkp(), true) . '</td>
+                        <td>' . $this->dump($this->dispatcher->getPkp()) . '</td>
                     </tr>
                     
                      <tr>
                         <td>Warnings</td>
-                        <td>' . Debugger::dump($this->dispatcher->getWarnings(), true) . '</td>
+                        <td>' . $this->dump($this->dispatcher->getWarnings()) . '</td>
                     </tr>
                     
                     <tr>
                         <td>Dispatcher</td>
-                        <td>' . Debugger::dump($this->dispatcher, true) . '</td>
+                        <td>' . $this->dump($this->dispatcher) . '</td>
                     </tr>
-                </table>
+                </table>';
 
-                Receipt
+        if (!is_null($lastReceipt = $this->dispatcher->getLastReceipt()))
+        {
+            $result .= 'Receipt
                 <table>
                     <tr><th>Property</th><th>Value</th></tr>';
-        foreach ($this->dispatcher->getLastReceipt() as $item => $value)
-        {
-            $dump = \Tracy\Debugger::dump($value, true);
-            $result .= '<tr><td>' . $item . '</td><td>' . $dump . '</td></tr>';
-        }
 
-        $result .= '</table>';
+            foreach ($lastReceipt as $item => $value)
+            {
+                $result .= '<tr><td>' . $item . '</td><td>' . $this->dump($value) . '</td></tr>';
+            }
+            $result .= '</table>';
+
+        }
 
         $result .= '</div>';
         return $result;
+    }
+
+    private function dump($var)
+    {
+        return call_user_func('\Tracy\Debugger::dump', $var, true);
     }
 }
