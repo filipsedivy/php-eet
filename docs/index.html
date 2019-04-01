@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Implementace EET</title>
+
+    <style>
+        table, td, th {
+            border: 1px solid #ddd;
+            text-align: left;
+            cursor: default;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 5px;
+        }
+
+        thead {
+            font-size: 1.1em;
+        }
+
+        tbody tr:hover {
+            background-color: lightgoldenrodyellow;
+        }
+
+        .warning {
+            background-color: #dc3545;
+            padding: 5px;
+            color: white;
+        }
+
+        .container {
+            width: 960px;
+            margin: 0 auto;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a.right {
+            float: right;
+            border: 1px solid black;
+            padding: 5px;
+            background-color: lightyellow;
+            color: black;
+        }
+
+        a.right:hover {
+            background-color: darksalmon;
+            color: white;
+        }
+
+        .fa-info {
+            color: #007bff;
+        }
+
+        .fa-success {
+            color: #28a745;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="assets/TinyToggle/css/tinytoggle.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Ceník implementace EET</h1>
+
+    <p class="warning" id="core" style="display: none">
+        <i class="fa fa-exclamation-triangle"></i> Pro fungování EET jako celku, je třeba mít implementované <strong>jádro
+        EET</strong>!
+    </p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Položka</th>
+            <th>Popis</th>
+            <th>Chci to!</th>
+            <th>Cena</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr style="background-color: lightyellow">
+            <td colspan="4"><strong>Hlavní položky</strong></td>
+        </tr>
+
+        <tr>
+            <td><label for="implementace">Implementace EET jádra</label></td>
+            <td>nezbytně nutné pro fungování EET</td>
+            <td><input name="implementace" value="5000" type="checkbox" id="implementace" class="toggle"
+                       data-tt-type="toggle" checked="checked"></td>
+            <td>5 000 Kč</td>
+        </tr>
+
+        <tr>
+            <td><label for="storno">Storno</label></td>
+            <td>možnost stornování účtenky</td>
+            <td><input name="storno" value="3000" type="checkbox" id="storno" class="toggle"
+                       data-tt-type="toggle"></td>
+            <td>3 000 Kč</td>
+        </tr>
+
+        <tr>
+            <td><label for="repeat">Opakované platby</label></td>
+            <td>v případě neúspěchu dojde k opakovému zaslání</td>
+            <td><input name="repeat" value="4000" type="checkbox" id="repeat" class="toggle"
+                       data-tt-type="toggle"></td>
+            <td>4 000 Kč</td>
+        </tr>
+
+        <tr style="background-color: lightyellow">
+            <td colspan="4"><strong>Doplňkové položky</strong></td>
+        </tr>
+
+        <tr>
+            <td><label for="gui">Grafické rozhraní</label></td>
+            <td>integrace do vaší aplikace<br>
+                <small>správa certifikátu, odeslané tržby,...</small>
+            </td>
+            <td><input name="gui" value="8000" type="checkbox" id="gui" class="toggle"
+                       data-tt-type="toggle"></td>
+            <td>8 000 Kč</td>
+        </tr>
+
+        <tr>
+            <td><label for="docs">Elektronické dokumenty</label></td>
+            <td>integrace do PDF, Excel, Word <br>
+                <small>cena zahrnuje pouze integraci do již existujícího dokumentu</small>
+            </td>
+            <td><input name="docs" value="3000" type="checkbox" id="docs" class="toggle"
+                       data-tt-type="toggle"></td>
+            <td>3 000 Kč</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p id="total">
+        <i class="fa fa-info-circle fa-success"></i> Celková cena za implementaci: <strong id="price">0 Kč</strong>
+        <small>(po slevě z daně: <strong id="price_sale">0 Kč</strong>)</small>
+
+        <a href="#" class="right">odeslat jako poptávku</a>
+    </p>
+
+    <p>
+        <i class="fa fa-info-circle fa-info"></i> Požadavky na aplikaci: PHP >= 5.6, databáze, cURL
+    </p>
+
+    <p>
+        <i class="fa fa-info-circle fa-info"></i>
+        Z této implementace je možné si nárokovat slevu 5 000 Kč na dani.
+        <a href="https://www.jaknaetrzby.cz/eet/radime-vam/jak-je-to-s-eet-a-slevou-na-dani/" rel="nofollow"
+           target="_blank">Více informací &raquo;</a>
+    </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="assets/TinyToggle/js/jquery.tinytoggle.min.js"></script>
+
+<script>
+    Number.prototype.formatMoney = function (decPlaces, thouSeparator, decSeparator) {
+        var n = this,
+            decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,
+            decSeparator = decSeparator == undefined ? "." : decSeparator,
+            thouSeparator = thouSeparator == undefined ? "," : thouSeparator,
+            sign = n < 0 ? "-" : "",
+            i = parseInt(n = Math.abs(+n || 0).toFixed(decPlaces)) + "",
+            j = (j = i.length) > 3 ? j % 3 : 0;
+        return sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
+    };
+
+    $(document).ready(function () {
+        $.fn.countPrice = function () {
+            let finalPrice = 0;
+
+            let services = {};
+
+            $('input[type="checkbox"]').each(function () {
+                let obj = $(this);
+                let name = obj.attr('name');
+                let price = parseInt(obj.attr('value'));
+                let plus = obj.prop('checked');
+                let desc = $('label[for="' + name + '"]').text();
+
+                if (plus) {
+                    finalPrice += price;
+                }
+
+                if (name === 'implementace') {
+                    if (plus) {
+                        $('#core').hide();
+                    } else {
+                        $('#core').show();
+                    }
+                }
+
+                services[desc] = plus ? 'ano' : 'ne';
+            });
+
+
+            let mail_message = '';
+
+            $.each(services, function (i, v) {
+                mail_message += i + ': ' + v + '%0D%0A';
+            });
+
+            let mail_link = 'mailto:mail@filipsedivy.cz?subject=Poptávka implementace EET&body=' + mail_message;
+
+            let price_sale = finalPrice - 5000;
+
+            if (price_sale < 0) {
+                price_sale = 0;
+            }
+
+            $('#price_sale').text(price_sale.formatMoney(0, ' ', '') + ' Kč');
+            $('#price').text(finalPrice.formatMoney(0, ' ', '') + ' Kč');
+            $('#total a').attr('href', mail_link);
+        };
+
+        $(".toggle").tinyToggle({
+            onChange: function (e, t) {
+                $.fn.countPrice();
+            },
+        });
+
+        $.fn.countPrice();
+    })
+    ;
+</script>
+
+</body>
+</html>
