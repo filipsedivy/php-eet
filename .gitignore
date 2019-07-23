@@ -1,3 +1,6 @@
-.idea/
-composer.lock
-vendor/
+# IDE
+/.idea
+
+# Composer
+/vendor
+/composer.lock
