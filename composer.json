@@ -1,9 +1,13 @@
 {
     "name": "filipsedivy/php-eet",
-    "description": "PHP knihovna pro elektronickou evidenci tržeb",
+    "description": "💸 Client for electronic records of sales",
     "homepage": "https://github.com/filipsedivy/PHP-EET",
     "license": "MIT",
-    "keywords": ["EET", "elektronická evidence tržeb", "etrzby.cz"],
+    "keywords": [
+        "EET",
+        "elektronická evidence tržeb",
+        "etrzby.cz"
+    ],
     "type": "library",
     "time": "2016-09-03",
     "support": {
@@ -19,21 +23,25 @@
             "role": "Developer"
         }
     ],
-    "autoload": {
-        "classmap": ["src/"]
-    },
-    "bin": [
-        "src/Tools/eet-clean"
-    ],
     "require": {
-        "php": ">=5.6.0",
+        "php": "^7.2",
         "robrichards/wse-php": "2.0.2",
         "ext-curl": "*",
         "ext-openssl": "*"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.8.5",
+        "phpstan/phpstan": "^0.8",
         "nette/tester": "^2.0",
         "tracy/tracy": "^2.4"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
     }
 }
