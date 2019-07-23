@@ -25,7 +25,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "robrichards/wse-php": "2.0.2",
+        "robrichards/wse-php": "^2.0",
         "ext-curl": "*",
         "ext-openssl": "*"
     },
