@@ -1,50 +1,22 @@
-# PHP knihovna pro EET
+# Client for electronic records of sale
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/07f653430c254d0bbf3f40c8595f0c89)](https://www.codacy.com/app/mail_72/PHP-EET?utm_source=github.com&utm_medium=referral&utm_content=filipsedivy/PHP-EET&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://packagist.org/packages/filipsedivy/php-eet)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/58a3ede2-9585-4e37-95ed-ca7726617ea8/mini.png)](https://insight.sensiolabs.com/projects/58a3ede2-9585-4e37-95ed-ca7726617ea8)
 
-ℹ️➡️ Možnost implementace EET přímo od autora knihovny + možnost odečtení slevy 5 000 Kč! [více informací](https://filipsedivy.github.io/PHP-EET/) ⬅️ℹ️
+If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=PHP-EET)**. Thank you!
 
-⚠️ Je třeba si aktualizovat EET knihovnu na verzi **v3.0.1**, jelikož předchozí verze neumožňuje odesílat opakované platby. **Aktualizace nemá vliv na kompatibilitu.** [Příručka jak opakovaně zasílat platby](https://github.com/filipsedivy/PHP-EET/wiki/Opakované-zas%C3%ADlán%C3%AD).
- ⚠️
-
-**Koukněte se na [přispěvatelé](#př%C3%ADspěvek), a příspějte taktéž na vývoj.** Díky těmto lidem je knihovna dále udržována a šířena zdarma jako open source.
-[Příspějte](https://github.com/filipsedivy/PHP-EET/wiki/Zaslán%C3%AD-př%C3%ADspěvku) a buďte na seznamu přispěvatelů
-
-V případě že podáváte **issue** a nenastavíte label - šítek, pro lepší přehlednost, tak je issue automaticky uzavřen bez řešení.
-Před podáním issue, prosím věnujte čas k pročtení [příručky](https://github.com/filipsedivy/PHP-EET/wiki/Issue-aneb-zaslán%C3%AD-chyby-nebo-nápadu).
-
-## Instalace
+## Installation
 
 ### Composer
 
-Pro instalaci balíčku je nutné jej instalovat skrze [composer](https://getcomposer.org/).
+The recommended way to install is via Composer:
 
 ```bash
 composer require filipsedivy/php-eet
 ```
 
-### Instalace bez composeru
-
-O tom jak nainstalovat závislosti bez composeru navštivte wiki - [instace bez composeru](https://github.com/filipsedivy/PHP-EET/wiki/Instalace-bez-composeru-pomoc%C3%AD-souboru)
-
-## Dokumentace
-
-Dokumentaci k použítí naleznete ve [wiki systému](https://github.com/filipsedivy/PHP-EET/wiki)
-
-Než se zeptáte, zkuste se do něj podívat, zda-li již problém není zdokumentován
-
-
-### Nejvíce zasílaných otázek
-* [Získání povinných kódů FIK, PKP a BKP](https://github.com/filipsedivy/PHP-EET/wiki/Z%C3%ADskán%C3%AD-BKP,-PKP-a-FIK-kódu)
-* [Popis prostředí playground a production a jejich nastavení](https://github.com/filipsedivy/PHP-EET/wiki/Práce-a-popis-prostřed%C3%AD)
-
-## Ukázka užití
-
-Ukázky naleznete ve složce **examples/**.
-
-Certifikát **EET_CA1_Playground-CZ00000019.p12** byl vydán pro účel testování Daňovou správou. Tento certifikát nepoužívejte pro ostrou verzi. Svůj certifikát si vygenerujete skrze rozhraní Daňové správy.
+## Usage
 
 ```php
 <?php
@@ -74,74 +46,20 @@ echo '<h2>---REQUEST---</h2>';
 echo '<pre>';
 
 try {
-    // Odeslání tržby
     $dispatcher->send($r);
 
-    // Tržba byla úspěšně odeslána
     echo sprintf('FIK: %s <br>', $dispatcher->getFik());
     echo sprintf('BKP: %s <br>', $dispatcher->getBkp());
 }catch(\FilipSedivy\EET\Exceptions\EetException $ex){
-    // Tržba nebyla odeslána
     echo sprintf('BKP: %s <br>', $dispatcher->getBkp());
     echo sprintf('PKP: %s <br>', $dispatcher->getPkp());
 }catch(Exception $ex){
-    // Obecná chyba
     var_dump($ex);
 }
 ```
 
-# Nette rozšíření
-
-Od verze **3.1.0** je k dispozici do Nette rozšíření pro implementaci EET knihovny.
-
-Pro registraci je třeba do konfiguračního souboru přidat následujcí řádky
-
-```yaml
-eet:
-	certificate: 
-		file: Cesta k certifikátu
-		password: Heslo certifikátu
-	service: playgroud, production nebo cesta k wsdl souboru
-
-extensions:
-	eet: FilipSedivy\EET\Bridges\Nette\EetExtension
-```
-
-
-
-## Pomoc a řešní chyb
-
-V případě že potřebujete poradit, nebo při implementaci Vám třída zobrazuje chybu můžete využít následujících kontaktů.
-Základní pomoc je poskytována zcela zdarma. V ostatních případech se řídí dle aktuální ceny, kterou naleznete ve [wiki](https://github.com/filipsedivy/PHP-EET/wiki/Zasl%C3%A1n%C3%AD-p%C5%99%C3%ADsp%C4%9Bvku#co-z-toho-nebudu-m%C3%ADt).
-
-### Issues
-Issues je systém veřejných hlášení chyb. V rámci veřejné podpory jsou k dispozici štítky **otázka** a **potřebuji pomoc**.
-Před tím než vytvoříte issue, zkuste se podívat zda není problém již řešen nebo již vyřešen někým jiným. [Seznam problémů řešených i vyřešených](https://github.com/filipsedivy/PHP-EET/issues?q=label%3Aot%C3%A1zka+label%3A%22pot%C5%99ebuji+pomoc%22).
-
-### Email
-V případě že veřejné řešení problémů nepřipadá v úvahu, tak je možné mě kontaktovat na emailové adrese, kterou naleznete na mé osobní stránce https://filipsedivy.cz.
-
-## Příspěvek
-V případě že se vám knihovna líbí a je vám užitečná, můžete mi zaslat příspěvěk. Jak zaslat příspěvek a co z toho budete mít můžete nalést [ve wiki](https://github.com/filipsedivy/PHP-EET/wiki/Zasl%C3%A1n%C3%AD-p%C5%99%C3%ADsp%C4%9Bvku).
-
-### Přispěvatelé
-| Přispěvatel | Částka |
-|-------------|--------|
-| https://www.drento.cz | 1 000 Kč |
-| http://www.elektrahk.cz | 1 000 Kč |
-| http://www.nerosty.cz |500 Kč |
-| https://www.manvel.cz | 500 Kč |
-| https://www.skoda-dily.cz | 1 000 Kč |
-
-## Screencasty
-
-- Generování certifikátu pro EET - https://youtu.be/N5Cb9SqeP6g
-
-## Odkazy
-- etržby.cz - http://www.etrzby.cz/
-- Finanční správa - http://www.financnisprava.cz/cs/financni-sprava/eet
-- Daňový portál - https://adisspr.mfcr.cz/adistc/adis/idpr_pub/eet/eet_sluzby.faces
-- Informace o EET z pohledu podnikání - http://www.jakpodnikat.cz/eet-elektronicka-evidence-trzeb.php
-
-## Licence
-MIT - https://opensource.org/licenses/MIT
+## Links
+- http://www.etrzby.cz/
+- http://www.financnisprava.cz/cs/financni-sprava/eet
+- https://adisspr.mfcr.cz/adistc/adis/idpr_pub/eet/eet_sluzby.faces
+- http://www.jakpodnikat.cz/eet-elektronicka-evidence-trzeb.php
