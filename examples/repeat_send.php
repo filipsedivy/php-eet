@@ -38,7 +38,7 @@ $bkp = $json['codes']['bkp'];
 $pkp = $json['codes']['pkp'];
 
 /* Vygeneruje se nové UUID, kterým se přepíše původní */
-$uuid = UUID::v4();
+$uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
 
 /** @var Receipt $r */
 $r = unserialize($json['receipt']);

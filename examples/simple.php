@@ -29,7 +29,7 @@ $dispatcher = new Dispatcher($certificate);
 $dispatcher->setPlaygroundService();
 
 // Generování UUID
-$uuid = UUID::v4();
+$uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
 
 // Vytvoření receiptu
 $r = new Receipt;
