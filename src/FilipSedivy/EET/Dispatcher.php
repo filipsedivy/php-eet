@@ -387,13 +387,13 @@ class Dispatcher
             foreach ($warnings as $warning) {
                 $this->lastWarnings[] = [
                     'code' => $warning->kod_varov,
-                    'message' => isset($msgs[$warning->kod_varov]) ? $msgs[$warning->kod_varov] : ''
+                    'message' => Enum\Warning::LIST[$warning->kod_varov] ?? ''
                 ];
             }
         } else {
             $this->lastWarnings[] = [
                 'code' => $warnings->kod_varov,
-                'message' => isset($msgs[$warnings->kod_varov]) ? $msgs[$warnings->kod_varov] : ''
+                'message' => Enum\Warning::LIST[$warnings->kod_varov] ?? ''
             ];
         }
 
