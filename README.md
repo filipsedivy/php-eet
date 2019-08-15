@@ -25,13 +25,12 @@ require_once __DIR__.'/vendor/autoload.php';
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
-use FilipSedivy\EET\Utils\UUID;
 
 $certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'eet');
 $dispatcher = new Dispatcher($certificate);
 $dispatcher->setPlaygroundService();
 
-$uuid = UUID::v4();
+$uuid = Ramsey\Uuid\Uuid::v4();
 
 $r = new Receipt;
 $r->uuid_zpravy = $uuid;
