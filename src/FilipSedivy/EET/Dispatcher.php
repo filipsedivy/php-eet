@@ -6,11 +6,11 @@ use FilipSedivy\EET\Exceptions\ClientException;
 use FilipSedivy\EET\Exceptions\RequirementsException;
 use FilipSedivy\EET\Exceptions\ServerException;
 use FilipSedivy\EET\Utils\Format;
+use FilipSedivy\EET\Enum;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
 class Dispatcher
 {
-
     /** @var Certificate */
     private $cert;
 
@@ -43,9 +43,8 @@ class Dispatcher
 
 
     /**
-     * Initialization
-     *
      * @param Certificate $cert
+     * @throws RequirementsException
      */
     public function __construct(Certificate $cert)
     {
@@ -59,7 +58,7 @@ class Dispatcher
      *
      * @param string $service
      */
-    public function setService($service)
+    public function setService($service): void
     {
         $this->service = $service;
     }
@@ -68,22 +67,24 @@ class Dispatcher
     /**
      * Test environment for testing the functionality of the program
      */
-    public function setPlaygroundService()
+    public function setPlaygroundService(): void
     {
-        $this->setService(__DIR__ . "/Schema/PlaygroundService.wsdl");
+        $this->setService(__DIR__ . '/Schema/PlaygroundService.wsdl');
     }
 
 
     /**
      * Production environment for sending receipt
      */
-    public function setProductionService()
+    public function setProductionService(): void
     {
-        $this->setService(__DIR__ . "/Schema/ProductionService.wsdl");
+        $this->setService(__DIR__ . '/Schema/ProductionService.wsdl');
     }
 
 
     /**
+     * @TODO Simplify function
+     *
      * Checking the accuracy of data sent
      *
      * @param Receipt $receipt
@@ -106,8 +107,9 @@ class Dispatcher
      * @param Receipt $receipt
      *
      * @return array
+     * @throws \Exception
      */
-    public function getCheckCodes(Receipt $receipt)
+    public function getCheckCodes(Receipt $receipt): array
     {
         if (isset($receipt->bkp, $receipt->pkp)) {
             $this->pkp = $receipt->pkp;
@@ -152,6 +154,8 @@ class Dispatcher
      * @param boolean $check
      *
      * @return boolean|string
+     * @throws ClientException
+     * @throws ServerException
      */
     public function send(Receipt $receipt, $check = false)
     {
@@ -171,7 +175,7 @@ class Dispatcher
      * @throws RequirementsException
      * @return void
      */
-    private function checkRequirements()
+    private function checkRequirements(): void
     {
         if (!class_exists('\SoapClient')) {
             throw new RequirementsException('Class SoapClient is not defined! Please, allow php extension php_soap.dll in php.ini');
@@ -350,17 +354,7 @@ class Dispatcher
     private function processError($error)
     {
         if ($error->kod) {
-            $msgs = [
-                -1 => 'Docasna technicka chyba zpracovani – odeslete prosim datovou zpravu pozdeji',
-                2 => 'Kodovani XML neni platne',
-                3 => 'XML zprava nevyhovela kontrole XML schematu',
-                4 => 'Neplatny podpis SOAP zpravy',
-                5 => 'Neplatny kontrolni bezpecnostni kod poplatnika (BKP)',
-                6 => 'DIC poplatnika ma chybnou strukturu',
-                7 => 'Datova zprava je prilis velka',
-                8 => 'Datova zprava nebyla zpracovana kvuli technicke chybe nebo chybe dat',
-            ];
-            $msg = isset($msgs[$error->kod]) ? $msgs[$error->kod] : '';
+            $msg = Enum\Error::LIST[$error->kod] ?? '';
             throw new ServerException($msg, $error->kod);
         }
     }
@@ -370,16 +364,8 @@ class Dispatcher
      *
      * @param array|\stdClass $warnings
      */
-    private function processWarnings($warnings)
+    private function processWarnings($warnings): void
     {
-        $msgs = [
-            1 => 'DIC poplatnika v datove zprave se neshoduje s DIC v certifikatu',
-            2 => 'Chybny format DIC poverujiciho poplatnika',
-            3 => 'Chybna hodnota PKP',
-            4 => 'Datum a cas prijeti trzby je novejsi nez datum a cas prijeti zpravy',
-            5 => 'Datum a cas prijeti trzby je vyrazne v minulosti '
-        ];
-
         //Reset last warnings
         $this->lastWarnings = array();
 
@@ -396,18 +382,16 @@ class Dispatcher
                 'message' => Enum\Warning::LIST[$warnings->kod_varov] ?? ''
             ];
         }
-
     }
 
-    /**
-     * @return array of warnings
-     */
-    public function getWarnings()
+    public function getWarnings(): array
     {
         return $this->lastWarnings;
     }
 
     /**
+     * @TODO Simplify function
+     *
      * @param array|string $option
      * @param null|string $value
      */
