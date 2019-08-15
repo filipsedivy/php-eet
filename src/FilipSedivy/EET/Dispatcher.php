@@ -8,11 +8,6 @@ use FilipSedivy\EET\Exceptions\ServerException;
 use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
-
-/**
- * Class Dispatcher
- * @package FilipSedivy\EET
- */
 class Dispatcher
 {
 
@@ -97,12 +92,9 @@ class Dispatcher
      */
     public function check(Receipt $receipt)
     {
-        try
-        {
+        try {
             return $this->send($receipt, true);
-        }
-        catch (ServerException $e)
-        {
+        } catch (ServerException $e) {
             return false;
         }
     }
@@ -117,13 +109,10 @@ class Dispatcher
      */
     public function getCheckCodes(Receipt $receipt)
     {
-        if (isset($receipt->bkp, $receipt->pkp))
-        {
+        if (isset($receipt->bkp, $receipt->pkp)) {
             $this->pkp = $receipt->pkp;
             $this->bkp = $receipt->bkp;
-        }
-        else
-        {
+        } else {
             $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
             $objKey->loadKey($this->cert->getPrivateKey());
 
@@ -142,14 +131,14 @@ class Dispatcher
 
         return [
             'pkp' => [
-                '_'        => $this->pkp,
-                'digest'   => 'SHA256',
-                'cipher'   => 'RSA2048',
+                '_' => $this->pkp,
+                'digest' => 'SHA256',
+                'cipher' => 'RSA2048',
                 'encoding' => 'base64'
             ],
             'bkp' => [
-                '_'        => $this->bkp,
-                'digest'   => 'SHA1',
+                '_' => $this->bkp,
+                'digest' => 'SHA1',
                 'encoding' => 'base16'
             ]
         ];
@@ -184,8 +173,7 @@ class Dispatcher
      */
     private function checkRequirements()
     {
-        if (!class_exists('\SoapClient'))
-        {
+        if (!class_exists('\SoapClient')) {
             throw new RequirementsException('Class SoapClient is not defined! Please, allow php extension php_soap.dll in php.ini');
         }
     }
@@ -210,13 +198,11 @@ class Dispatcher
      */
     private function initSoapClient()
     {
-        if (!isset($this->service))
-        {
+        if (!isset($this->service)) {
             throw new ClientException("Not set service");
         }
 
-        if ($this->soapClient === null)
-        {
+        if ($this->soapClient === null) {
             $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace, $this->curlOptions);
         }
     }
@@ -244,7 +230,7 @@ class Dispatcher
 
     /**
      * @param  Receipt $receipt
-     * @param  bool    $check
+     * @param  bool $check
      *
      * @return array
      * @throws ClientException
@@ -252,28 +238,25 @@ class Dispatcher
     public function prepareData($receipt, $check = false)
     {
         $head = [
-            'uuid_zpravy'   => $receipt->uuid_zpravy,
-            'dat_odesl'     => time(),
+            'uuid_zpravy' => $receipt->uuid_zpravy,
+            'dat_odesl' => time(),
             'prvni_zaslani' => $receipt->prvni_zaslani,
-            'overeni'       => $check
+            'overeni' => $check
         ];
 
         $body = [
-            'dic_popl'         => $receipt->dic_popl,
+            'dic_popl' => $receipt->dic_popl,
             'dic_poverujiciho' => $receipt->dic_poverujiciho,
-            'id_provoz'        => $receipt->id_provoz,
-            'id_pokl'          => $receipt->id_pokl,
-            'porad_cis'        => $receipt->porad_cis,
-            'celk_trzba'       => Format::price($receipt->celk_trzba),
-            'rezim'            => $receipt->rezim
+            'id_provoz' => $receipt->id_provoz,
+            'id_pokl' => $receipt->id_pokl,
+            'porad_cis' => $receipt->porad_cis,
+            'celk_trzba' => Format::price($receipt->celk_trzba),
+            'rezim' => $receipt->rezim
         ];
 
-        if ($receipt->dat_trzby instanceof \DateTime)
-        {
+        if ($receipt->dat_trzby instanceof \DateTime) {
             $body['dat_trzby'] = $receipt->dat_trzby->format('c');
-        }
-        else
-        {
+        } else {
             throw new ClientException('Property \'dat_trzby\' is not instance of DateTime');
         }
 
@@ -287,11 +270,9 @@ class Dispatcher
             'urceno_cerp_zuct', 'cerp_zuct'
         );
 
-        foreach ($nonRequireParameters as $nonRequireParameter)
-        {
+        foreach ($nonRequireParameters as $nonRequireParameter) {
             $value = $receipt->{$nonRequireParameter};
-            if ($value !== null)
-            {
+            if ($value !== null) {
                 $body[$nonRequireParameter] = Format::price($value);
             }
         }
@@ -299,8 +280,8 @@ class Dispatcher
         $this->lastReceipt = $receipt;
 
         return [
-            'Hlavicka'      => $head,
-            'Data'          => $body,
+            'Hlavicka' => $head,
+            'Data' => $body,
             'KontrolniKody' => $this->getCheckCodes($receipt)
         ];
     }
@@ -368,17 +349,16 @@ class Dispatcher
      */
     private function processError($error)
     {
-        if ($error->kod)
-        {
+        if ($error->kod) {
             $msgs = [
                 -1 => 'Docasna technicka chyba zpracovani – odeslete prosim datovou zpravu pozdeji',
-                2  => 'Kodovani XML neni platne',
-                3  => 'XML zprava nevyhovela kontrole XML schematu',
-                4  => 'Neplatny podpis SOAP zpravy',
-                5  => 'Neplatny kontrolni bezpecnostni kod poplatnika (BKP)',
-                6  => 'DIC poplatnika ma chybnou strukturu',
-                7  => 'Datova zprava je prilis velka',
-                8  => 'Datova zprava nebyla zpracovana kvuli technicke chybe nebo chybe dat',
+                2 => 'Kodovani XML neni platne',
+                3 => 'XML zprava nevyhovela kontrole XML schematu',
+                4 => 'Neplatny podpis SOAP zpravy',
+                5 => 'Neplatny kontrolni bezpecnostni kod poplatnika (BKP)',
+                6 => 'DIC poplatnika ma chybnou strukturu',
+                7 => 'Datova zprava je prilis velka',
+                8 => 'Datova zprava nebyla zpracovana kvuli technicke chybe nebo chybe dat',
             ];
             $msg = isset($msgs[$error->kod]) ? $msgs[$error->kod] : '';
             throw new ServerException($msg, $error->kod);
@@ -403,20 +383,16 @@ class Dispatcher
         //Reset last warnings
         $this->lastWarnings = array();
 
-        if (is_array($warnings))
-        {
-            foreach ($warnings as $warning)
-            {
+        if (is_array($warnings)) {
+            foreach ($warnings as $warning) {
                 $this->lastWarnings[] = [
-                    'code'    => $warning->kod_varov,
+                    'code' => $warning->kod_varov,
                     'message' => isset($msgs[$warning->kod_varov]) ? $msgs[$warning->kod_varov] : ''
                 ];
             }
-        }
-        else
-        {
+        } else {
             $this->lastWarnings[] = [
-                'code'    => $warnings->kod_varov,
+                'code' => $warnings->kod_varov,
                 'message' => isset($msgs[$warnings->kod_varov]) ? $msgs[$warnings->kod_varov] : ''
             ];
         }
@@ -433,19 +409,15 @@ class Dispatcher
 
     /**
      * @param array|string $option
-     * @param null|string  $value
+     * @param null|string $value
      */
     public function setCurlOption($option, $value = null)
     {
-        if (is_array($option))
-        {
-            foreach ($option as $name => $value)
-            {
+        if (is_array($option)) {
+            foreach ($option as $name => $value) {
                 $this->setCurlOption($name, $value);
             }
-        }
-        else
-        {
+        } else {
             $this->curlOptions[$option] = $value;
         }
     }

@@ -38,9 +38,9 @@
         "squizlabs/php_codesniffer": "^3.4"
     },
     "autoload": {
-        "classmap": [
-            "src/"
-        ]
+        "psr-4": {
+            "FilipSedivy\\EET\\": "src/FilipSedivy/EET"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

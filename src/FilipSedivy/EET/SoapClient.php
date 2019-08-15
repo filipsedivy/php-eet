@@ -8,9 +8,6 @@ use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
 /**
- * Class SoapClient
- * @package FilipSedivy\EET
- *
  * @method OdeslaniTrzby(array $data)
  */
 class SoapClient extends \SoapClient
@@ -49,17 +46,17 @@ class SoapClient extends \SoapClient
 
     /**
      *
-     * @param string      $service
+     * @param string $service
      * @param Certificate $cert
-     * @param bool        $trace
-     * @param array       $curlOptions
+     * @param bool $trace
+     * @param array $curlOptions
      */
     public function __construct($service, Certificate $cert, $trace = false, array $curlOptions = array())
     {
         $this->connectionStartTime = microtime(true);
         parent::__construct($service, [
             'exceptions' => true,
-            'trace'      => $trace
+            'trace' => $trace
         ]);
         $this->cert = $cert;
         $this->traceRequired = $trace;
@@ -95,10 +92,10 @@ class SoapClient extends \SoapClient
 
     /**
      *
-     * @param   string    $request
-     * @param   string    $location
-     * @param   string    $saction
-     * @param   int       $version
+     * @param   string $request
+     * @param   string $location
+     * @param   string $saction
+     * @param   int $version
      * @param   null|bool $one_way
      *
      * @return  null|string
@@ -108,8 +105,7 @@ class SoapClient extends \SoapClient
 
         $xml = $this->getXML($request);
         $this->lastRequest = $xml;
-        if ($this->returnRequest)
-        {
+        if ($this->returnRequest) {
             return '';
         }
 
@@ -124,10 +120,10 @@ class SoapClient extends \SoapClient
 
 
     /**
-     * @param string    $request
-     * @param string    $location
-     * @param string    $action
-     * @param int       $version
+     * @param string $request
+     * @param string $location
+     * @param string $action
+     * @param int $version
      * @param bool|null $one_way
      *
      * @return string|null
@@ -137,8 +133,7 @@ class SoapClient extends \SoapClient
     {
         // Call via Curl and use the timeout a
         $curl = curl_init($location);
-        if ($curl === false)
-        {
+        if ($curl === false) {
             throw new ClientException('Curl initialisation failed');
         }
         /** @var $headers array of headers to be sent with request */
@@ -149,12 +144,12 @@ class SoapClient extends \SoapClient
             'Content-Length: ' . strlen($request),
         );
         $options = array(
-            CURLOPT_VERBOSE        => false,
+            CURLOPT_VERBOSE => false,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_POSTFIELDS     => $request,
-            CURLOPT_HEADER         => $headers,
-            CURLOPT_HTTPHEADER     => array(sprintf('Content-Type: %s', $version == 2 ? 'application/soap+xml' : 'text/xml'), sprintf('SOAPAction: %s', $action)),
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $request,
+            CURLOPT_HEADER => $headers,
+            CURLOPT_HTTPHEADER => array(sprintf('Content-Type: %s', $version == 2 ? 'application/soap+xml' : 'text/xml'), sprintf('SOAPAction: %s', $action)),
         );
 
         $options = $options + $this->curlOptions;
@@ -167,8 +162,7 @@ class SoapClient extends \SoapClient
         $this->__setCurlOptions($curl, $options);
         $response = curl_exec($curl);
 
-        if (curl_errno($curl))
-        {
+        if (curl_errno($curl)) {
             $errorMessage = curl_error($curl);
             $errorNumber = curl_errno($curl);
             curl_close($curl);
@@ -187,16 +181,14 @@ class SoapClient extends \SoapClient
 
     /**
      * @param           $curl
-     * @param   array   $options
+     * @param   array $options
      *
      * @throws  ClientException
      */
     private function __setCurlOptions($curl, array $options)
     {
-        foreach ($options as $option => $value)
-        {
-            if (false !== curl_setopt($curl, $option, $value))
-            {
+        foreach ($options as $option => $value) {
+            if (false !== curl_setopt($curl, $option, $value)) {
                 continue;
             }
             throw new ClientException(
@@ -208,27 +200,22 @@ class SoapClient extends \SoapClient
 
     /**
      *
-     * @param   array    $options
+     * @param   array $options
      * @param   int|null $milliseconds
-     * @param   string   $name
+     * @param   string $name
      *
      * @return  mixed
      */
     private function __curlSetTimeoutOption($options, $milliseconds, $name)
     {
-        if ($milliseconds > 0)
-        {
-            if (defined("{$name}_MS"))
-            {
+        if ($milliseconds > 0) {
+            if (defined("{$name}_MS")) {
                 $options[constant("{$name}_MS")] = $milliseconds;
-            }
-            else
-            {
+            } else {
                 $seconds = ceil($milliseconds / 1000);
                 $options[$name] = $seconds;
             }
-            if ($milliseconds <= 1000)
-            {
+            if ($milliseconds <= 1000) {
                 $options[CURLOPT_NOSIGNAL] = 1;
             }
         }
@@ -264,8 +251,7 @@ class SoapClient extends \SoapClient
      */
     private function getConnectionTimeTillLastRequest()
     {
-        if (!$this->lastResponseEndTime || !$this->connectionStartTime)
-        {
+        if (!$this->lastResponseEndTime || !$this->connectionStartTime) {
             return null;
         }
         return $this->lastResponseEndTime - $this->connectionStartTime;
@@ -278,8 +264,7 @@ class SoapClient extends \SoapClient
      */
     private function getConnectionTimeTillNow()
     {
-        if (!$this->connectionStartTime)
-        {
+        if (!$this->connectionStartTime) {
             return null;
         }
         return microtime(true) - $this->connectionStartTime;
@@ -334,5 +319,4 @@ class SoapClient extends \SoapClient
     {
         return $this->connectTimeout;
     }
-
 }

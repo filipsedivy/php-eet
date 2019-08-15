@@ -2,10 +2,6 @@
 
 namespace FilipSedivy\EET;
 
-/**
- * Class Receipt
- * @package FilipSedivy\EET
- */
 class Receipt
 {
     /**
