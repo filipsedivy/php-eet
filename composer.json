@@ -28,6 +28,7 @@
         "ext-curl": "*",
         "ext-openssl": "*",
         "ext-dom": "*",
+        "ext-soap": "*",
         "robrichards/wse-php": "^2.0",
         "ramsey/uuid": "3.8"
     },
