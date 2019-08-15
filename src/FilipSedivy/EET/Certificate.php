@@ -2,69 +2,48 @@
 
 namespace FilipSedivy\EET;
 
-use FilipSedivy\EET\Exceptions\CertificateException;
+use FilipSedivy\EET\Exceptions\Certificate\CertificateExportFailedException;
+use FilipSedivy\EET\Exceptions\Certificate\CertificateNotFoundException;
+use FilipSedivy\EET\Exceptions\ExtensionNotFound;
+use FilipSedivy\EET\Utils\FileSystem;
 
-/**
- * Parsování PKCS#12 a uchování X.509 certifikátu
- *
- * @version 1.0.2
-*/
 class Certificate
 {
     /** @var string */
-    private $pkey;
+    private $privateKey;
 
     /** @var string */
     private $cert;
 
-
-    /**
-     * Certificate constructor
-     *
-     * @param   string  $certificate  Path of certificate
-     * @param   string  $password     Certificate password
-     * @throws  CertificateException
-     */
     public function __construct($certificate, $password)
     {
-        if(!file_exists($certificate))
-        {
-            throw new CertificateException("Certificate was not found");
+        if (!FileSystem::isFileExists($certificate)) {
+            throw new CertificateNotFoundException($certificate);
         }
 
         $certs = [];
         $pkcs12 = file_get_contents($certificate);
 
-        if (!extension_loaded('openssl') || !function_exists('openssl_pkcs12_read'))
-        {
-            throw new CertificateException("OpenSSL extension is not available.");
+        if (!function_exists('openssl_pkcs12_read')) {
+            throw new ExtensionNotFound('OpenSSL');
         }
 
         $openSSL = openssl_pkcs12_read($pkcs12, $certs, $password);
-        if(!$openSSL)
-        {
-            throw new CertificateException("The certificate has failed to export.");
+        if (!$openSSL) {
+            throw new CertificateExportFailedException($certificate);
         }
 
-        $this->pkey = $certs['pkey'];
+        $this->privateKey = $certs['pkey'];
         $this->cert = $certs['cert'];
     }
 
-
-    /**
-     *
-     * @return string
-     */
-    public function getPrivateKey(){
-        return $this->pkey;
+    public function getPrivateKey(): string
+    {
+        return $this->privateKey;
     }
 
-
-    /**
-     *
-     * @return string
-     */
-    public function getCert(){
+    public function getCert(): string
+    {
         return $this->cert;
     }
 }

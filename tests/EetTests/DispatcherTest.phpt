@@ -10,10 +10,7 @@ namespace EetTest\Dispatcher;
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Exceptions\ClientException;
-use FilipSedivy\EET\Exceptions\EetException;
-use FilipSedivy\EET\Exceptions\ServerException;
 use FilipSedivy\EET\Receipt;
-use FilipSedivy\EET\Utils\UUID;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -28,7 +25,7 @@ class DispatcherTest extends TestCase
         $dispatcher->setPlaygroundService();
 
         $r = new Receipt();
-        $r->uuid_zpravy = UUID::v4();
+        $r->uuid_zpravy = \Ramsey\Uuid\Uuid::uuid4()->toString();
         $r->id_provoz = '11';
         $r->id_pokl = 'IP105';
         $r->dic_popl = 'CZ1212121218';
@@ -48,10 +45,9 @@ class DispatcherTest extends TestCase
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
-        for ($i = 0; $i < rand(4, 9); $i++)
-        {
+        for ($i = 0, $iMax = random_int(4, 9); $i < $iMax; $i++) {
             $r = new Receipt();
-            $r->uuid_zpravy = UUID::v4();
+            $r->uuid_zpravy = \Ramsey\Uuid\Uuid::uuid4()->toString();
             $r->id_provoz = '11';
             $r->id_pokl = 'IP105';
             $r->dic_popl = 'CZ1212121218';
@@ -73,7 +69,7 @@ class DispatcherTest extends TestCase
         $dispatcher->setPlaygroundService();
 
         $r = new Receipt();
-        $r->uuid_zpravy = UUID::v4();
+        $r->uuid_zpravy = \Ramsey\Uuid\Uuid::uuid4()->toString();
         $r->id_provoz = '11';
         $r->id_pokl = 'IP105';
         $r->dic_popl = 'CZ1212121218';
@@ -94,7 +90,7 @@ class DispatcherTest extends TestCase
         $dispatcher->setPlaygroundService();
 
         $r = new Receipt();
-        $r->uuid_zpravy = UUID::v4();
+        $r->uuid_zpravy = \Ramsey\Uuid\Uuid::uuid4()->toString();
         $r->id_provoz = '11';
         $r->id_pokl = 'IP105';
         $r->dic_popl = 'CZ00000019';
@@ -124,7 +120,7 @@ class DispatcherTest extends TestCase
         $dispatcher->setPlaygroundService();
 
         $r = new Receipt();
-        $r->uuid_zpravy = UUID::v4();
+        $r->uuid_zpravy = \Ramsey\Uuid\Uuid::uuid4()->toString();
         $r->id_provoz = '11';
         $r->id_pokl = 'IP105';
         $r->dic_popl = 'CZ00000019';
@@ -144,7 +140,7 @@ class DispatcherTest extends TestCase
         $r->pkp = $proxyDispatcher->getPkp(false);
         $r->bkp = $proxyDispatcher->getBkp();
         $r->prvni_zaslani = false;
-        $r->uuid_zpravy = UUID::v4();
+        $r->uuid_zpravy = \Ramsey\Uuid\Uuid::uuid4()->toString();
 
         Assert::type('null', $dispatcher->getFik());
 
