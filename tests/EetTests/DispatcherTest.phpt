@@ -20,7 +20,7 @@ class DispatcherTest extends TestCase
 {
     public function testSendReceipt()
     {
-        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
@@ -41,7 +41,7 @@ class DispatcherTest extends TestCase
 
     public function testSendReceipts()
     {
-        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
@@ -64,7 +64,7 @@ class DispatcherTest extends TestCase
 
     public function testPermeableErrors()
     {
-        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
@@ -85,7 +85,7 @@ class DispatcherTest extends TestCase
 
     public function testNotPermeableErrors()
     {
-        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
 
@@ -108,7 +108,7 @@ class DispatcherTest extends TestCase
     {
         static $proxy = array('127.0.0.1', 8888);
 
-        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         $proxyDispatcher = new Dispatcher($certificate);
         $proxyDispatcher->setPlaygroundService();
@@ -153,7 +153,7 @@ class DispatcherTest extends TestCase
 
     public function testBaseReceipt()
     {
-        $certificate = new Certificate(__DIR__ . '/../../examples/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         $dispatcher = new Dispatcher($certificate);
         $dispatcher->setPlaygroundService();
