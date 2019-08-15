@@ -55,7 +55,7 @@
             "@tester"
         ],
         "phpstan": "phpstan analyse -c phpstan.neon -l 7 src/",
-        "phpcs": "phpcs --standard=phpcs.xml --encoding=utf-8 --colors -spm src/ tests/",
+        "phpcs": "phpcs --standard=phpcs.xml --encoding=utf-8 --colors -sp src/ tests/",
         "tester": "tester tests/"
     }
 }
