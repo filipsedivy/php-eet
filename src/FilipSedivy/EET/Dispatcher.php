@@ -122,7 +122,11 @@ class Dispatcher
     {
         $this->initSoapClient();
 
-        $response = $this->processData($receipt, $check);
+        try {
+            $response = $this->processData($receipt, $check);
+        } catch (Exceptions\SoapClient\CurlException $exception) {
+            throw new Exceptions\EET\ClientException($receipt, $this->pkp, $this->bkp, $exception);
+        }
 
         if (isset($response->Chyba)) {
             $this->processError($response->Chyba);
