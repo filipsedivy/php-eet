@@ -2,17 +2,18 @@
 
 namespace FilipSedivy\EET;
 
-use FilipSedivy\EET\Exceptions\ClientException;
-use FilipSedivy\EET\Exceptions\RequirementsException;
-use FilipSedivy\EET\Exceptions\ServerException;
-use FilipSedivy\EET\Utils\Format;
 use FilipSedivy\EET\Enum;
+use FilipSedivy\EET\Exceptions;
+use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
 class Dispatcher
 {
+    public const PLAYGROUND_SERVICE = 'playground',
+        PRODUCTION_SERVICE = 'production';
+
     /** @var Certificate */
-    private $cert;
+    private $certificate;
 
     /** @var string WSDL path or URL */
     private $service;
@@ -20,95 +21,66 @@ class Dispatcher
     /** @var SoapClient */
     private $soapClient;
 
-    /** @var bool */
-    private $trace = false;
-
-    /** @var string Generated PKP from Receipt */
+    /** @var string */
     protected $pkp;
 
-    /** @var string Generated BKP from Receipt */
+    /** @var string */
     protected $bkp;
 
-    /** @var string Received FIK */
+    /** @var string */
     protected $fik;
 
-    /** @var Receipt Last Receipt */
+    /** @var Receipt */
     protected $lastReceipt;
 
-    /** @var array List of last warnings */
-    protected $lastWarnings = array();
+    /** @var array */
+    protected $lastWarnings = [];
 
     /** @var array Curl options */
-    private $curlOptions = array();
+    private $curlOptions = [];
 
-
-    /**
-     * @param Certificate $cert
-     * @throws RequirementsException
-     */
-    public function __construct(Certificate $cert)
+    public function __construct(Certificate $certificate, ?string $service = self::PRODUCTION_SERVICE)
     {
-        $this->cert = $cert;
         $this->checkRequirements();
+        $this->certificate = $certificate;
+
+        if ($service !== null) {
+            if ($service === self::PLAYGROUND_SERVICE) {
+                $this->setPlaygroundService();
+            } elseif ($service === self::PRODUCTION_SERVICE) {
+                $this->setProductionService();
+            } else {
+                $this->setService($service);
+            }
+        }
     }
 
-
-    /**
-     * Setting WSDL path or URL
-     *
-     * @param string $service
-     */
     public function setService($service): void
     {
         $this->service = $service;
     }
 
-
-    /**
-     * Test environment for testing the functionality of the program
-     */
     public function setPlaygroundService(): void
     {
         $this->setService(__DIR__ . '/Schema/PlaygroundService.wsdl');
     }
 
-
-    /**
-     * Production environment for sending receipt
-     */
     public function setProductionService(): void
     {
         $this->setService(__DIR__ . '/Schema/ProductionService.wsdl');
     }
 
-
-    /**
-     * @TODO Simplify function
-     *
-     * Checking the accuracy of data sent
-     *
-     * @param Receipt $receipt
-     *
-     * @return boolean|string
-     */
-    public function check(Receipt $receipt)
+    public function check(Receipt $receipt): bool
     {
         try {
-            return $this->send($receipt, true);
-        } catch (ServerException $e) {
+            $this->send($receipt, true);
+
+            return true;
+        } catch (Exceptions\EET\ErrorException $e) {
             return false;
         }
     }
 
-
-    /**
-     * Check codes
-     *
-     * @param Receipt $receipt
-     *
-     * @return array
-     * @throws \Exception
-     */
     public function getCheckCodes(Receipt $receipt): array
     {
         if (isset($receipt->bkp, $receipt->pkp)) {
@@ -116,7 +88,7 @@ class Dispatcher
             $this->bkp = $receipt->bkp;
         } else {
             $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
-            $objKey->loadKey($this->cert->getPrivateKey());
+            $objKey->loadKey($this->certificate->getPrivateKey());
 
             $arr = [
                 $receipt->dic_popl,
@@ -124,7 +96,7 @@ class Dispatcher
                 $receipt->id_pokl,
                 $receipt->porad_cis,
                 $receipt->dat_trzby->format('c'),
-                Format::price($receipt->celk_trzba)
+                $receipt->celk_trzba
             ];
 
             $this->pkp = $objKey->signData(implode('|', $arr));
@@ -146,228 +118,119 @@ class Dispatcher
         ];
     }
 
-
-    /**
-     * Send receipt
-     *
-     * @param Receipt $receipt
-     * @param boolean $check
-     *
-     * @return boolean|string
-     * @throws ClientException
-     * @throws ServerException
-     */
-    public function send(Receipt $receipt, $check = false)
+    public function send(Receipt $receipt, bool $check = false): ?string
     {
         $this->initSoapClient();
 
         $response = $this->processData($receipt, $check);
 
-        isset($response->Chyba) && $this->processError($response->Chyba);
-        isset($response->Varovani) && $this->processWarnings($response->Varovani);
+        if (isset($response->Chyba)) {
+            $this->processError($response->Chyba);
+        }
+
+        if (isset($response->Varovani)) {
+            $this->processWarnings($response->Varovani);
+        }
 
         $this->fik = $check ? null : $response->Potvrzeni->fik;
+
         return $this->fik;
     }
 
-    /**
-     *
-     * @throws RequirementsException
-     * @return void
-     */
-    private function checkRequirements(): void
+    public function getSoapClient(): SoapClient
     {
-        if (!class_exists('\SoapClient')) {
-            throw new RequirementsException('Class SoapClient is not defined! Please, allow php extension php_soap.dll in php.ini');
+        if (!isset($this->soapClient)) {
+            $this->initSoapClient();
         }
-    }
 
-    /**
-     * Get (or if not exists: initialize and get) SOAP client.
-     *
-     * @return SoapClient
-     */
-    public function getSoapClient()
-    {
-        !isset($this->soapClient) && $this->initSoapClient();
         return $this->soapClient;
     }
 
-
-    /**
-     * Require to initialize a new SOAP client for a new request.
-     *
-     * @return void
-     * @throws ClientException
-     */
-    private function initSoapClient()
+    public function prepareData(Receipt $receipt, bool $check = false): array
     {
-        if (!isset($this->service)) {
-            throw new ClientException("Not set service");
-        }
-
-        if ($this->soapClient === null) {
-            $this->soapClient = new SoapClient($this->service, $this->cert, $this->trace, $this->curlOptions);
-        }
-    }
-
-
-    /**
-     * Enable debug mode
-     */
-    public function enableDebug()
-    {
-        $this->trace = true;
-    }
-
-
-    /**
-     * Get trace from SoapClient
-     *
-     * @return bool|string
-     */
-    public function getTrace()
-    {
-        return $this->trace;
-    }
-
-
-    /**
-     * @param  Receipt $receipt
-     * @param  bool $check
-     *
-     * @return array
-     * @throws ClientException
-     */
-    public function prepareData($receipt, $check = false)
-    {
-        $head = [
-            'uuid_zpravy' => $receipt->uuid_zpravy,
+        $head = $receipt->buildHeader();
+        $head += [
             'dat_odesl' => time(),
-            'prvni_zaslani' => $receipt->prvni_zaslani,
             'overeni' => $check
         ];
-
-        $body = [
-            'dic_popl' => $receipt->dic_popl,
-            'dic_poverujiciho' => $receipt->dic_poverujiciho,
-            'id_provoz' => $receipt->id_provoz,
-            'id_pokl' => $receipt->id_pokl,
-            'porad_cis' => $receipt->porad_cis,
-            'celk_trzba' => Format::price($receipt->celk_trzba),
-            'rezim' => $receipt->rezim
-        ];
-
-        if ($receipt->dat_trzby instanceof \DateTime) {
-            $body['dat_trzby'] = $receipt->dat_trzby->format('c');
-        } else {
-            throw new ClientException('Property \'dat_trzby\' is not instance of DateTime');
-        }
-
-        $nonRequireParameters = array(
-            'zakl_nepodl_dph',
-            'zakl_dan1', 'dan1',
-            'zakl_dan2', 'dan2',
-            'zakl_dan3', 'dan3',
-            'cest_sluz',
-            'pouzit_zboz1', 'pouzit_zboz2', 'pouzit_zboz3',
-            'urceno_cerp_zuct', 'cerp_zuct'
-        );
-
-        foreach ($nonRequireParameters as $nonRequireParameter) {
-            $value = $receipt->{$nonRequireParameter};
-            if ($value !== null) {
-                $body[$nonRequireParameter] = Format::price($value);
-            }
-        }
 
         $this->lastReceipt = $receipt;
 
         return [
             'Hlavicka' => $head,
-            'Data' => $body,
+            'Data' => $receipt->buildBody(),
             'KontrolniKody' => $this->getCheckCodes($receipt)
         ];
     }
 
+    public function getBkp(): ?string
+    {
+        return $this->bkp;
+    }
 
-    /**
-     *
-     * @param   Receipt $receipt
-     * @param   boolean $check
-     *
-     * @return  object
-     */
-    private function processData(Receipt $receipt, $check = false)
+    public function getPkp(bool $encoded = true): ?string
+    {
+        $pkp = $this->pkp;
+
+        if ($pkp === null) {
+            return null;
+        }
+
+        if ($encoded) {
+            $pkp = base64_encode($pkp);
+        }
+
+        return $pkp;
+    }
+
+    public function getFik(): ?string
+    {
+        return $this->fik;
+    }
+
+    public function getLastReceipt(): ?Receipt
+    {
+        return $this->lastReceipt;
+    }
+
+    public function getWarnings(): array
+    {
+        return $this->lastWarnings;
+    }
+
+    public function setCurlOption(string $option, $value = null): self
+    {
+        $this->curlOptions[$option] = $value;
+
+        return $this;
+    }
+
+    private function checkRequirements(): void
+    {
+        if (!class_exists(\SoapClient::class)) {
+            throw new Exceptions\ExtensionNotFound('php_soap.dll');
+        }
+    }
+
+    private function processData(Receipt $receipt, bool $check = false)
     {
         $data = $this->prepareData($receipt, $check);
 
         return $this->getSoapClient()->OdeslaniTrzby($data);
     }
 
-
-    /**
-     * @return string
-     */
-    public function getBkp()
-    {
-        return $this->bkp;
-    }
-
-
-    /**
-     * @param   bool $encoded
-     *
-     * @return  string
-     */
-    public function getPkp($encoded = true)
-    {
-        $pkp = $this->pkp;
-        if ($encoded) $pkp = base64_encode($pkp);
-        return $pkp;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getFik()
-    {
-        return $this->fik;
-    }
-
-
-    /**
-     * @return Receipt
-     */
-    public function getLastReceipt()
-    {
-        return $this->lastReceipt;
-    }
-
-
-    /**
-     * @param $error
-     *
-     * @throws ServerException
-     */
-    private function processError($error)
+    private function processError($error): void
     {
         if ($error->kod) {
             $msg = Enum\Error::LIST[$error->kod] ?? '';
-            throw new ServerException($msg, $error->kod);
+
+            throw new Exceptions\EET\ErrorException($msg, $error->kod);
         }
     }
 
-    /**
-     * Convert warning codes from response to array with messages.
-     *
-     * @param array|\stdClass $warnings
-     */
     private function processWarnings($warnings): void
     {
-        //Reset last warnings
-        $this->lastWarnings = array();
+        $this->lastWarnings = [];
 
         if (is_array($warnings)) {
             foreach ($warnings as $warning) {
@@ -384,26 +247,14 @@ class Dispatcher
         }
     }
 
-    public function getWarnings(): array
+    private function initSoapClient(): void
     {
-        return $this->lastWarnings;
-    }
+        if (!isset($this->service)) {
+            throw new Exceptions\RuntimeException('Service is not set. Use self::set(Production|Playground)Service()');
+        }
 
-    /**
-     * @TODO Simplify function
-     *
-     * @param array|string $option
-     * @param null|string $value
-     */
-    public function setCurlOption($option, $value = null)
-    {
-        if (is_array($option)) {
-            foreach ($option as $name => $value) {
-                $this->setCurlOption($name, $value);
-            }
-        } else {
-            $this->curlOptions[$option] = $value;
+        if (!isset($this->soapClient)) {
+            $this->soapClient = new SoapClient($this->service, $this->certificate, false, $this->curlOptions);
         }
     }
-
 }
