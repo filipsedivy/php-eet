@@ -49,14 +49,12 @@ class Dispatcher
         $this->checkRequirements();
         $this->certificate = $certificate;
 
-        if ($service !== null) {
-            if ($service === self::PLAYGROUND_SERVICE) {
-                $this->setPlaygroundService();
-            } elseif ($service === self::PRODUCTION_SERVICE) {
-                $this->setProductionService();
-            } else {
-                $this->setService($service);
-            }
+        if ($service === self::PLAYGROUND_SERVICE) {
+            $this->setPlaygroundService();
+        } elseif ($service === self::PRODUCTION_SERVICE) {
+            $this->setProductionService();
+        } else {
+            $this->setService($service);
         }
 
         if ($validate) {
