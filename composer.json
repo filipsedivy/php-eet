@@ -1,11 +1,14 @@
 {
     "name": "filipsedivy/php-eet",
-    "description": "PHP knihovna pro elektronickou evidenci tržeb",
+    "description": "💸 Client for electronic records of sales",
     "homepage": "https://github.com/filipsedivy/PHP-EET",
     "license": "MIT",
-    "keywords": ["EET", "elektronická evidence tržeb", "etrzby.cz"],
+    "keywords": [
+        "EET",
+        "elektronická evidence tržeb",
+        "etrzby.cz"
+    ],
     "type": "library",
-    "time": "2016-09-03",
     "support": {
         "email": "mail@filipsedivy.cz",
         "issues": "https://github.com/filipsedivy/PHP-EET/issues",
@@ -19,21 +22,41 @@
             "role": "Developer"
         }
     ],
-    "autoload": {
-        "classmap": ["src/"]
-    },
-    "bin": [
-        "src/Tools/eet-clean"
-    ],
     "require": {
-        "php": ">=5.6.0",
-        "robrichards/wse-php": "2.0.2",
+        "php": "^7.1",
         "ext-curl": "*",
-        "ext-openssl": "*"
+        "ext-dom": "*",
+        "ext-openssl": "*",
+        "ext-soap": "*",
+        "ramsey/uuid": "3.8",
+        "robrichards/wse-php": "^2.0",
+        "symfony/validator": "^4.3"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.8.5",
         "nette/tester": "^2.0",
-        "tracy/tracy": "^2.4"
+        "phpstan/phpstan": "^0.8",
+        "slevomat/coding-standard": "^5.0",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "FilipSedivy\\EET\\": "src/FilipSedivy/EET"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "tests": [
+            "@phpstan",
+            "@phpcs",
+            "@tester"
+        ],
+        "phpstan": "phpstan analyse -c phpstan.neon -l 7 src/",
+        "phpcs": "phpcs --standard=phpcs.xml --encoding=utf-8 --colors -sp src/ tests/",
+        "tester": "tester -c tests/php.ini tests/",
+        "coverage": "tester . -c tests/php.ini --coverage coverage.html --coverage-src src/ --colors 1"
     }
 }
