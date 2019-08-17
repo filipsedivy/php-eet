@@ -5,7 +5,7 @@
  * @testCase
  */
 
-namespace EETTest\Certificate;
+namespace EETTest;
 
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Exceptions\Certificate\CertificateExportFailedException;
