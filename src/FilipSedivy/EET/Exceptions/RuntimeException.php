@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace FilipSedivy\EET\Exceptions;
 
-use Throwable;
-
 class RuntimeException extends \RuntimeException
 {
-
 }
+

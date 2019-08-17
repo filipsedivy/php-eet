@@ -4,5 +4,4 @@ namespace FilipSedivy\EET\Exceptions;
 
 class IOException extends RuntimeException
 {
-
 }

@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace FilipSedivy\EET\Enum;
 
-class Warning
+final class Warning
 {
     public const LIST = [
         1 => 'DIC poplatnika v datove zprave se neshoduje s DIC v certifikatu',
