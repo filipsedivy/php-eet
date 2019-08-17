@@ -4,6 +4,15 @@ namespace FilipSedivy\EET\Utils;
 
 class Format
 {
+    /**
+     * @var string|int|float $value
+     * @return string
+     */
+    public static function price($value): string
+    {
+        return number_format($value, 2, '.', '');
+    }
+
     public static function BKB(string $code): string
     {
         $r = '';
