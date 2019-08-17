@@ -8,49 +8,14 @@ If the library is useful, **[please make a donation now](https://filipsedivy.cz/
 
 ## Installation
 
-### Composer
-
-The recommended way to install is via Composer:
-
 ```bash
 composer require filipsedivy/php-eet
 ```
 
-## Usage
+## Documentation
 
-```php
-<?php
-use FilipSedivy\EET\Certificate;
-use FilipSedivy\EET\Dispatcher;
-use FilipSedivy\EET\Receipt;
-use Ramsey\Uuid\Uuid;
-
-$receipt = new Receipt;
-$receipt->uuid_zpravy = Uuid::uuid4();
-$receipt->id_provoz = '141';
-$receipt->id_pokl = '1patro-vpravo';
-$receipt->porad_cis = '141-18543-05';
-$receipt->dic_popl = 'CZ00000019';
-$receipt->dat_trzby = new DateTime;
-$receipt->celk_trzba = 500;
-
-$certificate = new Certificate('EET_CA1_Playground-CZ00000019.p12', 'eet');
-$dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
-
-try {
-    $dispatcher->send($receipt);
-
-    echo 'FIK: ' . $dispatcher->getFik();
-    echo 'BKP: ' . $dispatcher->getBkp();
-} catch (FilipSedivy\EET\Exceptions\EET\ClientException $exception) {
-    echo 'BKP: ' . $exception->getBkp();
-    echo 'PKP:' . $exception->getPkp();
-} catch (FilipSedivy\EET\Exceptions\EET\ErrorException $exception) {
-    echo '(' . $exception->getCode() . ') ' . $exception->getMessage();
-} catch (FilipSedivy\EET\Exceptions\Receipt\ConstraintViolationException $violationException) {
-    echo implode('<br>', $violationException->getErrors());
-}
-```
+- [Usage](.docs/README.md#usage)
+- [Explanation of exceptions](.docs/README.md#exceptions)
 
 ## Links
 - http://www.etrzby.cz/
