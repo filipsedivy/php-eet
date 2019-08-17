@@ -16,6 +16,9 @@ composer require filipsedivy/php-eet
 
 - [Usage](.docs/README.md#usage)
 - [Explanation of exceptions](.docs/README.md#exceptions)
+    - [EET\ClientException](.docs/README.md#eetclientexception)
+    - [EET\ErrorException](.docs/README.md#eeterrorexception)
+    - [Receipt\ConstraintViolationException](.docs/README.md#receiptconstraintviolationexception)
 
 ## Links
 - http://www.etrzby.cz/
