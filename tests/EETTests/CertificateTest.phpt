@@ -5,9 +5,10 @@
  * @testCase
  */
 
-namespace EetTest\Certificate;
+namespace EETTest\Certificate;
 
 use FilipSedivy\EET\Certificate;
+use FilipSedivy\EET\Exceptions\Certificate\CertificateExportFailedException;
 use FilipSedivy\EET\Exceptions\Certificate\CertificateNotFoundException;
 use Tester\Assert;
 
@@ -34,7 +35,14 @@ class CertificateTest extends \Tester\TestCase
         $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         Assert::type('string', $certificate->getPrivateKey());
-        Assert::type('string', $certificate->getCert());
+        Assert::type('string', $certificate->getCertificate());
+    }
+
+    public function testBadPassword(): void
+    {
+        Assert::exception(function () {
+            new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'password');
+        }, CertificateExportFailedException::class);
     }
 }
 

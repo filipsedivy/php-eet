@@ -21,13 +21,13 @@ class Dispatcher
     /** @var SoapClient */
     private $soapClient;
 
-    /** @var string */
+    /** @var string|null */
     protected $pkp;
 
-    /** @var string */
+    /** @var string|null */
     protected $bkp;
 
-    /** @var string */
+    /** @var string|null */
     protected $fik;
 
     /** @var Receipt */
