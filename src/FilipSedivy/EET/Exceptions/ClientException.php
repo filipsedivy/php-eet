@@ -2,11 +2,7 @@
 
 namespace FilipSedivy\EET\Exceptions;
 
-/**
- * Class ClientException
- * @package FilipSedivy\EET\Exceptions
- */
 class ClientException extends EetException
 {
-
 }
+
