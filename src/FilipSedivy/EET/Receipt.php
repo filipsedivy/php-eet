@@ -3,6 +3,7 @@
 namespace FilipSedivy\EET;
 
 use DateTime;
+use FilipSedivy\EET\Utils\Format;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -11,12 +12,18 @@ class Receipt
     private const HEADER = ['uuid_zpravy', 'prvni_zaslani'];
 
     private const BODY_REQUIRE = [
-        'dic_popl', 'dic_poverujiciho', 'id_provoz', 'id_pokl',
+        'dic_popl', 'id_provoz', 'id_pokl',
         'porad_cis', 'celk_trzba', 'rezim', 'dat_trzby'
     ];
 
     private const BODY_OPTIONAL = [
-        'zakl_nepodl_dph', 'zakl_dan1', 'dan1', 'zakl_dan2',
+        'dic_poverujiciho', 'zakl_nepodl_dph', 'zakl_dan1', 'dan1', 'zakl_dan2',
+        'dan2', 'zakl_dan3', 'dan3', 'cest_sluz', 'pouzit_zboz1',
+        'pouzit_zboz2', 'pouzit_zboz3', 'urceno_cerp_zuct', 'cerp_zuct'
+    ];
+
+    private const BODY_PRICE_FORMAT = [
+        'celk_trzba', 'zakl_nepodl_dph', 'zakl_dan1', 'dan1', 'zakl_dan2',
         'dan2', 'zakl_dan3', 'dan3', 'cest_sluz', 'pouzit_zboz1',
         'pouzit_zboz2', 'pouzit_zboz3', 'urceno_cerp_zuct', 'cerp_zuct'
     ];
@@ -109,7 +116,7 @@ class Receipt
         return $header;
     }
 
-    public function buildBody(): array
+    public function buildBody(bool $autoFormatPrice = true): array
     {
         $body = [];
 
@@ -130,6 +137,15 @@ class Receipt
 
             if ($value !== null) {
                 $body[$parameter] = $value;
+            }
+        }
+
+        // format price
+        if ($autoFormatPrice) {
+            foreach (self::BODY_PRICE_FORMAT as $item) {
+                if (array_key_exists($item, $body)) {
+                    $body[$item] = Format::price($body[$item]);
+                }
             }
         }
 
