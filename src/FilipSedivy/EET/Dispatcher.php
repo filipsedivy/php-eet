@@ -202,7 +202,7 @@ class Dispatcher
         return $this->lastWarnings;
     }
 
-    public function setCurlOption(string $option, $value = null): self
+    public function setCurlOption(int $option, $value = null): self
     {
         $this->curlOptions[$option] = $value;
 
