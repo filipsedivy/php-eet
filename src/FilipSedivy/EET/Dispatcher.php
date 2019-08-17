@@ -6,6 +6,8 @@ use FilipSedivy\EET\Enum;
 use FilipSedivy\EET\Exceptions;
 use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Dispatcher
 {
@@ -20,6 +22,9 @@ class Dispatcher
 
     /** @var SoapClient */
     private $soapClient;
+
+    /** @var ValidatorInterface|null */
+    private $validator;
 
     /** @var string|null */
     protected $pkp;
@@ -39,7 +44,7 @@ class Dispatcher
     /** @var array Curl options */
     private $curlOptions = [];
 
-    public function __construct(Certificate $certificate, ?string $service = self::PRODUCTION_SERVICE)
+    public function __construct(Certificate $certificate, ?string $service = self::PRODUCTION_SERVICE, bool $validate = true)
     {
         $this->checkRequirements();
         $this->certificate = $certificate;
@@ -52,6 +57,10 @@ class Dispatcher
             } else {
                 $this->setService($service);
             }
+        }
+
+        if ($validate) {
+            $this->initValidator();
         }
     }
 
@@ -83,6 +92,14 @@ class Dispatcher
 
     public function getCheckCodes(Receipt $receipt): array
     {
+        if (isset($this->validator)) {
+            $violations = $this->validator->validate($receipt);
+
+            if ($violations->count() > 0) {
+                throw new Exceptions\Receipt\ConstraintViolationException($violations);
+            }
+        }
+
         if (isset($receipt->bkp, $receipt->pkp)) {
             $this->pkp = $receipt->pkp;
             $this->bkp = $receipt->bkp;
@@ -260,5 +277,19 @@ class Dispatcher
         if (!isset($this->soapClient)) {
             $this->soapClient = new SoapClient($this->service, $this->certificate, false, $this->curlOptions);
         }
+    }
+
+    private function initValidator(): void
+    {
+        if (!isset($this->validator)) {
+            $this->validator = $this->buildValidatorInterface();
+        }
+    }
+
+    private function buildValidatorInterface(): ValidatorInterface
+    {
+        return Validation::createValidatorBuilder()
+            ->addMethodMapping('loadValidatorMetadata')
+            ->getValidator();
     }
 }

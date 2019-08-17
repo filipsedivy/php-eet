@@ -47,6 +47,8 @@ try {
     echo 'PKP:' . $exception->getPkp();
 } catch (FilipSedivy\EET\Exceptions\EET\ErrorException $exception) {
     echo '(' . $exception->getCode() . ') ' . $exception->getMessage();
+} catch (FilipSedivy\EET\Exceptions\Receipt\ConstraintViolationException $violationException) {
+    echo implode('<br>', $violationException->getErrors());
 }
 ```
 

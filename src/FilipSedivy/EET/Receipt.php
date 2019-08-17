@@ -199,46 +199,46 @@ class Receipt
 
         $metadata
             ->addPropertyConstraint('celk_trzba', new Assert\NotBlank)
-            ->addPropertyConstraint('celk_trzba', new Assert\Type('float'));
+            ->addPropertyConstraint('celk_trzba', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('zakl_nepodl_dph', new Assert\Type('float'));
+            ->addPropertyConstraint('zakl_nepodl_dph', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('zakl_dan1', new Assert\Type('float'));
+            ->addPropertyConstraint('zakl_dan1', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('dan1', new Assert\Type('float'));
+            ->addPropertyConstraint('dan1', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('zakl_dan2', new Assert\Type('float'));
+            ->addPropertyConstraint('zakl_dan2', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('dan2', new Assert\Type('float'));
+            ->addPropertyConstraint('dan2', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('zakl_dan3', new Assert\Type('float'));
+            ->addPropertyConstraint('zakl_dan3', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('dan3', new Assert\Type('float'));
+            ->addPropertyConstraint('dan3', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('cest_sluz', new Assert\Type('float'));
+            ->addPropertyConstraint('cest_sluz', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('pouzit_zboz1', new Assert\Type('float'));
+            ->addPropertyConstraint('pouzit_zboz1', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('pouzit_zboz2', new Assert\Type('float'));
+            ->addPropertyConstraint('pouzit_zboz2', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('pouzit_zboz3', new Assert\Type('float'));
+            ->addPropertyConstraint('pouzit_zboz3', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('urceno_cerp_zuct', new Assert\Type('float'));
+            ->addPropertyConstraint('urceno_cerp_zuct', new Assert\Type('numeric'));
 
         $metadata
-            ->addPropertyConstraint('cerp_zuct', new Assert\Type('float'));
+            ->addPropertyConstraint('cerp_zuct', new Assert\Type('numeric'));
 
         $metadata
             ->addPropertyConstraint('rezim', new Assert\NotBlank)
