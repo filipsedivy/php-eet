@@ -143,7 +143,7 @@ class Receipt
         // format price
         if ($autoFormatPrice) {
             foreach (self::BODY_PRICE_FORMAT as $item) {
-                if (array_key_exists($item, $body)) {
+                if (array_key_exists($item, $body) && $body[$item] !== null) {
                     $body[$item] = Format::price($body[$item]);
                 }
             }

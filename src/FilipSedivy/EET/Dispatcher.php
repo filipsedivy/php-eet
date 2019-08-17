@@ -44,7 +44,7 @@ class Dispatcher
     /** @var array Curl options */
     private $curlOptions = [];
 
-    public function __construct(Certificate $certificate, ?string $service = self::PRODUCTION_SERVICE, bool $validate = true)
+    public function __construct(Certificate $certificate, string $service = self::PRODUCTION_SERVICE, bool $validate = true)
     {
         $this->checkRequirements();
         $this->certificate = $certificate;
@@ -77,6 +77,11 @@ class Dispatcher
     public function setProductionService(): void
     {
         $this->setService(__DIR__ . '/Schema/ProductionService.wsdl');
+    }
+
+    public function getService(): string
+    {
+        return $this->service;
     }
 
     public function check(Receipt $receipt): bool
