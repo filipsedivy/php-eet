@@ -16,11 +16,6 @@ class FileSystem
         return is_file($file);
     }
 
-    public static function isReadable(string $file): bool
-    {
-        return self::isFile($file) && is_readable($file);
-    }
-
     public static function read(string $file): string
     {
         $content = @file_get_contents($file);
