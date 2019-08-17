@@ -18,6 +18,33 @@ require_once __DIR__ . '/../bootstrap.php';
 
 class DispatcherTest extends TestCase
 {
+    public function testService(): void
+    {
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
+
+        $dispatcher = new Dispatcher($certificate, 'Personal/MySchema/MyService.wsdl');
+
+        Assert::contains('Personal/MySchema/MyService.wsdl', $dispatcher->getService());
+
+        $schemaPath = 'FilipSedivy/EET/Schema';
+
+        $dispatcher->setProductionService();
+
+        Assert::contains($schemaPath . '/ProductionService.wsdl', $dispatcher->getService());
+
+        $dispatcher->setPlaygroundService();
+
+        Assert::contains($schemaPath . '/PlaygroundService.wsdl', $dispatcher->getService());
+
+        $dispatcher->setService('Personal/MySchema/MyService.wsdl');
+
+        Assert::contains('Personal/MySchema/MyService.wsdl', $dispatcher->getService());
+
+        $dispatcher = new Dispatcher($certificate, Dispatcher::PRODUCTION_SERVICE);
+
+        Assert::contains($schemaPath . '/ProductionService.wsdl', $dispatcher->getService());
+    }
+
     public function testSendReceipt(): void
     {
         $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
@@ -51,6 +78,33 @@ class DispatcherTest extends TestCase
                 Assert::fail('Client->getReceipt() is not instanceof Receipt');
             }
         }
+    }
+
+    public function testCheck(): void
+    {
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
+
+        $receipt = $this->getValidReceipt();
+        Assert::true($dispatcher->check($receipt));
+
+        $receipt->dic_popl = 'CZ00000018';
+        Assert::false($dispatcher->check($receipt));
+    }
+
+    public function testGetCheckCodes(): void
+    {
+        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
+
+        $receipt = $this->getValidReceipt();
+
+        Assert::type('array', $dispatcher->getCheckCodes($receipt));
+
+        $receipt->bkp = $dispatcher->getBkp();
+        $receipt->pkp = $dispatcher->getPkp(false);
+
+        Assert::type('array', $dispatcher->getCheckCodes($receipt));
     }
 
     private function getValidReceipt(): Receipt

@@ -56,6 +56,7 @@
         ],
         "phpstan": "phpstan analyse -c phpstan.neon -l 7 src/",
         "phpcs": "phpcs --standard=phpcs.xml --encoding=utf-8 --colors -sp src/ tests/",
-        "tester": "tester tests/"
+        "tester": "tester -c tests/php.ini tests/",
+        "coverage": "tester . -c tests/php.ini --coverage coverage.html --coverage-src src/ --colors 1"
     }
 }
