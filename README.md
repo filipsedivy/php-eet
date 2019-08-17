@@ -20,40 +20,33 @@ composer require filipsedivy/php-eet
 
 ```php
 <?php
-require_once __DIR__.'/vendor/autoload.php';
-
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Dispatcher;
 use FilipSedivy\EET\Receipt;
+use Ramsey\Uuid\Uuid;
 
-$certificate = new Certificate(__DIR__.'/EET_CA1_Playground-CZ00000019.p12', 'eet');
-$dispatcher = new Dispatcher($certificate);
-$dispatcher->setPlaygroundService();
+$receipt = new Receipt;
+$receipt->uuid_zpravy = Uuid::uuid4();
+$receipt->id_provoz = '141';
+$receipt->id_pokl = '1patro-vpravo';
+$receipt->porad_cis = '141-18543-05';
+$receipt->dic_popl = 'CZ00000019';
+$receipt->dat_trzby = new DateTime;
+$receipt->celk_trzba = 500;
 
-$uuid = Ramsey\Uuid\Uuid::v4();
-
-$r = new Receipt;
-$r->uuid_zpravy = $uuid;
-$r->id_provoz = '11';
-$r->id_pokl = 'IP105';
-$r->dic_popl = 'CZ1212121218';
-$r->porad_cis = '1';
-$r->dat_trzby = new \DateTime();
-$r->celk_trzba = 500;
-
-echo '<h2>---REQUEST---</h2>';
-echo '<pre>';
+$certificate = new Certificate('EET_CA1_Playground-CZ00000019.p12', 'eet');
+$dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
 
 try {
-    $dispatcher->send($r);
+    $dispatcher->send($receipt);
 
-    echo sprintf('FIK: %s <br>', $dispatcher->getFik());
-    echo sprintf('BKP: %s <br>', $dispatcher->getBkp());
-}catch(\FilipSedivy\EET\Exceptions\EetException $ex){
-    echo sprintf('BKP: %s <br>', $dispatcher->getBkp());
-    echo sprintf('PKP: %s <br>', $dispatcher->getPkp());
-}catch(Exception $ex){
-    var_dump($ex);
+    echo 'FIK: ' . $dispatcher->getFik();
+    echo 'BKP: ' . $dispatcher->getBkp();
+} catch (FilipSedivy\EET\Exceptions\EET\ClientException $exception) {
+    echo 'BKP: ' . $exception->getBkp();
+    echo 'PKP:' . $exception->getPkp();
+} catch (FilipSedivy\EET\Exceptions\EET\ErrorException $exception) {
+    echo '(' . $exception->getCode() . ') ' . $exception->getMessage();
 }
 ```
 
