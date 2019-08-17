@@ -2,10 +2,8 @@
 
 namespace FilipSedivy\EET;
 
-use FilipSedivy\EET\Exceptions\Certificate\CertificateExportFailedException;
-use FilipSedivy\EET\Exceptions\Certificate\CertificateNotFoundException;
-use FilipSedivy\EET\Exceptions\ExtensionNotFound;
-use FilipSedivy\EET\Utils\FileSystem;
+use FilipSedivy\EET\Exceptions;
+use FilipSedivy\EET\Utils;
 
 class Certificate
 {
@@ -13,28 +11,28 @@ class Certificate
     private $privateKey;
 
     /** @var string */
-    private $cert;
+    private $certificate;
 
-    public function __construct($certificate, $password)
+    public function __construct(string $file, string $password)
     {
-        if (!FileSystem::isFileExists($certificate)) {
-            throw new CertificateNotFoundException($certificate);
+        if (!Utils\FileSystem::isFileExists($file)) {
+            throw new Exceptions\Certificate\CertificateNotFoundException($file);
         }
 
-        $certs = [];
-        $pkcs12 = file_get_contents($certificate);
+        $pkcs12 = Utils\FileSystem::read($file);
 
         if (!function_exists('openssl_pkcs12_read')) {
-            throw new ExtensionNotFound('OpenSSL');
+            throw new Exceptions\ExtensionNotFound('OpenSSL');
         }
 
         $openSSL = openssl_pkcs12_read($pkcs12, $certs, $password);
+
         if (!$openSSL) {
-            throw new CertificateExportFailedException($certificate);
+            throw new Exceptions\Certificate\CertificateExportFailedException($file);
         }
 
         $this->privateKey = $certs['pkey'];
-        $this->cert = $certs['cert'];
+        $this->certificate = $certs['cert'];
     }
 
     public function getPrivateKey(): string
@@ -42,8 +40,8 @@ class Certificate
         return $this->privateKey;
     }
 
-    public function getCert(): string
+    public function getCertificate(): string
     {
-        return $this->cert;
+        return $this->certificate;
     }
 }
