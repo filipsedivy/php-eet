@@ -15,6 +15,8 @@ composer require filipsedivy/php-eet
 ## Documentation
 
 - [Usage](.docs/README.md#usage)
+- [Certificate](.docs/README.md#certificate)
+- [Dispatcher](.docs/README.md#dispatcher)
 - [Explanation of exceptions](.docs/README.md#exceptions)
     - [EET\ClientException](.docs/README.md#eetclientexception)
     - [EET\ErrorException](.docs/README.md#eeterrorexception)

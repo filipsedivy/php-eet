@@ -36,6 +36,37 @@ try {
 }
 ```
 
+## Certificate
+
+These are classes that allow the certificate to be exported without further processing.
+
+Received file in p12 format, the one that etrzby.cz will export.
+
+```php
+$certificate = FilipSedivy\EET\Certificate(string $file, string $password);
+```
+
+**Parameters:**
+- `string $file`: File path
+- `string $password`: Certificate password
+
+## Dispatcher
+
+Dispatcher is a class that takes care of recipe validation and communication with SoapClient.
+
+```php
+$dispatcher = FilipSedivy\EET\Dispatcher(Certificate $certificate, ?string $service = self::PRODUCTION_SERVICE, bool $validate = true);
+```
+
+**Parameters:**
+- `Certificate $certificate`: Certificate class instance
+- `?string $service`: Setting services (`self::PLAYGROUND_SERVICE` OR `self::PRODUCTION_SERVICE`)
+- `bool $validate`: Enable offline Receipt validation
+
+**Methods:**
+- `check(Receipt $receipt): bool`: Receipt verification without registering EET
+- `send(Receipt $receipt, bool $check = false): ?string`: Send EET to the server. If everything is OK, the string with FIK is returned. If `$check = true` is enabled, FIK is not returned
+
 ## Exceptions
 
 All exceptions have a common namespace `FilipSedivy\EET\Exceptions`
