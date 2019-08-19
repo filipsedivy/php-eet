@@ -1,7 +1,7 @@
 # Client for electronic records of sale
 
 [![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) 
-[![Coverage Status](https://coveralls.io/repos/filipsedivy/PHP-EET/application/badge.svg?branch=master)](https://coveralls.io/github/filipsedivy/PHP-EET?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/filipsedivy/PHP-EET/badge.svg?branch=master)](https://coveralls.io/github/filipsedivy/PHP-EET?branch=master)
 [![Monthly Downloads](https://poser.pugx.org/filipsedivy/php-eet/d/monthly)](https://packagist.org/packages/filipsedivy/php-eet)
 [![Latest Stable Version](https://poser.pugx.org/filipsedivy/PHP-EET/v/stable)](https://github.com/filipsedivy/PHP-EET/releases)
 [![GitHub license](https://img.shields.io/github/license/filipsedivy/PHP-EET)](https://github.com/filipsedivy/PHP-EET/blob/master/LICENSE)
