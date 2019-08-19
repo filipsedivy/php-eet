@@ -1,6 +1,6 @@
 env:
-  global:
-    - CC_TEST_REPORTER_ID=d9ed8fec8c220262b21d8eee991b371476a89b4a2276faf5789b08099b7ed93e
+  - PHP_BIN=php
+  - PHP_BIN=php-cgi
 
 language: php
 php:
@@ -8,22 +8,44 @@ php:
   - '7.2'
   - '7.3'
 
+sudo: false
 cache:
   directories:
     - "$HOME/.composer/cache"
 
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-  - travis_retry composer self-update
+  - phpenv config-rm xdebug.ini || return 0
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+  - travis_retry composer install --no-progress --prefer-dist
 
 script:
-  - travis_retry composer tests
-  #- travis_retry composer coverage-xml
+  - vendor/bin/tester -p $PHP_BIN tests -s
 
-after_script:
-  #- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+after_failure:
+  - for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
+
+jobs:
+  include:
+    - name: Lowest Dependencies
+      env: PHP_BIN=php
+      install:
+        - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
+
+    - stage: Static Analysis
+      script:
+        - vendor/bin/phpstan analyse -c phpstan.neon -l 7 src/
+
+    - stage: Code Coverage
+      script:
+        - vendor/bin/tester -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src
+      after_script:
+        - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+        - php coveralls.phar --verbose --config tests/.coveralls.yml
+
+  allow_failures:
+    - stage: Static Analysis
+    - stage: Code Coverage
+
+notifications:
+  email: false
