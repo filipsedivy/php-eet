@@ -1,8 +1,10 @@
 # Client for electronic records of sale
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/07f653430c254d0bbf3f40c8595f0c89)](https://www.codacy.com/app/mail_72/PHP-EET?utm_source=github.com&utm_medium=referral&utm_content=filipsedivy/PHP-EET&utm_campaign=badger)
-[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://packagist.org/packages/filipsedivy/php-eet)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/58a3ede2-9585-4e37-95ed-ca7726617ea8/mini.png)](https://insight.sensiolabs.com/projects/58a3ede2-9585-4e37-95ed-ca7726617ea8)
+[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) 
+[![Coverage Status](https://coveralls.io/repos/filipsedivy/PHP-EET/application/badge.svg?branch=master)](https://coveralls.io/github/filipsedivy/PHP-EET?branch=master)
+[![Monthly Downloads](https://poser.pugx.org/filipsedivy/php-eet/d/monthly)](https://packagist.org/packages/filipsedivy/php-eet)
+[![Latest Stable Version](https://poser.pugx.org/filipsedivy/PHP-EET/v/stable)](https://github.com/filipsedivy/PHP-EET/releases)
+[![GitHub license](https://img.shields.io/github/license/filipsedivy/PHP-EET)](https://github.com/filipsedivy/PHP-EET/blob/master/LICENSE)
 
 If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=PHP-EET)**. Thank you!
 
