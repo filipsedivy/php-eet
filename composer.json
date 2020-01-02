@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": ">=7.1",
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-openssl": "*",
@@ -46,9 +46,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "7.3"
-        }
+        "sort-packages": true
     }
 }
