@@ -4,6 +4,7 @@ namespace FilipSedivy\EET;
 
 use FilipSedivy\EET\Enum;
 use FilipSedivy\EET\Exceptions;
+use FilipSedivy\EET\Utils\Debugger;
 use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Symfony\Component\Validator\Validation;
@@ -91,6 +92,15 @@ class Dispatcher
         } catch (Exceptions\EET\ErrorException $e) {
             return false;
         }
+    }
+
+    public function test(Receipt $receipt, bool $hiddenSensitiveData = true): void
+    {
+        $this->check($receipt);
+
+        $debugger = new Debugger\LastRequest($this->soapClient->lastRequest);
+        $debugger->hiddenSensitiveData = $hiddenSensitiveData;
+        $debugger->out();
     }
 
     public function getCheckCodes(Receipt $receipt): array
