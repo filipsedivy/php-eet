@@ -4,9 +4,11 @@ env:
 
 language: php
 php:
-  - '7.1'
-  - '7.2'
-  - '7.3'
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4snapshot
+  - nightly
 
 sudo: false
 cache:
@@ -51,6 +53,8 @@ jobs:
     - stage: Static Analysis
     - stage: Code Coverage
     - stage: Code Sniffer
+    - php: 7.4snapshot
+    - php: nightly
 
 notifications:
   email: false
