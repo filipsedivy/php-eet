@@ -1,7 +1,3 @@
-env:
-  - PHP_BIN=php
-  - PHP_BIN=php-cgi
-
 language: php
 php:
   - 7.1
@@ -9,10 +5,9 @@ php:
   - 7.3
   - 7.4
 
-sudo: false
-cache:
-  directories:
-    - "$HOME/.composer/cache"
+env:
+  - PHP_BIN=php
+  - PHP_BIN=php-cgi
 
 before_script:
   - phpenv config-rm xdebug.ini || return 0
@@ -31,18 +26,22 @@ jobs:
   include:
     - name: Lowest Dependencies
       env: PHP_BIN=php
+      php: 7.2
       install:
         - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
 
     - stage: Code Sniffer
+      php: 7.3
       script:
         - vendor/bin/phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/
 
     - stage: Static Analysis
+      php: 7.3
       script:
         - vendor/bin/phpstan analyse -c phpstan.neon -l 7 src/
 
     - stage: Code Coverage
+      php: 7.3
       script:
         - vendor/bin/tester -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src
       after_script:
@@ -53,6 +52,12 @@ jobs:
     - stage: Static Analysis
     - stage: Code Coverage
     - php: 7.4
+
+sudo: false
+
+cache:
+  directories:
+    - "$HOME/.composer/cache"
 
 notifications:
   email: false
