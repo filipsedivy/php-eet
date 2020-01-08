@@ -44,6 +44,17 @@ class CertificateTest extends \Tester\TestCase
             new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'password');
         }, CertificateExportFailedException::class);
     }
+
+    public function testCertificatePath(): void
+    {
+        try {
+            new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'password');
+
+            Assert::fail('Certificate have bad password');
+        } catch (CertificateExportFailedException $exception) {
+            Assert::type('string', $exception->getPath());
+        }
+    }
 }
 
 (new CertificateTest())->run();
