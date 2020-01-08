@@ -5,7 +5,7 @@ Powerful & effective ⚡️ PHP library
 </p>
 
 <p align=center>
-🕹 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | <<🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
+🕹 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | 🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
 </p>
 
 <p align="center">
