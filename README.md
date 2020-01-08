@@ -5,7 +5,7 @@ Powerful & effective ⚡️ PHP library for electronic records of sale
 </p>
 
 <p align=center>
-🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | 🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
+Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
 </p>
 
 <p align="center">
@@ -15,9 +15,10 @@ Powerful & effective ⚡️ PHP library for electronic records of sale
   <a href="https://github.com/filipsedivy/PHP-EET/releases"><img src="https://poser.pugx.org/filipsedivy/PHP-EET/v/stable?format=flat-square"></a>
 </p>
 
-If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=PHP-EET)**. Thank you!
 
-## Installation
+## Usage
+
+To install latest version of `filipsedivy/php-eet` use [Composer](https://getcomposer.com).
 
 ```bash
 composer require filipsedivy/php-eet
@@ -38,3 +39,7 @@ composer require filipsedivy/php-eet
 - http://www.financnisprava.cz/cs/financni-sprava/eet
 - https://adisspr.mfcr.cz/adistc/adis/idpr_pub/eet/eet_sluzby.faces
 - http://www.jakpodnikat.cz/eet-elektronicka-evidence-trzeb.php
+
+-----
+
+If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=PHP-EET)**. Thank you!
