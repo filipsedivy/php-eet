@@ -12,6 +12,8 @@ class CertificateExportFailedException extends RuntimeException implements Certi
 
     public function __construct(string $path, ?Throwable $previous = null)
     {
+        $this->path = $path;
+
         $message = "The certificate ('$path') cannot be exported";
         parent::__construct($message, 0, $previous);
     }
