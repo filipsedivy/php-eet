@@ -4,13 +4,16 @@
 Powerful & effective ⚡️ PHP library
 </p>
 
-# 
+<p align=center>
+🕹 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | <<🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
+</p>
 
-[![Build Status](https://travis-ci.org/filipsedivy/PHP-EET.svg?branch=master)](https://travis-ci.org/filipsedivy/PHP-EET) 
-[![Coverage Status](https://coveralls.io/repos/github/filipsedivy/PHP-EET/badge.svg?branch=master)](https://coveralls.io/github/filipsedivy/PHP-EET?branch=master)
-[![Monthly Downloads](https://poser.pugx.org/filipsedivy/php-eet/d/monthly)](https://packagist.org/packages/filipsedivy/php-eet)
-[![Latest Stable Version](https://poser.pugx.org/filipsedivy/PHP-EET/v/stable)](https://github.com/filipsedivy/PHP-EET/releases)
-[![GitHub license](https://img.shields.io/github/license/filipsedivy/PHP-EET)](https://github.com/filipsedivy/PHP-EET/blob/master/LICENSE)
+<p align="center">
+  <a href="https://travis-ci.org/filipsedivy/PHP-EET"><img src="https://img.shields.io/travis/filipsedivy/PHP-EET.svg?style=flat-square"></a>
+  <a href="https://coveralls.io/r/filipsedivy/PHP-EET"><img src="https://img.shields.io/coveralls/filipsedivy/PHP-EET.svg?style=flat-square"></a>
+  <a href="https://packagist.org/packages/filipsedivy/php-eet"><img src="https://poser.pugx.org/filipsedivy/php-eet/d/monthly?format=flat-square"></a>
+  <a href="https://github.com/filipsedivy/PHP-EET/releases"><img src="https://poser.pugx.org/filipsedivy/PHP-EET/v/stable?format=flat-square"></a>
+</p>
 
 If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=PHP-EET)**. Thank you!
 
