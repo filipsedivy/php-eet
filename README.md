@@ -20,7 +20,7 @@ Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 
 </p>
 
 <p align="center">
-    <a href="https://github.com/contributte/eet">Nette Framework</a>
+    <a href="https://github.com/contributte/eet">Nette Framework</a> [<small><code>contributte/eet</code></small>]
 </p>
 
 -----
