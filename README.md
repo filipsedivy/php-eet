@@ -23,6 +23,8 @@ Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 
     <a href="https://github.com/contributte/eet">Nette Framework</a>
 </p>
 
+-----
+
 ## Usage
 
 To install latest version of `filipsedivy/php-eet` use [Composer](https://getcomposer.com).
