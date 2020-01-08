@@ -1,11 +1,11 @@
 <h1 align=center>Client for electronic records of sale</h1>
 
 <p align=center>
-Powerful & effective ⚡️ PHP library
+Powerful & effective ⚡️ PHP library for electronic records of sale
 </p>
 
 <p align=center>
-🕹 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | 🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
+🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | 🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
 </p>
 
 <p align="center">
