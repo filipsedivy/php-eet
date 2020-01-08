@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /**
  * Test: FilipSedivy/Utils/Format.
  *
@@ -29,4 +30,4 @@ class FormatTest extends TestCase
     }
 }
 
-(new FormatTest())->run();
+(new FormatTest)->run();

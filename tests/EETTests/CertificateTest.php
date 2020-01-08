@@ -1,24 +1,20 @@
 <?php declare(strict_types=1);
-/**
- * Test: FilipSedivy\EET\Certificate.
- *
- * @testCase
- */
 
-namespace EETTest;
+namespace EETTests;
 
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Exceptions\Certificate\CertificateExportFailedException;
 use FilipSedivy\EET\Exceptions\Certificate\CertificateNotFoundException;
 use Tester\Assert;
+use Tester\TestCase;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-class CertificateTest extends \Tester\TestCase
+class CertificateTest extends TestCase
 {
     public function testFileNotExists(): void
     {
-        Assert::exception(function () {
+        Assert::exception(static function () {
             new Certificate(__DIR__ . '/not-exists-certificate.p12', 'testPassword');
         }, CertificateNotFoundException::class);
     }
@@ -40,7 +36,7 @@ class CertificateTest extends \Tester\TestCase
 
     public function testBadPassword(): void
     {
-        Assert::exception(function () {
+        Assert::exception(static function () {
             new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'password');
         }, CertificateExportFailedException::class);
     }
@@ -57,4 +53,4 @@ class CertificateTest extends \Tester\TestCase
     }
 }
 
-(new CertificateTest())->run();
+(new CertificateTest)->run();

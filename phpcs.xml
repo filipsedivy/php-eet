@@ -44,4 +44,8 @@
             <property name="allowFullyQualifiedGlobalClasses" value="true"/>
         </properties>
     </rule>
+
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName">
+        <exclude-pattern>tests/</exclude-pattern>
+    </rule>
 </ruleset>

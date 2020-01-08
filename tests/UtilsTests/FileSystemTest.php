@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-/**
- * Test: FilipSedivy/Utils/FileSystem.
- *
- * @testCase
- */
 
 namespace UtilsTests;
 
@@ -18,10 +13,10 @@ class FileSystemTest extends TestCase
 {
     public function testNotExistFile(): void
     {
-        Assert::exception(function () {
+        Assert::exception(static function () {
             FileSystem::read(__DIR__ . '/not-exist-file');
         }, IOException::class);
     }
 }
 
-(new FileSystemTest())->run();
+(new FileSystemTest)->run();
