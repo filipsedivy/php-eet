@@ -2,7 +2,7 @@
     "name": "filipsedivy/php-eet",
     "description": "💸 Client for electronic records of sales",
     "homepage": "https://github.com/filipsedivy/PHP-EET",
-    "license": "MIT",
+    "license": ["MIT"],
     "keywords": [
         "EET",
         "elektronická evidence tržeb",
@@ -45,7 +45,9 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "config": {
-        "sort-packages": true
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.1-dev"
+        }
     }
 }
