@@ -20,7 +20,7 @@ Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 
 </p>
 
 <p align="center">
-    <a href="https://github.com/contributte/eet"><img src="https://img.shields.io/static/v1?label=Nette%20Framework&message=contributte%2Feet&color=informational&style=flat-square"></a>
+    <a href="https://github.com/contributte/eet"><img src="https://img.shields.io/static/v1?label=Nette%20Framework&message=contributte%2Feet&color=16a085&style=flat-square&cacheSeconds=3600"></a>
 </p>
 
 -----
