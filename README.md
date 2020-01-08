@@ -15,6 +15,13 @@ Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 
   <a href="https://github.com/filipsedivy/PHP-EET/releases"><img src="https://poser.pugx.org/filipsedivy/PHP-EET/v/stable?format=flat-square"></a>
 </p>
 
+<p align="center">
+<b>✏️ There are official implementations for frameworks.</b>
+</p>
+
+<p align="center">
+    <a href="https://github.com/contributte/eet">Nette Framework</a>
+</p>
 
 ## Usage
 
@@ -33,6 +40,10 @@ composer require filipsedivy/php-eet
     - [EET\ClientException](.docs/README.md#eetclientexception)
     - [EET\ErrorException](.docs/README.md#eeterrorexception)
     - [Receipt\ConstraintViolationException](.docs/README.md#receiptconstraintviolationexception)
+
+## Contributing
+
+PHP-EET is an Open Source, community-driven project. You can help develop code or create documentation.
 
 ## Links
 - http://www.etrzby.cz/
