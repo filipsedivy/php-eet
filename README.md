@@ -12,6 +12,7 @@ Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 
   <a href="https://travis-ci.org/filipsedivy/PHP-EET"><img src="https://img.shields.io/travis/filipsedivy/PHP-EET.svg?style=flat-square"></a>
   <a href="https://coveralls.io/r/filipsedivy/PHP-EET"><img src="https://img.shields.io/coveralls/filipsedivy/PHP-EET.svg?style=flat-square"></a>
   <a href="https://packagist.org/packages/filipsedivy/php-eet"><img src="https://poser.pugx.org/filipsedivy/php-eet/d/monthly?format=flat-square"></a>
+  <a href="https://packagist.org/packages/filipsedivy/php-eet"><img src="https://poser.pugx.org/filipsedivy/php-eet/d/total?format=flat-square"></a>
   <a href="https://github.com/filipsedivy/PHP-EET/releases"><img src="https://poser.pugx.org/filipsedivy/PHP-EET/v/stable?format=flat-square"></a>
 </p>
 
