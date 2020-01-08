@@ -4,6 +4,8 @@ php:
     - 7.2
     - 7.3
     - 7.4
+    - nightly
+    - hvvm
 
 env:
     - PHP_BIN=php
@@ -30,15 +32,18 @@ jobs:
             install:
                 - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
 
+
         -   stage: Code Sniffer
             php: 7.3
             script:
                 - vendor/bin/phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/
 
+
         -   stage: Static Analysis
             php: 7.3
             script:
                 - vendor/bin/phpstan analyse -c phpstan.neon -l 7 src/
+
 
         -   stage: Code Coverage
             php: 7.3
@@ -52,6 +57,8 @@ jobs:
         -   stage: Static Analysis
         -   stage: Code Coverage
         -   php: 7.4
+        -   php: nightly
+        -   php: hvvm
 
 sudo: false
 
