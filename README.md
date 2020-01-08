@@ -35,13 +35,7 @@ composer require filipsedivy/php-eet
 
 ## Documentation
 
-- [Usage](.docs/README.md#usage)
-- [Certificate](.docs/README.md#certificate)
-- [Dispatcher](.docs/README.md#dispatcher)
-- [Explanation of exceptions](.docs/README.md#exceptions)
-    - [EET\ClientException](.docs/README.md#eetclientexception)
-    - [EET\ErrorException](.docs/README.md#eeterrorexception)
-    - [Receipt\ConstraintViolationException](.docs/README.md#receiptconstraintviolationexception)
+For detailed instructions on how to use the library, visit the [documentation](.docs/README.md).
 
 ## Contributing
 
