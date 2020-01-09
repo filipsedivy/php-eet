@@ -59,7 +59,7 @@
             "@tester"
         ],
         "phpstan": "phpstan analyse --level 7 --configuration tests/phpstan.neon src/",
-        "cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/",
+        "cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/cases tests/engine",
         "cbf": "phpcbf --standard=phpcs.xml --colors --encoding=utf-8 -nsp src/ tests/",
         "tester": "nunjuck -s -c ./tests/php.ini ./tests",
         "coverage": "nunjuck -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src"
