@@ -1,16 +1,9 @@
 <?php declare(strict_types=1);
-/**
- * Test: FilipSedivy\EET\Dispatcher.
- *
- * @testCase
- */
 
-namespace EETTest;
+namespace Tests\Cases;
 
-use FilipSedivy\EET\Certificate;
-use FilipSedivy\EET\Dispatcher;
-use FilipSedivy\EET\Exceptions\EET\ClientException;
-use FilipSedivy\EET\Receipt;
+use FilipSedivy\EET;
+use Ramsey\Uuid\Uuid;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -20,9 +13,9 @@ class DispatcherTest extends TestCase
 {
     public function testService(): void
     {
-        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
-        $dispatcher = new Dispatcher($certificate, 'Personal/MySchema/MyService.wsdl');
+        $dispatcher = new EET\Dispatcher($certificate, 'Personal/MySchema/MyService.wsdl');
 
         Assert::contains('Personal/MySchema/MyService.wsdl', $dispatcher->getService());
 
@@ -40,15 +33,15 @@ class DispatcherTest extends TestCase
 
         Assert::contains('Personal/MySchema/MyService.wsdl', $dispatcher->getService());
 
-        $dispatcher = new Dispatcher($certificate, Dispatcher::PRODUCTION_SERVICE);
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PRODUCTION_SERVICE);
 
         Assert::contains($schemaPath . '/ProductionService.wsdl', $dispatcher->getService());
     }
 
     public function testSendReceipt(): void
     {
-        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
-        $dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         $dispatcher->send($this->getValidReceipt());
 
@@ -59,22 +52,22 @@ class DispatcherTest extends TestCase
     public function testFailed(): void
     {
         static $proxy = ['127.0.0.1', 8888];
-        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
-        $dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
         $dispatcher->setCurlOption(CURLOPT_PROXY, implode($proxy, ':'));
 
         Assert::exception(function () use ($dispatcher) {
             $dispatcher->send($this->getValidReceipt());
-        }, ClientException::class);
+        }, EET\Exceptions\EET\ClientException::class);
 
         try {
             $dispatcher->send($this->getValidReceipt());
-        } catch (ClientException $client) {
+        } catch (EET\Exceptions\EET\ClientException $client) {
             Assert::type('string', $client->getBkp());
             Assert::type('string', $client->getPkp());
 
-            if (!$client->getReceipt() instanceof Receipt) {
+            if (!$client->getReceipt() instanceof EET\Receipt) {
                 Assert::fail('Client->getReceipt() is not instanceof Receipt');
             }
         }
@@ -82,8 +75,8 @@ class DispatcherTest extends TestCase
 
     public function testCheck(): void
     {
-        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
-        $dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         $receipt = $this->getValidReceipt();
         Assert::true($dispatcher->check($receipt));
@@ -94,8 +87,8 @@ class DispatcherTest extends TestCase
 
     public function testGetCheckCodes(): void
     {
-        $certificate = new Certificate(__DIR__ . '/../Data/EET_CA1_Playground-CZ00000019.p12', 'eet');
-        $dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         $receipt = $this->getValidReceipt();
 
@@ -107,19 +100,19 @@ class DispatcherTest extends TestCase
         Assert::type('array', $dispatcher->getCheckCodes($receipt));
     }
 
-    private function getValidReceipt(): Receipt
+    private function getValidReceipt(): EET\Receipt
     {
-        $receipt = new Receipt();
-        $receipt->uuid_zpravy = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $receipt = new EET\Receipt;
+        $receipt->uuid_zpravy = Uuid::uuid4()->toString();
         $receipt->id_provoz = '11';
         $receipt->id_pokl = 'IP105';
         $receipt->dic_popl = 'CZ00000019';
         $receipt->porad_cis = '1';
-        $receipt->dat_trzby = new \DateTime();
+        $receipt->dat_trzby = new \DateTime;
         $receipt->celk_trzba = 500;
 
         return $receipt;
     }
 }
 
-(new DispatcherTest())->run();
+(new DispatcherTest)->run();

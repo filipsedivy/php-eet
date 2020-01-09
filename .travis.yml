@@ -1,60 +1,68 @@
-env:
-  - PHP_BIN=php
-  - PHP_BIN=php-cgi
-
 language: php
 php:
-  - 7.1
-  - 7.2
-  - 7.3
-  - 7.4snapshot
-  - nightly
+    - 7.1
+    - 7.2
+    - 7.3
+    - 7.4
+    - nightly
 
-sudo: false
-cache:
-  directories:
-    - "$HOME/.composer/cache"
+env:
+    - PHP_BIN=php
+    - PHP_BIN=php-cgi
 
 before_script:
-  - phpenv config-rm xdebug.ini || return 0
+    - phpenv config-rm xdebug.ini || return 0
+    - travis_retry composer self-update
 
 install:
-  - travis_retry composer install --no-progress --prefer-dist
+    - travis_retry composer install --no-interaction --no-progress --prefer-dist
 
 script:
-  - vendor/bin/tester -p $PHP_BIN tests -s
+    - ./vendor/bin/nunjuck -p $PHP_BIN -s -c ./tests/php.ini ./tests
 
 after_failure:
-  - for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
+    - for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
 
 jobs:
-  include:
-    - name: Lowest Dependencies
-      env: PHP_BIN=php
-      install:
-        - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
+    include:
+        -   name: Lowest Dependencies
+            env: PHP_BIN=php
+            php: 7.2
+            install:
+                - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
 
-    - stage: Code Sniffer
-      script:
-        - vendor/bin/phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/
 
-    - stage: Static Analysis
-      script:
-        - vendor/bin/phpstan analyse -c phpstan.neon -l 7 src/
+        -   stage: Code Sniffer
+            php: 7.3
+            script:
+                - vendor/bin/phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/
 
-    - stage: Code Coverage
-      script:
-        - vendor/bin/tester -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src
-      after_script:
-        - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
-        - php coveralls.phar --verbose --config .coveralls.yml
 
-  allow_failures:
-    - stage: Static Analysis
-    - stage: Code Coverage
-    - stage: Code Sniffer
-    - php: 7.4snapshot
-    - php: nightly
+        -   stage: Static Analysis
+            php: 7.3
+            script:
+                - travis_retry composer phpstan
+
+
+        -   stage: Code Coverage
+            php: 7.3
+            script:
+                - travis_retry composer coverage
+            after_script:
+                - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+                - php coveralls.phar --verbose --config tests/.coveralls.yml
+
+    allow_failures:
+        -   stage: Static Analysis
+        -   stage: Code Coverage
+        -   php: 7.4
+        -   php: nightly
+
+sudo: false
+
+cache:
+    directories:
+        - "$HOME/.composer/cache"
 
 notifications:
-  email: false
+    email: false
