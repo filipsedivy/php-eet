@@ -126,7 +126,7 @@ class Dispatcher
                 $receipt->id_pokl,
                 $receipt->porad_cis,
                 $receipt->dat_trzby->format('c'),
-                $receipt->celk_trzba
+                Format::price($receipt->celk_trzba)
             ];
 
             $this->pkp = $objKey->signData(implode('|', $arr));
