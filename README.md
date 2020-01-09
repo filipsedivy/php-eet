@@ -42,12 +42,6 @@ For detailed instructions on how to use the library, visit the [documentation](.
 
 PHP-EET is an Open Source, community-driven project. You can help develop code or create documentation.
 
-## Links
-- http://www.etrzby.cz/
-- http://www.financnisprava.cz/cs/financni-sprava/eet
-- https://adisspr.mfcr.cz/adistc/adis/idpr_pub/eet/eet_sluzby.faces
-- http://www.jakpodnikat.cz/eet-elektronicka-evidence-trzeb.php
-
 -----
 
 If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=PHP-EET)**. Thank you!
