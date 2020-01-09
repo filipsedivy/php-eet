@@ -2,7 +2,9 @@
     "name": "filipsedivy/php-eet",
     "description": "💸 Client for electronic records of sales",
     "homepage": "https://github.com/filipsedivy/PHP-EET",
-    "license": ["MIT"],
+    "license": [
+        "MIT"
+    ],
     "keywords": [
         "EET",
         "elektronická evidence tržeb",
@@ -51,6 +53,11 @@
         }
     },
     "scripts": {
+        "full": [
+            "@cs",
+            "@phpstan",
+            "@tester"
+        ],
         "phpstan": "phpstan analyse --level 7 --configuration tests/phpstan.neon src/",
         "cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/",
         "cbf": "phpcbf --standard=phpcs.xml --colors --encoding=utf-8 -nsp src/ tests/",
