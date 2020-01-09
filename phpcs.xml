@@ -18,17 +18,18 @@
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming"/>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
         <properties>
-            <property name="spacesCountAroundEqualsSign" value="0"/>
+            <property name="rootNamespaces" type="array" value="
+				src/FilipSedivy/EET=>FilipSedivy\EET,
+				tests/cases=>Tests\Cases,
+			"/>
         </properties>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>
-            <property name="rootNamespaces" type="array">
-                <element key="src/FilipSedivy/EET" value="FilipSedivy\EET"/>
-            </property>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
         </properties>
     </rule>
 
@@ -43,9 +44,5 @@
         <properties>
             <property name="allowFullyQualifiedGlobalClasses" value="true"/>
         </properties>
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName">
-        <exclude-pattern>tests/</exclude-pattern>
     </rule>
 </ruleset>

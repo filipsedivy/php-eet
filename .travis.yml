@@ -18,7 +18,7 @@ install:
     - travis_retry composer install --no-interaction --no-progress --prefer-dist
 
 script:
-    - ./vendor/bin/tester -p $PHP_BIN -s -c ./tests/php.ini ./tests
+    - ./vendor/bin/nunjuck -p $PHP_BIN -s -c ./tests/php.ini ./tests
 
 after_failure:
     - for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
@@ -41,13 +41,13 @@ jobs:
         -   stage: Static Analysis
             php: 7.3
             script:
-                - vendor/bin/phpstan analyse -c phpstan.neon -l 7 src/
+                - travis_retry composer phpstan
 
 
         -   stage: Code Coverage
             php: 7.3
             script:
-                - vendor/bin/tester -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src
+                - travis_retry composer coverage
             after_script:
                 - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
                 - php coveralls.phar --verbose --config tests/.coveralls.yml
