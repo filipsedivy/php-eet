@@ -30,9 +30,9 @@
         "ext-dom": "*",
         "ext-openssl": "*",
         "ext-soap": "*",
-        "ramsey/uuid": "3.8",
+        "ramsey/uuid": "^3.9",
         "robrichards/wse-php": "^2.0",
-        "symfony/validator": "^4.3"
+        "symfony/validator": "^4.4"
     },
     "require-dev": {
         "ninjify/nunjuck": "^0.2",
