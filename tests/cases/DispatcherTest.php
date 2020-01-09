@@ -100,6 +100,47 @@ class DispatcherTest extends TestCase
         Assert::type('array', $dispatcher->getCheckCodes($receipt));
     }
 
+    public function testLastReceipt(): void
+    {
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
+
+        Assert::null($dispatcher->getLastReceipt());
+
+        $dispatcher->send($this->getValidReceipt());
+
+        Assert::type(EET\Receipt::class, $dispatcher->getLastReceipt());
+    }
+
+    public function testGetWarnings(): void
+    {
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
+
+        Assert::type('array', $dispatcher->getWarnings());
+        Assert::count(0, $dispatcher->getWarnings());
+    }
+
+    public function testGetPkp(): void
+    {
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
+
+        Assert::null($dispatcher->getPkp());
+
+        $dispatcher->send($this->getValidReceipt());
+
+        Assert::type('string', $dispatcher->getPkp());
+    }
+
+    public function testGetSoapClient(): void
+    {
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
+
+        Assert::type(EET\SoapClient::class, $dispatcher->getSoapClient());
+    }
+
     private function getValidReceipt(): EET\Receipt
     {
         $receipt = new EET\Receipt;

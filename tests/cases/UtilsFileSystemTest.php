@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Cases\Utils;
+namespace Tests\Cases;
 
 use FilipSedivy\EET\Exceptions;
 use FilipSedivy\EET\Utils;
 use Tester\Assert;
 use Tester\TestCase;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
-class FileSystemTest extends TestCase
+class UtilsFileSystemTest extends TestCase
 {
     public function testNotExistFile(): void
     {
@@ -19,4 +19,4 @@ class FileSystemTest extends TestCase
     }
 }
 
-(new FileSystemTest)->run();
+(new UtilsFileSystemTest)->run();

@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Cases\Utils;
+namespace Tests\Cases;
 
 use FilipSedivy\EET;
 use Tester\Assert;
 use Tester\TestCase;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
-class FormatTest extends TestCase
+class UtilsFormatTest extends TestCase
 {
     public function testPriceFormat(): void
     {
@@ -24,4 +24,4 @@ class FormatTest extends TestCase
     }
 }
 
-(new FormatTest)->run();
+(new UtilsFormatTest)->run();
