@@ -2,6 +2,7 @@
 
 namespace Tests\Cases;
 
+use Exception;
 use FilipSedivy\EET;
 use Symfony\Component\Validator;
 use Tester\Assert;
@@ -38,7 +39,7 @@ class ReceiptTest extends TestCase
     public function testEmptyCodes(): void
     {
         $receipt = new EET\Receipt;
-        $exception = new EET\Exceptions\EET\ClientException($receipt, null, null, null);
+        $exception = new EET\Exceptions\EET\ClientException($receipt, null, null, new Exception);
 
         Assert::null($exception->getPkp());
         Assert::null($exception->getBkp());
