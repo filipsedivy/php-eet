@@ -24,7 +24,7 @@ class ReceiptTest extends TestCase
         Assert::same($receipt->buildHeader(), $header);
     }
 
-    public function testSendEmptyReceipt()
+    public function testSendEmptyReceipt(): void
     {
         $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
@@ -33,6 +33,15 @@ class ReceiptTest extends TestCase
             $receipt = new EET\Receipt;
             $dispatcher->send($receipt);
         }, EET\Exceptions\Receipt\ConstraintViolationException::class);
+    }
+
+    public function testEmptyCodes(): void
+    {
+        $receipt = new EET\Receipt;
+        $exception = new EET\Exceptions\EET\ClientException($receipt, null, null, null);
+
+        Assert::null($exception->getPkp());
+        Assert::null($exception->getBkp());
     }
 
     public function testConstraintViolation(): void
