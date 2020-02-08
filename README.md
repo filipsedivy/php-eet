@@ -9,11 +9,11 @@ Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/filipsedivy/PHP-EET"><img src="https://img.shields.io/travis/filipsedivy/PHP-EET.svg?style=flat-square"></a>
-  <a href="https://coveralls.io/r/filipsedivy/PHP-EET"><img src="https://img.shields.io/coveralls/filipsedivy/PHP-EET.svg?style=flat-square"></a>
+  <a href="https://travis-ci.org/filipsedivy/php-eet"><img src="https://img.shields.io/travis/filipsedivy/php-eet.svg?style=flat-square"></a>
+  <a href="https://coveralls.io/r/filipsedivy/php-eet"><img src="https://img.shields.io/coveralls/filipsedivy/php-eet.svg?style=flat-square"></a>
   <a href="https://packagist.org/packages/filipsedivy/php-eet"><img src="https://poser.pugx.org/filipsedivy/php-eet/d/monthly?format=flat-square"></a>
   <a href="https://packagist.org/packages/filipsedivy/php-eet"><img src="https://poser.pugx.org/filipsedivy/php-eet/d/total?format=flat-square"></a>
-  <a href="https://github.com/filipsedivy/PHP-EET/releases"><img src="https://poser.pugx.org/filipsedivy/PHP-EET/v/stable?format=flat-square"></a>
+  <a href="https://github.com/filipsedivy/php-eet/releases"><img src="https://poser.pugx.org/filipsedivy/php-eet/v/stable?format=flat-square"></a>
 </p>
 
 <p align="center">
@@ -40,8 +40,8 @@ For detailed instructions on how to use the library, visit the [documentation](.
 
 ## Contributing
 
-PHP-EET is an Open Source, community-driven project. You can help develop code or create documentation.
+php-eet is an Open Source, community-driven project. You can help develop code or create documentation.
 
 -----
 
-If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=PHP-EET)**. Thank you!
+If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=php-eet)**. Thank you!
