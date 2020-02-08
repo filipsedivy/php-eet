@@ -58,8 +58,6 @@ jobs:
         -   php: 7.4
         -   php: nightly
 
-sudo: false
-
 cache:
     directories:
         - "$HOME/.composer/cache"
