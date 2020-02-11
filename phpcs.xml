@@ -21,7 +21,7 @@
     <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
         <properties>
             <property name="rootNamespaces" type="array" value="
-				src/FilipSedivy/EET=>FilipSedivy\EET,
+				src=>FilipSedivy\EET,
 				tests/cases=>Tests\Cases,
 			"/>
         </properties>

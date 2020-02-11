@@ -53,7 +53,6 @@ jobs:
                 - php coveralls.phar --verbose --config tests/.coveralls.yml
 
     allow_failures:
-        -   stage: Static Analysis
         -   stage: Code Coverage
         -   php: 7.4
         -   php: nightly

@@ -19,7 +19,7 @@ class DispatcherTest extends TestCase
 
         Assert::contains('Personal/MySchema/MyService.wsdl', $dispatcher->getService());
 
-        $schemaPath = 'FilipSedivy/EET/Schema';
+        $schemaPath = 'Schema';
 
         $dispatcher->setProductionService();
 
