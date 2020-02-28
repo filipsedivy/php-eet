@@ -10,7 +10,7 @@ use FilipSedivy\EET\Receipt;
 use Ramsey\Uuid\Uuid;
 
 $receipt = new Receipt;
-$receipt->uuid_zpravy = Uuid::uuid4();
+$receipt->uuid_zpravy = Uuid::uuid4()->toString();
 $receipt->id_provoz = '141';
 $receipt->id_pokl = '1patro-vpravo';
 $receipt->porad_cis = '141-18543-05';
