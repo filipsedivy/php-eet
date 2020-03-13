@@ -209,9 +209,9 @@ class SoapClient extends InternalSoapClient
         return $this->lastRequest;
     }
 
-    public function __getLastResponse(): ?string
+    public function __getLastResponse(): string
     {
-        return $this->lastResponse;
+        return (string)$this->lastResponse;
     }
 
     public function setTimeout($milliseconds): void
