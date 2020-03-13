@@ -48,7 +48,7 @@ class DispatcherTest extends TestCase
 
         Assert::type('string', $dispatcher->getFik());
         Assert::type('string', $dispatcher->getBkp());
-        Expect::string($dispatcher->getSoapClient()->lastResponse);
+        Assert::type('string', $dispatcher->getSoapClient()->lastResponse);
     }
 
     public function testFailed(): void
