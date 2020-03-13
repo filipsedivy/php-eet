@@ -40,12 +40,11 @@ class PotvrzeniTest extends TestCase
         Assert::type(EET\Potvrzeni::class, $dispatcher->getPotvrzeni());
         Assert::same($receipt->uuid_zpravy, $dispatcher->getPotvrzeni()->uuid_zpravy);
         Assert::same($dispatcher->getCheckCodes($receipt)['bkp']['_'], $dispatcher->getPotvrzeni()->bkp);
-        Expect::string($dispatcher->getPotvrzeni()->fik);
-        Expect::string($dispatcher->getPotvrzeni()->dat_prij);
+        Assert::type('string', $dispatcher->getPotvrzeni()->fik);
         Assert::type(DateTime::class, $dispatcher->getPotvrzeni()->dat_prij);
-        Expect::bool($dispatcher->getPotvrzeni()->test);
+        Assert::type('bool', $dispatcher->getPotvrzeni()->test);
         Assert::same(true, $dispatcher->getPotvrzeni()->test);
-        Expect::array($dispatcher->getPotvrzeni()->varovani);
+        Assert::type('array', $dispatcher->getPotvrzeni()->varovani);
     }
 
     private function getValidReceipt(): EET\Receipt
