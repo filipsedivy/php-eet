@@ -57,7 +57,7 @@ class Dispatcher
 
         if ($service === self::PLAYGROUND_SERVICE) {
             $this->setPlaygroundService();
-        } elseif ($service === self::PRODUCTION_SERVICE) {
+        } else if ($service === self::PRODUCTION_SERVICE) {
             $this->setProductionService();
         } else {
             $this->setService($service);
@@ -165,7 +165,7 @@ class Dispatcher
             throw new Exceptions\EET\ClientException($receipt, $this->pkp, $this->bkp, $exception);
         }
 
-	    if (isset($response->Chyba)) {
+        if (isset($response->Chyba)) {
             $this->processError($response->Chyba);
         }
 
@@ -175,19 +175,19 @@ class Dispatcher
 
         $this->fik = $check ? null : $response->Potvrzeni->fik;
 
-	    $this->potvrzeni = new Potvrzeni();
+        $this->potvrzeni = new Potvrzeni();
         $this->potvrzeni->uuid_zpravy = $response->Hlavicka->uuid_zpravy;
         if ($check === false) {
-        	try {
-		        $this->potvrzeni->dat_prij = new DateTime($response->Hlavicka->dat_prij);
-	        } catch (Exception $ex) {
-        		$this->potvrzeni->dat_prij = null;
-	        }
-	        $this->potvrzeni->bkp = $response->Hlavicka->bkp;
-	        $this->potvrzeni->fik = $this->fik;
-	        $this->potvrzeni->test = (true === property_exists($response->Potvrzeni, 'test') && (bool)$response->Potvrzeni->test === true);
+            try {
+                $this->potvrzeni->dat_prij = new DateTime($response->Hlavicka->dat_prij);
+            } catch (Exception $ex) {
+                $this->potvrzeni->dat_prij = null;
+            }
+            $this->potvrzeni->bkp = $response->Hlavicka->bkp;
+            $this->potvrzeni->fik = $this->fik;
+            $this->potvrzeni->test = (true === property_exists($response->Potvrzeni, 'test') && (bool)$response->Potvrzeni->test === true);
         }
-	    $this->potvrzeni->varovani = $this->lastWarnings;
+        $this->potvrzeni->varovani = $this->lastWarnings;
 
         return $this->fik;
     }
@@ -243,12 +243,12 @@ class Dispatcher
         return $this->fik;
     }
 
-	/**
-	 * @return Potvrzeni|null
-	 */
+    /**
+     * @return Potvrzeni|null
+     */
     public function getPotvrzeni(): ?Potvrzeni
     {
-    	return $this->potvrzeni;
+        return $this->potvrzeni;
     }
 
     public function getLastReceipt(): ?Receipt
