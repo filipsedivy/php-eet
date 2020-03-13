@@ -3,7 +3,6 @@
 namespace FilipSedivy\EET;
 
 use DateTime;
-use Exception;
 use FilipSedivy\EET\Enum;
 use FilipSedivy\EET\Exceptions;
 use FilipSedivy\EET\Utils\Debugger;
@@ -11,6 +10,7 @@ use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 class Dispatcher
 {
@@ -57,7 +57,7 @@ class Dispatcher
 
         if ($service === self::PLAYGROUND_SERVICE) {
             $this->setPlaygroundService();
-        } else if ($service === self::PRODUCTION_SERVICE) {
+        } elseif ($service === self::PRODUCTION_SERVICE) {
             $this->setProductionService();
         } else {
             $this->setService($service);
@@ -175,12 +175,12 @@ class Dispatcher
 
         $this->fik = $check ? null : $response->Potvrzeni->fik;
 
-        $this->potvrzeni = new Potvrzeni();
+        $this->potvrzeni = new Potvrzeni;
         $this->potvrzeni->uuid_zpravy = $response->Hlavicka->uuid_zpravy;
         if ($check === false) {
             try {
                 $this->potvrzeni->dat_prij = new DateTime($response->Hlavicka->dat_prij);
-            } catch (Exception $ex) {
+            } catch (Throwable $ex) {
                 $this->potvrzeni->dat_prij = null;
             }
             $this->potvrzeni->bkp = $response->Hlavicka->bkp;

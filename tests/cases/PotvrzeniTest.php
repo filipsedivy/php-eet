@@ -1,14 +1,4 @@
-<?php
-/******************************************************************************
- * Author: Petr Suchy (xsuchy09) <suchy@wamos.cz> <https://www.wamos.cz>
- * Project: php-eet
- * Date: 13.03.20
- * Time: 12:11
- * Copyright: (c) Petr Suchy (xsuchy09) <suchy@wamos.cz> <http://www.wamos.cz>
- *****************************************************************************/
-
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Tests\Cases;
 
@@ -47,7 +37,7 @@ class PotvrzeniTest extends TestCase
 
     private function getValidReceipt(): EET\Receipt
     {
-        $receipt = new EET\Receipt();
+        $receipt = new EET\Receipt;
         $receipt->uuid_zpravy = Uuid::uuid4()->toString();
         $receipt->id_provoz = '11';
         $receipt->id_pokl = 'IP105';
