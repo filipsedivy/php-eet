@@ -3,6 +3,7 @@
 namespace Tests\Cases;
 
 use FilipSedivy\EET;
+use Nette\Schema\Expect;
 use Ramsey\Uuid\Uuid;
 use Tester\Assert;
 use Tester\TestCase;
@@ -47,6 +48,7 @@ class DispatcherTest extends TestCase
 
         Assert::type('string', $dispatcher->getFik());
         Assert::type('string', $dispatcher->getBkp());
+        Expect::string($dispatcher->getSoapClient()->lastResponse);
     }
 
     public function testFailed(): void
