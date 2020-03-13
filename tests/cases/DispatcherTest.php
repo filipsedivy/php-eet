@@ -3,7 +3,6 @@
 namespace Tests\Cases;
 
 use FilipSedivy\EET;
-use Nette\Schema\Expect;
 use Ramsey\Uuid\Uuid;
 use Tester\Assert;
 use Tester\TestCase;
