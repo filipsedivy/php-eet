@@ -177,16 +177,20 @@ class Dispatcher
 
         $this->potvrzeni = new Potvrzeni;
         $this->potvrzeni->uuid_zpravy = $response->Hlavicka->uuid_zpravy;
+
         if ($check === false) {
+
             try {
                 $this->potvrzeni->dat_prij = new DateTime($response->Hlavicka->dat_prij);
             } catch (Throwable $ex) {
                 $this->potvrzeni->dat_prij = null;
             }
+
             $this->potvrzeni->bkp = $response->Hlavicka->bkp;
             $this->potvrzeni->fik = $this->fik;
-            $this->potvrzeni->test = (true === property_exists($response->Potvrzeni, 'test') && (bool)$response->Potvrzeni->test === true);
+            $this->potvrzeni->test = property_exists($response->Potvrzeni, 'test') && (bool)$response->Potvrzeni->test;
         }
+
         $this->potvrzeni->varovani = $this->lastWarnings;
 
         return $this->fik;

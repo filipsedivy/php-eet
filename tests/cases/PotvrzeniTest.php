@@ -10,11 +10,6 @@ use Tester\TestCase;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-
-/**
- * Class PotvrzeniTest
- * @package Tests\Cases
- */
 class PotvrzeniTest extends TestCase
 {
     public function testPotvrzeni(): void
