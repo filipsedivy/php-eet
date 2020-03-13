@@ -31,7 +31,7 @@ class SoapClient extends InternalSoapClient
     /** @var string */
     public $lastRequest;
 
-    /** @var string */
+    /** @var string|null */
     public $lastResponse;
 
     /** @var bool */
@@ -209,7 +209,7 @@ class SoapClient extends InternalSoapClient
         return $this->lastRequest;
     }
 
-    public function __getLastResponse(): string
+    public function __getLastResponse(): ?string
     {
         return $this->lastResponse;
     }
