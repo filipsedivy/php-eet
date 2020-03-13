@@ -13,9 +13,7 @@ declare(strict_types=1);
 namespace Tests\Cases;
 
 use DateTime;
-use Exception;
 use FilipSedivy\EET;
-use Nette\Schema\Expect;
 use Ramsey\Uuid\Uuid;
 use Tester\Assert;
 use Tester\TestCase;
