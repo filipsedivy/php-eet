@@ -2,10 +2,6 @@
 
 namespace FilipSedivy\EET;
 
-/**
- * Class Potvrzeni
- * @package FilipSedivy\EET
- */
 class Potvrzeni
 {
     /** @var string */

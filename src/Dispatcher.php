@@ -179,7 +179,6 @@ class Dispatcher
         $this->potvrzeni->uuid_zpravy = $response->Hlavicka->uuid_zpravy;
 
         if ($check === false) {
-
             try {
                 $this->potvrzeni->dat_prij = new DateTime($response->Hlavicka->dat_prij);
             } catch (Throwable $ex) {
