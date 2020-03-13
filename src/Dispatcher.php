@@ -2,6 +2,8 @@
 
 namespace FilipSedivy\EET;
 
+use DateTime;
+use Exception;
 use FilipSedivy\EET\Enum;
 use FilipSedivy\EET\Exceptions;
 use FilipSedivy\EET\Utils\Debugger;
@@ -36,6 +38,9 @@ class Dispatcher
     /** @var string|null */
     protected $fik;
 
+    /** @var Potvrzeni|null */
+    protected $potvrzeni;
+
     /** @var Receipt */
     protected $lastReceipt;
 
@@ -61,6 +66,8 @@ class Dispatcher
         if ($validate) {
             $this->initValidator();
         }
+
+        $this->potvrzeni = null;
     }
 
     public function setService($service): void
@@ -158,7 +165,7 @@ class Dispatcher
             throw new Exceptions\EET\ClientException($receipt, $this->pkp, $this->bkp, $exception);
         }
 
-        if (isset($response->Chyba)) {
+	    if (isset($response->Chyba)) {
             $this->processError($response->Chyba);
         }
 
@@ -167,6 +174,20 @@ class Dispatcher
         }
 
         $this->fik = $check ? null : $response->Potvrzeni->fik;
+
+	    $this->potvrzeni = new Potvrzeni();
+        $this->potvrzeni->uuid_zpravy = $response->Hlavicka->uuid_zpravy;
+        if ($check === false) {
+        	try {
+		        $this->potvrzeni->dat_prij = new DateTime($response->Hlavicka->dat_prij);
+	        } catch (Exception $ex) {
+        		$this->potvrzeni->dat_prij = null;
+	        }
+	        $this->potvrzeni->bkp = $response->Hlavicka->bkp;
+	        $this->potvrzeni->fik = $this->fik;
+	        $this->potvrzeni->test = (true === property_exists($response->Potvrzeni, 'test') && (bool)$response->Potvrzeni->test === true);
+        }
+	    $this->potvrzeni->varovani = $this->lastWarnings;
 
         return $this->fik;
     }
@@ -220,6 +241,14 @@ class Dispatcher
     public function getFik(): ?string
     {
         return $this->fik;
+    }
+
+	/**
+	 * @return Potvrzeni|null
+	 */
+    public function getPotvrzeni(): ?Potvrzeni
+    {
+    	return $this->potvrzeni;
     }
 
     public function getLastReceipt(): ?Receipt

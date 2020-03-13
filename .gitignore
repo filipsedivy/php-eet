@@ -4,3 +4,6 @@
 # Composer
 /vendor
 /composer.lock
+
+# Tester output
+/tests/cases/output
