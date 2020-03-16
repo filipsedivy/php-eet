@@ -96,6 +96,8 @@ class SoapClient extends InternalSoapClient
 
     public function doRequestByCurl(string $request, string $location, string $action, int $version, int $one_way = 0): ?string
     {
+        $this->lastResponseHttpCode = null;
+
         $curl = curl_init($location);
 
         if ($curl === false) {
