@@ -28,6 +28,9 @@ class SoapClient extends InternalSoapClient
     /** @var float */
     private $lastResponseEndTime;
 
+    /** @var int|null */
+    private $lastResponseHttpCode;
+
     /** @var string */
     public $lastRequest;
 
@@ -96,6 +99,8 @@ class SoapClient extends InternalSoapClient
 
     public function doRequestByCurl(string $request, string $location, string $action, int $version, int $one_way = 0): ?string
     {
+        $this->lastResponseHttpCode = null;
+
         $curl = curl_init($location);
 
         if ($curl === false) {
@@ -136,6 +141,8 @@ class SoapClient extends InternalSoapClient
 
             throw new CurlException($errorMessage, $errorNumber);
         }
+
+        $this->lastResponseHttpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         $header_len = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $body = substr($response, $header_len);
@@ -179,6 +186,11 @@ class SoapClient extends InternalSoapClient
     public function getLastResponseTime(): float
     {
         return $this->lastResponseEndTime - $this->lastResponseStartTime;
+    }
+
+    public function getLastResponseHttpCode(): ?int
+    {
+        return $this->lastResponseHttpCode;
     }
 
     public function getConnectionTime(bool $tillLastRequest = false)
