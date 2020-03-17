@@ -47,6 +47,7 @@ class DispatcherTest extends TestCase
 
         Assert::type('string', $dispatcher->getFik());
         Assert::type('string', $dispatcher->getBkp());
+        Assert::type('string', $dispatcher->getSoapClient()->lastResponse);
         Assert::same(200, $dispatcher->getSoapClient()->getLastResponseHttpCode());
         Assert::type(\DateTime::class, $dispatcher->getSentDateTime());
     }

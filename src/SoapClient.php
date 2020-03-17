@@ -34,6 +34,9 @@ class SoapClient extends InternalSoapClient
     /** @var string */
     public $lastRequest;
 
+    /** @var string|null */
+    public $lastResponse;
+
     /** @var bool */
     private $returnRequest = false;
 
@@ -87,11 +90,11 @@ class SoapClient extends InternalSoapClient
 
         $this->trace && $this->lastResponseStartTime = microtime(true);
 
-        $response = $this->doRequestByCurl($xml, $location, $action, $version, $one_way);
+        $this->lastResponse = $this->doRequestByCurl($xml, $location, $action, $version, $one_way);
 
         $this->trace && $this->lastResponseEndTime = microtime(true);
 
-        return $response;
+        return $this->lastResponse;
     }
 
     public function doRequestByCurl(string $request, string $location, string $action, int $version, int $one_way = 0): ?string
@@ -216,6 +219,11 @@ class SoapClient extends InternalSoapClient
     public function __getLastRequest(): string
     {
         return $this->lastRequest;
+    }
+
+    public function __getLastResponse(): string
+    {
+        return (string)$this->lastResponse;
     }
 
     public function setTimeout($milliseconds): void
