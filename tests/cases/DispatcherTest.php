@@ -47,6 +47,7 @@ class DispatcherTest extends TestCase
 
         Assert::type('string', $dispatcher->getFik());
         Assert::type('string', $dispatcher->getBkp());
+        Assert::same(200, $dispatcher->getSoapClient()->getLastResponseHttpCode());
         Assert::type(\DateTime::class, $dispatcher->getSentDateTime());
     }
 
@@ -67,6 +68,7 @@ class DispatcherTest extends TestCase
         } catch (EET\Exceptions\EET\ClientException $client) {
             Assert::type('string', $client->getBkp());
             Assert::type('string', $client->getPkp());
+            Assert::null($dispatcher->getSoapClient()->getLastResponseHttpCode());
             Assert::type(\DateTime::class, $dispatcher->getSentDateTime());
 
             if (!$client->getReceipt() instanceof EET\Receipt) {
