@@ -2,6 +2,7 @@
 
 namespace FilipSedivy\EET;
 
+use DateTime;
 use FilipSedivy\EET\Enum;
 use FilipSedivy\EET\Exceptions;
 use FilipSedivy\EET\Utils\Debugger;
@@ -35,6 +36,9 @@ class Dispatcher
 
     /** @var string|null */
     protected $fik;
+
+    /** @var DateTime|null */
+    protected $sentDateTime;
 
     /** @var Receipt */
     protected $lastReceipt;
@@ -182,9 +186,10 @@ class Dispatcher
 
     public function prepareData(Receipt $receipt, bool $check = false): array
     {
+        $this->sentDateTime = new DateTime;
         $head = $receipt->buildHeader();
         $head += [
-            'dat_odesl' => time(),
+            'dat_odesl' => $this->sentDateTime->format('c'),
             'overeni' => $check
         ];
 
@@ -215,6 +220,11 @@ class Dispatcher
         }
 
         return $pkp;
+    }
+
+    public function getSentDateTime(): ?DateTime
+    {
+        return $this->sentDateTime;
     }
 
     public function getFik(): ?string
