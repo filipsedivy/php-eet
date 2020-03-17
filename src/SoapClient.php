@@ -28,8 +28,14 @@ class SoapClient extends InternalSoapClient
     /** @var float */
     private $lastResponseEndTime;
 
+    /** @var int|null */
+    private $lastResponseHttpCode;
+
     /** @var string */
     public $lastRequest;
+
+    /** @var string|null */
+    public $lastResponse;
 
     /** @var bool */
     private $returnRequest = false;
@@ -84,15 +90,17 @@ class SoapClient extends InternalSoapClient
 
         $this->trace && $this->lastResponseStartTime = microtime(true);
 
-        $response = $this->doRequestByCurl($xml, $location, $action, $version, $one_way);
+        $this->lastResponse = $this->doRequestByCurl($xml, $location, $action, $version, $one_way);
 
         $this->trace && $this->lastResponseEndTime = microtime(true);
 
-        return $response;
+        return $this->lastResponse;
     }
 
     public function doRequestByCurl(string $request, string $location, string $action, int $version, int $one_way = 0): ?string
     {
+        $this->lastResponseHttpCode = null;
+
         $curl = curl_init($location);
 
         if ($curl === false) {
@@ -133,6 +141,8 @@ class SoapClient extends InternalSoapClient
 
             throw new CurlException($errorMessage, $errorNumber);
         }
+
+        $this->lastResponseHttpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         $header_len = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $body = substr($response, $header_len);
@@ -178,6 +188,11 @@ class SoapClient extends InternalSoapClient
         return $this->lastResponseEndTime - $this->lastResponseStartTime;
     }
 
+    public function getLastResponseHttpCode(): ?int
+    {
+        return $this->lastResponseHttpCode;
+    }
+
     public function getConnectionTime(bool $tillLastRequest = false)
     {
         return $tillLastRequest ? $this->getConnectionTimeTillLastRequest() : $this->getConnectionTimeTillNow();
@@ -204,6 +219,11 @@ class SoapClient extends InternalSoapClient
     public function __getLastRequest(): string
     {
         return $this->lastRequest;
+    }
+
+    public function __getLastResponse(): string
+    {
+        return (string)$this->lastResponse;
     }
 
     public function setTimeout($milliseconds): void

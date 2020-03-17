@@ -41,6 +41,9 @@ class Dispatcher
     /** @var Potvrzeni|null */
     protected $potvrzeni;
 
+    /** @var DateTime|null */
+    protected $sentDateTime;
+
     /** @var Receipt */
     protected $lastReceipt;
 
@@ -206,9 +209,10 @@ class Dispatcher
 
     public function prepareData(Receipt $receipt, bool $check = false): array
     {
+        $this->sentDateTime = new DateTime;
         $head = $receipt->buildHeader();
         $head += [
-            'dat_odesl' => time(),
+            'dat_odesl' => $this->sentDateTime->format('c'),
             'overeni' => $check
         ];
 
@@ -239,6 +243,11 @@ class Dispatcher
         }
 
         return $pkp;
+    }
+
+    public function getSentDateTime(): ?DateTime
+    {
+        return $this->sentDateTime;
     }
 
     public function getFik(): ?string
