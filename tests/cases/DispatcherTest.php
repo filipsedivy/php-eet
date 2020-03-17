@@ -56,7 +56,7 @@ class DispatcherTest extends TestCase
         $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
-        $dispatcher->setCurlOption(CURLOPT_PROXY, implode($proxy, ':'));
+        $dispatcher->setCurlOption(CURLOPT_PROXY, implode(':', $proxy));
 
         Assert::exception(function () use ($dispatcher) {
             $dispatcher->send($this->getValidReceipt());
