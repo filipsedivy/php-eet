@@ -47,6 +47,9 @@ class DispatcherTest extends TestCase
 
         Assert::type('string', $dispatcher->getFik());
         Assert::type('string', $dispatcher->getBkp());
+        Assert::type('string', $dispatcher->getSoapClient()->lastResponse);
+        Assert::same(200, $dispatcher->getSoapClient()->getLastResponseHttpCode());
+        Assert::type(\DateTime::class, $dispatcher->getSentDateTime());
     }
 
     public function testFailed(): void
@@ -55,7 +58,7 @@ class DispatcherTest extends TestCase
         $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
-        $dispatcher->setCurlOption(CURLOPT_PROXY, implode($proxy, ':'));
+        $dispatcher->setCurlOption(CURLOPT_PROXY, implode(':', $proxy));
 
         Assert::exception(function () use ($dispatcher) {
             $dispatcher->send($this->getValidReceipt());
@@ -66,6 +69,8 @@ class DispatcherTest extends TestCase
         } catch (EET\Exceptions\EET\ClientException $client) {
             Assert::type('string', $client->getBkp());
             Assert::type('string', $client->getPkp());
+            Assert::null($dispatcher->getSoapClient()->getLastResponseHttpCode());
+            Assert::type(\DateTime::class, $dispatcher->getSentDateTime());
 
             if (!$client->getReceipt() instanceof EET\Receipt) {
                 Assert::fail('Client->getReceipt() is not instanceof Receipt');
@@ -131,6 +136,18 @@ class DispatcherTest extends TestCase
         $dispatcher->send($this->getValidReceipt());
 
         Assert::type('string', $dispatcher->getPkp());
+    }
+
+    public function testGetSentDateTime(): void
+    {
+        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
+
+        Assert::null($dispatcher->getSentDateTime());
+
+        $dispatcher->send($this->getValidReceipt());
+
+        Assert::type(\DateTime::class, $dispatcher->getSentDateTime());
     }
 
     public function testGetSoapClient(): void
