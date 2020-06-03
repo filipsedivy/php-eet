@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET;
+namespace XSuchy09\EET;
 
 use DateTime;
-use FilipSedivy\EET\Exceptions;
-use FilipSedivy\EET\Utils;
+use XSuchy09\EET\Exceptions;
+use XSuchy09\EET\Utils;
 
 class Certificate
 {

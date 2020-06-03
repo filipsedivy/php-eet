@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Utils;
+namespace XSuchy09\EET\Utils;
 
-use FilipSedivy\EET\Exceptions;
+use XSuchy09\EET\Exceptions;
 
 class FileSystem
 {

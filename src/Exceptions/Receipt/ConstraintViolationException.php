@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions\Receipt;
+namespace XSuchy09\EET\Exceptions\Receipt;
 
-use FilipSedivy\EET\Exceptions\RuntimeException;
+use XSuchy09\EET\Exceptions\RuntimeException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 

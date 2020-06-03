@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET;
+namespace XSuchy09\EET;
 
-use FilipSedivy\EET\Exceptions\SoapClient\CurlException;
+use XSuchy09\EET\Exceptions\SoapClient\CurlException;
 use RobRichards\WsePhp\WSSESoap;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;

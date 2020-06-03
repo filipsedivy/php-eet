@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions\EET;
+namespace XSuchy09\EET\Exceptions\EET;
 
 interface EETException extends \Throwable
 {

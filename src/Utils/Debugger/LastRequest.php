@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Utils\Debugger;
+namespace XSuchy09\EET\Utils\Debugger;
 
 use DOMDocument;
 

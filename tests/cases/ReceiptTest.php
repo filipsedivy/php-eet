@@ -3,7 +3,7 @@
 namespace Tests\Cases;
 
 use Exception;
-use FilipSedivy\EET;
+use XSuchy09\EET;
 use Symfony\Component\Validator;
 use Tester\Assert;
 use Tester\TestCase;

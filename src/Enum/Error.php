@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Enum;
+namespace XSuchy09\EET\Enum;
 
 final class Error
 {

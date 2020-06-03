@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions;
+namespace XSuchy09\EET\Exceptions;
 
 class IOException extends RuntimeException
 {

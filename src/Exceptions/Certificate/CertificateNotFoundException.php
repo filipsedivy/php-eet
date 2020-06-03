@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions\Certificate;
+namespace XSuchy09\EET\Exceptions\Certificate;
 
-use FilipSedivy\EET\Exceptions\FileSystem\FileNotFoundException;
+use XSuchy09\EET\Exceptions\FileSystem\FileNotFoundException;
 use Throwable;
 
 class CertificateNotFoundException extends FileNotFoundException
