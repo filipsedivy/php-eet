@@ -1,7 +1,7 @@
 {
-    "name": "filipsedivy/php-eet",
+    "name": "xsuchy09/php-eet",
     "description": "💸 Client for electronic records of sales",
-    "homepage": "https://github.com/filipsedivy/PHP-EET",
+    "homepage": "https://github.com/xsuchy09/php-eet",
     "license": [
         "MIT"
     ],
@@ -12,15 +12,21 @@
     ],
     "type": "library",
     "support": {
-        "email": "mail@filipsedivy.cz",
-        "issues": "https://github.com/filipsedivy/PHP-EET/issues",
-        "source:": "https://github.com/filipsedivy/PHP-EET"
+        "email": "suchy@wamos.cz",
+        "issues": "https://github.com/xsuchy09/php-eet/issues",
+        "source:": "https://github.com/xsuchy09/php-eet"
     },
     "authors": [
         {
             "name": "Filip Šedivý",
             "email": "mail@filipsedivy.cz",
             "homepage": "https://filipsedivy.cz",
+            "role": "Developer"
+        },
+        {
+            "name": "Petr Suchý",
+            "email": "suchy@wamos.cz",
+            "homepage": "https://www.wamos.cz",
             "role": "Developer"
         }
     ],
@@ -32,17 +38,17 @@
         "ext-soap": "*",
         "ramsey/uuid": "^3.9",
         "robrichards/wse-php": "^2.0",
-        "symfony/validator": "^4.4"
+        "symfony/validator": "^4.4",
+        "nette/tester": "^2.3"
     },
     "require-dev": {
-        "ninjify/nunjuck": "^0.2",
         "phpstan/phpstan": "^0.8",
         "slevomat/coding-standard": "^5.0",
         "squizlabs/php_codesniffer": "^3.4"
     },
     "autoload": {
         "psr-4": {
-            "FilipSedivy\\EET\\": "src"
+            "XSuchy09\\EET\\": "src"
         }
     },
     "minimum-stability": "dev",
@@ -61,7 +67,7 @@
         "phpstan": "phpstan analyse --level 7 --configuration tests/phpstan.neon src/",
         "cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/cases/",
         "cbf": "phpcbf --standard=phpcs.xml --colors --encoding=utf-8 -nsp src/ tests/",
-        "tester": "nunjuck -s -c ./tests/php.ini ./tests",
+        "tester": "tester -s -c ./tests/php.ini ./tests",
         "coverage": "nunjuck -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src"
     }
 }

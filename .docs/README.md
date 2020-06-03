@@ -4,9 +4,9 @@
 
 ```php
 <?php
-use FilipSedivy\EET\Certificate;
-use FilipSedivy\EET\Dispatcher;
-use FilipSedivy\EET\Receipt;
+use XSuchy09\EET\Certificate;
+use XSuchy09\EET\Dispatcher;
+use XSuchy09\EET\Receipt;
 use Ramsey\Uuid\Uuid;
 
 $receipt = new Receipt;
@@ -26,12 +26,12 @@ try {
 
     echo 'FIK: ' . $dispatcher->getFik();
     echo 'BKP: ' . $dispatcher->getBkp();
-} catch (FilipSedivy\EET\Exceptions\EET\ClientException $exception) {
+} catch (XSuchy09\EET\Exceptions\EET\ClientException $exception) {
     echo 'BKP: ' . $exception->getBkp();
     echo 'PKP:' . $exception->getPkp();
-} catch (FilipSedivy\EET\Exceptions\EET\ErrorException $exception) {
+} catch (XSuchy09\EET\Exceptions\EET\ErrorException $exception) {
     echo '(' . $exception->getCode() . ') ' . $exception->getMessage();
-} catch (FilipSedivy\EET\Exceptions\Receipt\ConstraintViolationException $violationException) {
+} catch (XSuchy09\EET\Exceptions\Receipt\ConstraintViolationException $violationException) {
     echo implode('<br>', $violationException->getErrors());
 }
 ```
@@ -43,7 +43,7 @@ These are classes that allow the certificate to be exported without further proc
 Received file in p12 format, the one that etrzby.cz will export.
 
 ```php
-$certificate = FilipSedivy\EET\Certificate(string $file, string $password);
+$certificate = XSuchy09\EET\Certificate(string $file, string $password);
 ```
 
 **Parameters:**
@@ -55,7 +55,7 @@ $certificate = FilipSedivy\EET\Certificate(string $file, string $password);
 Dispatcher is a class that takes care of recipe validation and communication with SoapClient.
 
 ```php
-$dispatcher = FilipSedivy\EET\Dispatcher(Certificate $certificate, ?string $service = self::PRODUCTION_SERVICE, bool $validate = true);
+$dispatcher = XSuchy09\EET\Dispatcher(Certificate $certificate, ?string $service = self::PRODUCTION_SERVICE, bool $validate = true);
 ```
 
 **Parameters:**
@@ -69,7 +69,7 @@ $dispatcher = FilipSedivy\EET\Dispatcher(Certificate $certificate, ?string $serv
 
 ## Exceptions
 
-All exceptions have a common namespace `FilipSedivy\EET\Exceptions`
+All exceptions have a common namespace `XSuchy09\EET\Exceptions`
 
 ### EET\ClientException
 
@@ -80,7 +80,7 @@ This is an exception that is thrown when there is a problem communicating with t
 ```php
 try {
     $dispatcher->send($receipt);
-} catch (FilipSedivy\EET\Exceptions\EET\ClientException $exception) {
+} catch (XSuchy09\EET\Exceptions\EET\ClientException $exception) {
     echo 'BKP: ' . $exception->getBkp();
     echo 'PKP:' . $exception->getPkp();
     print_r($exception->getReceipt());
@@ -96,7 +96,7 @@ This error occurs when an error is returned directly from the EET server. In thi
 ```php
 try {
     $dispatcher->send($receipt);
-} catch (FilipSedivy\EET\Exceptions\EET\ErrorException $exception) {
+} catch (XSuchy09\EET\Exceptions\EET\ErrorException $exception) {
      echo '(' . $exception->getCode() . ') ' . $exception->getMessage();
 }
 ```
@@ -110,7 +110,7 @@ In this case, the EET is not sent to the destination server and the Receipt is i
 ```php
 try {
     $dispatcher->send($receipt);
-} catch (FilipSedivy\EET\Exceptions\Receipt\ConstraintViolationException $violationException) {
+} catch (XSuchy09\EET\Exceptions\Receipt\ConstraintViolationException $violationException) {
       echo implode('<br>', $violationException->getErrors());
   }
 ```

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions\Certificate;
+namespace XSuchy09\EET\Exceptions\Certificate;
 
-use FilipSedivy\EET\Exceptions\RuntimeException;
+use XSuchy09\EET\Exceptions\RuntimeException;
 use Throwable;
 
 class CertificateExportFailedException extends RuntimeException implements CertificateException

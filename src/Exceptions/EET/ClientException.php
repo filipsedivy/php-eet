@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions\EET;
+namespace XSuchy09\EET\Exceptions\EET;
 
-use FilipSedivy\EET\Exceptions\RuntimeException;
-use FilipSedivy\EET\Receipt;
+use XSuchy09\EET\Exceptions\RuntimeException;
+use XSuchy09\EET\Receipt;
 use Throwable;
 
 class ClientException extends RuntimeException

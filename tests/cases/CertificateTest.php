@@ -3,8 +3,8 @@
 namespace Tests\Cases;
 
 use DateTime;
-use FilipSedivy\EET\Certificate;
-use FilipSedivy\EET\Exceptions;
+use XSuchy09\EET\Certificate;
+use XSuchy09\EET\Exceptions;
 use Tester\Assert;
 use Tester\TestCase;
 

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET;
+namespace XSuchy09\EET;
 
 use DateTime;
-use FilipSedivy\EET\Enum;
-use FilipSedivy\EET\Exceptions;
-use FilipSedivy\EET\Utils\Debugger;
-use FilipSedivy\EET\Utils\Format;
+use XSuchy09\EET\Enum;
+use XSuchy09\EET\Exceptions;
+use XSuchy09\EET\Utils\Debugger;
+use XSuchy09\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

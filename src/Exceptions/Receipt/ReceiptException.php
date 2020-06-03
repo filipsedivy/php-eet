@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions\Receipt;
+namespace XSuchy09\EET\Exceptions\Receipt;
 
 interface ReceiptException extends \Throwable
 {

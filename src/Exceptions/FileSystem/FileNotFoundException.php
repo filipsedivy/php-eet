@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET\Exceptions\FileSystem;
+namespace XSuchy09\EET\Exceptions\FileSystem;
 
-use FilipSedivy\EET\Exceptions\UnexpectedException;
+use XSuchy09\EET\Exceptions\UnexpectedException;
 
 class FileNotFoundException extends UnexpectedException implements FileSystemException
 {

@@ -2,8 +2,8 @@
 
 namespace Tests\Cases;
 
-use FilipSedivy\EET\Exceptions;
-use FilipSedivy\EET\Utils;
+use XSuchy09\EET\Exceptions;
+use XSuchy09\EET\Utils;
 use Tester\Assert;
 use Tester\TestCase;
 

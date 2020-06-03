@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace FilipSedivy\EET;
+namespace XSuchy09\EET;
 
 use DateTime;
-use FilipSedivy\EET\Utils\Format;
+use XSuchy09\EET\Utils\Format;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
