@@ -5,6 +5,7 @@ namespace Tests\Cases;
 use DateTime;
 use FilipSedivy\EET\Certificate;
 use FilipSedivy\EET\Exceptions;
+use FilipSedivy\EET\Utils\FileSystem;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -15,20 +16,31 @@ class CertificateTest extends TestCase
     public function testFileNotExists(): void
     {
         Assert::exception(static function () {
-            new Certificate(__DIR__ . '/not-exists-certificate.p12', 'testPassword');
+            Certificate::fromFile(__DIR__ . '/not-exists-certificate.p12', 'testPassword');
         }, Exceptions\Certificate\CertificateNotFoundException::class);
     }
 
     public function testFileExists(): void
     {
-        $certificate = new Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $pkcs12 = FileSystem::read(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12');
+
+        $certificate = Certificate::fromString($pkcs12, 'eet');
 
         Assert::type(Certificate::class, $certificate);
     }
 
-    public function testCertificate(): void
+    public function testCertificateFromString(): void
     {
-        $certificate = new Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+
+        Assert::type('string', $certificate->getPrivateKey());
+        Assert::type('string', $certificate->getCertificate());
+    }
+
+
+    public function testCertificateFromFile(): void
+    {
+        $certificate = Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         Assert::type('string', $certificate->getPrivateKey());
         Assert::type('string', $certificate->getCertificate());
@@ -37,14 +49,14 @@ class CertificateTest extends TestCase
     public function testBadPassword(): void
     {
         Assert::exception(static function () {
-            new Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'password');
+            Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'password');
         }, Exceptions\Certificate\CertificateExportFailedException::class);
     }
 
     public function testCertificatePath(): void
     {
         try {
-            new Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'password');
+            Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'password');
 
             Assert::fail('Certificate have bad password');
         } catch (Exceptions\Certificate\CertificateExportFailedException $exception) {
@@ -54,8 +66,8 @@ class CertificateTest extends TestCase
 
     public function testCertificateValidation(): void
     {
-        $certificate = new Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
-        $certificate2 = new Certificate(DATA_DIR . '/CA_TEST-01.p12', 'test');
+        $certificate = Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate2 = Certificate::fromFile(DATA_DIR . '/CA_TEST-01.p12', 'test');
 
         Assert::true($certificate->isIssuerOk());
         Assert::true($certificate->isValidOk());
@@ -70,7 +82,7 @@ class CertificateTest extends TestCase
 
     public function testExport(): void
     {
-        $certificate = new Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         Assert::type('array', $certificate->getExport());
         Assert::type('array', $certificate->getIssuer());

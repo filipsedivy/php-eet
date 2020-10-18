@@ -17,7 +17,12 @@ class Certificate
     /** @var array */
     private $export;
 
-    public function __construct(string $file, string $password)
+    public static function fromString(string $pkcs12, string $password): Certificate
+    {
+        return self::readPkcs12($pkcs12, $password, "unknown");
+    }
+
+    public static function fromFile(string $file, string $password): Certificate
     {
         if (!Utils\FileSystem::isFileExists($file)) {
             throw new Exceptions\Certificate\CertificateNotFoundException($file);
@@ -25,6 +30,11 @@ class Certificate
 
         $pkcs12 = Utils\FileSystem::read($file);
 
+        return self::readPkcs12($pkcs12, $password, $file);
+    }
+
+    private static function readPkcs12(string $pkcs12, string $password, string $identifier): Certificate
+    {
         if (!function_exists('openssl_pkcs12_read')) {
             throw new Exceptions\ExtensionNotFound('OpenSSL');
         }
@@ -32,12 +42,22 @@ class Certificate
         $openSSL = openssl_pkcs12_read($pkcs12, $certs, $password);
 
         if (!$openSSL) {
-            throw new Exceptions\Certificate\CertificateExportFailedException($file);
+            throw new Exceptions\Certificate\CertificateExportFailedException($identifier);
         }
 
-        $this->privateKey = $certs['pkey'];
-        $this->certificate = $certs['cert'];
-        $this->export = openssl_x509_parse($this->getCertificate());
+        $privateKey = $certs['pkey'];
+        $certificate = $certs['cert'];
+        $export = openssl_x509_parse($certificate);
+
+        return new Certificate($privateKey, $certificate, $export);
+    }
+
+
+    private function __construct(string $privateKey, string $certificate, array $export)
+    {
+        $this->privateKey = $privateKey;
+        $this->certificate = $certificate;
+        $this->export = $export;
     }
 
     public function getPrivateKey(): string

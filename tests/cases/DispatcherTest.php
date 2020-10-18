@@ -13,7 +13,7 @@ class DispatcherTest extends TestCase
 {
     public function testService(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         $dispatcher = new EET\Dispatcher($certificate, 'Personal/MySchema/MyService.wsdl');
 
@@ -40,7 +40,7 @@ class DispatcherTest extends TestCase
 
     public function testSendReceipt(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         $dispatcher->send($this->getValidReceipt());
@@ -55,7 +55,7 @@ class DispatcherTest extends TestCase
     public function testFailed(): void
     {
         static $proxy = ['127.0.0.1', 8888];
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
 
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
         $dispatcher->setCurlOption(CURLOPT_PROXY, implode(':', $proxy));
@@ -80,7 +80,7 @@ class DispatcherTest extends TestCase
 
     public function testCheck(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         $receipt = $this->getValidReceipt();
@@ -92,7 +92,7 @@ class DispatcherTest extends TestCase
 
     public function testGetCheckCodes(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         $receipt = $this->getValidReceipt();
@@ -107,7 +107,7 @@ class DispatcherTest extends TestCase
 
     public function testLastReceipt(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         Assert::null($dispatcher->getLastReceipt());
@@ -119,7 +119,7 @@ class DispatcherTest extends TestCase
 
     public function testGetWarnings(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         Assert::type('array', $dispatcher->getWarnings());
@@ -128,7 +128,7 @@ class DispatcherTest extends TestCase
 
     public function testGetPkp(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         Assert::null($dispatcher->getPkp());
@@ -140,7 +140,7 @@ class DispatcherTest extends TestCase
 
     public function testGetSentDateTime(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         Assert::null($dispatcher->getSentDateTime());
@@ -152,7 +152,7 @@ class DispatcherTest extends TestCase
 
     public function testGetSoapClient(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         Assert::type(EET\SoapClient::class, $dispatcher->getSoapClient());

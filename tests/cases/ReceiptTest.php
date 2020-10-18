@@ -27,7 +27,7 @@ class ReceiptTest extends TestCase
 
     public function testSendEmptyReceipt(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         Assert::exception(static function () use ($dispatcher) {
@@ -47,7 +47,7 @@ class ReceiptTest extends TestCase
 
     public function testConstraintViolation(): void
     {
-        $certificate = new EET\Certificate(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
+        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
         $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE, true);
 
         $receipt = new EET\Receipt;
