@@ -18,7 +18,7 @@ $receipt->dic_popl = 'CZ00000019';
 $receipt->dat_trzby = new DateTime;
 $receipt->celk_trzba = 500;
 
-$certificate = new Certificate('EET_CA1_Playground-CZ00000019.p12', 'eet');
+$certificate = Certificate::fromFile('EET_CA1_Playground-CZ00000019.p12', 'eet');
 $dispatcher = new Dispatcher($certificate, Dispatcher::PLAYGROUND_SERVICE);
 
 try {
