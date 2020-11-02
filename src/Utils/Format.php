@@ -10,7 +10,7 @@ class Format
      */
     public static function price($value): string
     {
-        return number_format($value, 2, '.', '');
+        return number_format((float) $value, 2, '.', '');
     }
 
     public static function BKB(string $code): string
