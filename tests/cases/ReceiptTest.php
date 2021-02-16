@@ -25,17 +25,6 @@ class ReceiptTest extends TestCase
         Assert::same($receipt->buildHeader(), $header);
     }
 
-    public function testSendEmptyReceipt(): void
-    {
-        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
-        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
-
-        Assert::exception(static function () use ($dispatcher): void {
-            $receipt = new EET\Receipt;
-            $dispatcher->send($receipt);
-        }, EET\Exceptions\Receipt\ConstraintViolationException::class);
-    }
-
     public function testEmptyCodes(): void
     {
         $receipt = new EET\Receipt;
@@ -43,23 +32,6 @@ class ReceiptTest extends TestCase
 
         Assert::null($exception->getPkp());
         Assert::null($exception->getBkp());
-    }
-
-    public function testConstraintViolation(): void
-    {
-        $certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
-        $dispatcher = new EET\Dispatcher($certificate, EET\Dispatcher::PLAYGROUND_SERVICE, true);
-
-        $receipt = new EET\Receipt;
-        $receipt->dic_popl = 'BadValue';
-
-        try {
-            $dispatcher->getCheckCodes($receipt);
-        } catch (EET\Exceptions\Receipt\ConstraintViolationException $exception) {
-            Assert::type('array', $exception->getErrors());
-            Assert::type('array', $exception->getProperties());
-            Assert::type(Validator\ConstraintViolationListInterface::class, $exception->getConstraintViolationList());
-        }
     }
 }
 
