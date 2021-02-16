@@ -25,7 +25,7 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.4",
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-openssl": "*",
@@ -35,10 +35,10 @@
         "symfony/validator": "^4.4 || ^5.0"
     },
     "require-dev": {
-        "ninjify/nunjuck": "^0.2",
-        "phpstan/phpstan": "^0.8",
-        "slevomat/coding-standard": "^5.0",
-        "squizlabs/php_codesniffer": "^3.4"
+        "ninjify/nunjuck": "^0.3.0",
+        "phpstan/phpstan": "^0.12.0",
+        "slevomat/coding-standard": "^6.4.0",
+        "squizlabs/php_codesniffer": "^3.5.0"
     },
     "autoload": {
         "psr-4": {
@@ -58,7 +58,7 @@
             "@phpstan",
             "@tester"
         ],
-        "phpstan": "phpstan analyse --level 7 --configuration tests/phpstan.neon src/",
+        "phpstan": "phpstan analyse --configuration tests/phpstan.neon",
         "cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/cases/",
         "cbf": "phpcbf --standard=phpcs.xml --colors --encoding=utf-8 -nsp src/ tests/",
         "tester": "nunjuck -s -c ./tests/php.ini ./tests",
