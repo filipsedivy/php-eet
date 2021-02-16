@@ -4,6 +4,7 @@ namespace FilipSedivy\EET;
 
 use DateTime;
 use FilipSedivy\EET\Utils\Format;
+use Ramsey\Uuid\Uuid;
 
 class Receipt
 {
@@ -75,6 +76,11 @@ class Receipt
     public ?string $bkp = null;
 
     public ?string $pkp = null;
+
+    public function __construct()
+    {
+        $this->uuid_zpravy = Uuid::uuid4()->toString();
+    }
 
     /** @return array<string|float|int|null> */
     public function buildHeader(): array
