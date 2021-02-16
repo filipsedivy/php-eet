@@ -2,32 +2,68 @@ name: Tests
 
 on: [ push, pull_request ]
 
+env:
+  extensions: "json, soap"
+  composer-version: "v1"
+  cache-version: "1"
+  composer-install: "composer update --no-interaction --no-progress --no-suggest --prefer-dist --prefer-stable"
+
 jobs:
-  tests:
-    runs-on: ubuntu-latest
+  static-analysis:
+    name: "Static analysis"
+    runs-on: "${{ matrix.operating-system }}"
+
     strategy:
       matrix:
-        php: [ '7.4', '8.0' ]
-
+        php-version: [ '7.4', '8.0' ]
+        operating-system: [ 'ubuntu-latest' ]
       fail-fast: false
 
-    name: PHP ${{ matrix.php }} tests
     steps:
-      - uses: actions/checkout@v2
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          coverage: none
-          extensions: soap
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
 
-      - run: composer install --no-progress --prefer-dist
-      - run: vendor/bin/tester tests -s -C
-      - if: failure()
-        uses: actions/upload-artifact@v2
+      - name: "Setup PHP cache environment"
+        id: "extcache"
+        uses: "shivammathur/cache-extensions@v1"
         with:
-          name: output
-          path: tests/**/output
+          php-version: "${{ matrix.php-version }}"
+          extensions: "${{ env.extensions }}"
+          key: "${{ env.cache-version }}"
 
+      - name: "Cache PHP extensions"
+        uses: "actions/cache@v2"
+        with:
+          path: "${{ steps.extcache.outputs.dir }}"
+          key: "${{ steps.extcache.outputs.key }}"
+          restore-keys: "${{ steps.extcache.outputs.key }}"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: "${{ env.extensions }}"
+          tools: "composer:${{ env.composer-version }} "
+
+      - name: "Setup problem matchers for PHP"
+        run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
+
+      - name: "Get Composer cache directory"
+        id: "composercache"
+        run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+
+      - name: "Cache PHP dependencies"
+        uses: "actions/cache@v2"
+        with:
+          path: "${{ steps.composercache.outputs.dir }}"
+          key: "${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}"
+          restore-keys: "${{ runner.os }}-composer-"
+
+      - name: "Install dependencies"
+        run: "${{ env.composer-install }}"
+
+      - name: "PHPStan"
+        run: "composer phpstan"
 
   lowest_dependencies:
     name: Lowest Dependencies
@@ -38,24 +74,7 @@ jobs:
         with:
           php-version: 7.4
           coverage: none
-          extensions: soap
+          extensions: "${{ env.extensions }}"
 
-      - run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
+      - run: composer update --no-interaction --prefer-dist --prefer-lowest --prefer-stable
       - run: vendor/bin/nunjuck -s -c ./tests/php.ini ./tests
-
-
-  code_coverage:
-    name: Code Coverage
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 7.4
-          coverage: none
-          extensions: soap, phpdbg
-
-      - run: composer install --no-progress --prefer-dist
-      - run: composer coverage
-      - run: wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
-      - run: php coveralls.phar --verbose -c ./tests/php.ini --config tests/.coveralls.yml
