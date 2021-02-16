@@ -252,8 +252,7 @@ class Dispatcher
         return $this->getSoapClient()->OdeslaniTrzby($data);
     }
 
-    /** @param array<string, int> $error */
-    private function processError(array $error): void
+    private function processError(object $error): void
     {
         if ($error->kod) {
             $msg = Enum\Error::LIST[$error->kod] ?? '';
@@ -262,8 +261,7 @@ class Dispatcher
         }
     }
 
-    /** @param array<string, int> $warnings */
-    private function processWarnings(array $warnings): void
+    private function processWarnings(object $warnings): void
     {
         $this->lastWarnings = [];
 
