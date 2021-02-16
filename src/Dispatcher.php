@@ -15,15 +15,15 @@ class Dispatcher
 
     public const PRODUCTION_SERVICE = 'production';
 
-    protected ?string $pkp;
+    protected ?string $pkp = null;
 
-    protected ?string $bkp;
+    protected ?string $bkp = null;
 
-    protected ?string $fik;
+    protected ?string $fik = null;
 
-    protected ?DateTime $sentDateTime;
+    protected ?DateTime $sentDateTime = null;
 
-    protected ?Receipt $lastReceipt;
+    protected ?Receipt $lastReceipt = null;
 
     /** @var array<string> */
     protected array $lastWarnings = [];
