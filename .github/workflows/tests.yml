@@ -18,6 +18,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
+          extensions: soap
 
       - run: composer install --no-progress --prefer-dist
       - run: vendor/bin/tester tests -s -C
@@ -37,6 +38,7 @@ jobs:
         with:
           php-version: 7.4
           coverage: none
+          extensions: soap
 
       - run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
       - run: vendor/bin/nunjuck -s -c ./tests/php.ini ./tests
@@ -51,6 +53,7 @@ jobs:
         with:
           php-version: 7.4
           coverage: none
+          extensions: soap
 
       - run: composer install --no-progress --prefer-dist
       - run: composer coverage
