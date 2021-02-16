@@ -23,7 +23,7 @@ class Dispatcher
 
     protected ?DateTime $sentDateTime;
 
-    protected Receipt $lastReceipt;
+    protected ?Receipt $lastReceipt;
 
     /** @var array<string> */
     protected array $lastWarnings = [];
