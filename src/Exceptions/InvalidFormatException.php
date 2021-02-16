@@ -2,7 +2,6 @@
 
 namespace FilipSedivy\EET\Exceptions;
 
-class RuntimeException extends EetException
+final class InvalidFormatException extends RuntimeException
 {
 }
-

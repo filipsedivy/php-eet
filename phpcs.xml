@@ -13,9 +13,9 @@
         <exclude name="SlevomatCodingStandard.ControlStructures.RequireMultiLineTernaryOperator"/>
         <exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
         <exclude name="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration"/>
         <exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators"/>
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint"/>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">

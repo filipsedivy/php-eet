@@ -4,10 +4,7 @@ namespace FilipSedivy\EET\Utils;
 
 class Format
 {
-    /**
-     * @var string|int|float $value
-     * @return string
-     */
+    /** @param string|int|float $value */
     public static function price($value): string
     {
         return number_format((float) $value, 2, '.', '');

@@ -8,48 +8,39 @@ use FilipSedivy\EET\Exceptions;
 use FilipSedivy\EET\Utils\Debugger;
 use FilipSedivy\EET\Utils\Format;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
-use Symfony\Component\Validator\Validation;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Dispatcher
 {
-    public const PLAYGROUND_SERVICE = 'playground',
-        PRODUCTION_SERVICE = 'production';
+    public const PLAYGROUND_SERVICE = 'playground';
 
-    /** @var Certificate */
-    private $certificate;
+    public const PRODUCTION_SERVICE = 'production';
 
-    /** @var string WSDL path or URL */
-    private $service;
+    protected ?string $pkp;
 
-    /** @var SoapClient */
-    private $soapClient;
+    protected ?string $bkp;
 
-    /** @var ValidatorInterface|null */
-    private $validator;
+    protected ?string $fik;
 
-    /** @var string|null */
-    protected $pkp;
+    protected ?DateTime $sentDateTime;
 
-    /** @var string|null */
-    protected $bkp;
+    protected Receipt $lastReceipt;
 
-    /** @var string|null */
-    protected $fik;
+    /** @var array<string> */
+    protected array $lastWarnings = [];
 
-    /** @var DateTime|null */
-    protected $sentDateTime;
+    private Certificate $certificate;
 
-    /** @var Receipt */
-    protected $lastReceipt;
+    private string $service;
 
-    /** @var array */
-    protected $lastWarnings = [];
+    private SoapClient $soapClient;
 
-    /** @var array Curl options */
-    private $curlOptions = [];
+    /** @var array<string> */
+    private array $curlOptions = [];
 
-    public function __construct(Certificate $certificate, string $service = self::PRODUCTION_SERVICE, bool $validate = true)
+    public function __construct(
+        Certificate $certificate,
+        string $service = self::PRODUCTION_SERVICE
+    )
     {
         $this->checkRequirements();
         $this->certificate = $certificate;
@@ -61,13 +52,9 @@ class Dispatcher
         } else {
             $this->setService($service);
         }
-
-        if ($validate) {
-            $this->initValidator();
-        }
     }
 
-    public function setService($service): void
+    public function setService(string $service): void
     {
         $this->service = $service;
     }
@@ -107,16 +94,12 @@ class Dispatcher
         $debugger->out();
     }
 
+    /**
+     * @return non-empty-array<string, array<string, string>>
+     * @throws \Exception
+     */
     public function getCheckCodes(Receipt $receipt): array
     {
-        if (isset($this->validator)) {
-            $violations = $this->validator->validate($receipt);
-
-            if ($violations->count() > 0) {
-                throw new Exceptions\Receipt\ConstraintViolationException($violations);
-            }
-        }
-
         if (isset($receipt->bkp, $receipt->pkp)) {
             $this->pkp = $receipt->pkp;
             $this->bkp = $receipt->bkp;
@@ -184,6 +167,10 @@ class Dispatcher
         return $this->soapClient;
     }
 
+    /**
+     * @return array<string, mixed>
+     * @throws \Exception
+     */
     public function prepareData(Receipt $receipt, bool $check = false): array
     {
         $this->sentDateTime = new DateTime;
@@ -237,11 +224,13 @@ class Dispatcher
         return $this->lastReceipt;
     }
 
+    /** @return array<string> */
     public function getWarnings(): array
     {
         return $this->lastWarnings;
     }
 
+    /** @param mixed $value */
     public function setCurlOption(int $option, $value = null): self
     {
         $this->curlOptions[$option] = $value;
@@ -256,14 +245,15 @@ class Dispatcher
         }
     }
 
-    private function processData(Receipt $receipt, bool $check = false)
+    private function processData(Receipt $receipt, bool $check = false): object
     {
         $data = $this->prepareData($receipt, $check);
 
         return $this->getSoapClient()->OdeslaniTrzby($data);
     }
 
-    private function processError($error): void
+    /** @param array<string, int> $error */
+    private function processError(array $error): void
     {
         if ($error->kod) {
             $msg = Enum\Error::LIST[$error->kod] ?? '';
@@ -272,7 +262,8 @@ class Dispatcher
         }
     }
 
-    private function processWarnings($warnings): void
+    /** @param array<string, int> $warnings */
+    private function processWarnings(array $warnings): void
     {
         $this->lastWarnings = [];
 
@@ -300,19 +291,5 @@ class Dispatcher
         if (!isset($this->soapClient)) {
             $this->soapClient = new SoapClient($this->service, $this->certificate, false, $this->curlOptions);
         }
-    }
-
-    private function initValidator(): void
-    {
-        if (!isset($this->validator)) {
-            $this->validator = $this->buildValidatorInterface();
-        }
-    }
-
-    private function buildValidatorInterface(): ValidatorInterface
-    {
-        return Validation::createValidatorBuilder()
-            ->addMethodMapping('loadValidatorMetadata')
-            ->getValidator();
     }
 }

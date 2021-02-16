@@ -12,13 +12,7 @@ require_once __DIR__ . '/../bootstrap.php';
 
 class DispatcherTest extends TestCase
 {
-    /** @var EET\Certificate */
-    private $certificate;
-
-    protected function setUp()
-    {
-        $this->certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
-    }
+    private EET\Certificate $certificate;
 
     public function testService(): void
     {
@@ -60,11 +54,10 @@ class DispatcherTest extends TestCase
 
     public function testFailed(): void
     {
-        static $proxy = ['127.0.0.1', 8888];
         $dispatcher = new EET\Dispatcher($this->certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
-        $dispatcher->setCurlOption(CURLOPT_PROXY, implode(':', $proxy));
+        $dispatcher->setCurlOption(CURLOPT_PROXY, '127.0.0.1:8888');
 
-        Assert::exception(function () use ($dispatcher) {
+        Assert::exception(function () use ($dispatcher): void {
             $dispatcher->send($this->getValidReceipt());
         }, EET\Exceptions\EET\ClientException::class);
 
@@ -153,6 +146,11 @@ class DispatcherTest extends TestCase
         $dispatcher = new EET\Dispatcher($this->certificate, EET\Dispatcher::PLAYGROUND_SERVICE);
 
         Assert::type(EET\SoapClient::class, $dispatcher->getSoapClient());
+    }
+
+    protected function setUp(): void
+    {
+        $this->certificate = EET\Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
     }
 
     private function getValidReceipt(): EET\Receipt

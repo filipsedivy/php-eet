@@ -8,46 +8,35 @@ use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SoapClient as InternalSoapClient;
 
-/**
- * @method OdeslaniTrzby(array $data)
- */
+/** @method OdeslaniTrzby(array $data) */
 class SoapClient extends InternalSoapClient
 {
-    /** @var Certificate */
-    private $certificate;
+    public string $lastRequest;
 
-    /** @var bool */
-    private $trace;
+    public ?string $lastResponse = null;
 
-    /** @var float */
-    private $connectionStartTime;
+    private Certificate $certificate;
 
-    /** @var float */
-    private $lastResponseStartTime;
+    private bool $trace;
 
-    /** @var float */
-    private $lastResponseEndTime;
+    private float $connectionStartTime;
 
-    /** @var int|null */
-    private $lastResponseHttpCode;
+    private float $lastResponseStartTime;
 
-    /** @var string */
-    public $lastRequest;
+    private float $lastResponseEndTime;
 
-    /** @var string|null */
-    public $lastResponse;
+    private ?int $lastResponseHttpCode = null;
 
-    /** @var bool */
-    private $returnRequest = false;
+    private bool $returnRequest = false;
 
     /** @var int|null timeout in milliseconds */
-    private $timeout = 2500;
+    private ?int $timeout = 2500;
 
     /** @var int|null connection timeout in milliseconds */
-    private $connectTimeout = 2000;
+    private ?int $connectTimeout = 2000;
 
     /** @var array */
-    private $curlOptions;
+    private array $curlOptions;
 
     public function __construct(string $service, Certificate $certificate, bool $trace = false, array $curlOptions = [])
     {
@@ -97,7 +86,13 @@ class SoapClient extends InternalSoapClient
         return $this->lastResponse;
     }
 
-    public function doRequestByCurl(string $request, string $location, string $action, int $version, int $one_way = 0): ?string
+    public function doRequestByCurl(
+        string $request,
+        string $location,
+        string $action,
+        int $version,
+        int $one_way = 0
+    ): ?string
     {
         $this->lastResponseHttpCode = null;
 
@@ -152,6 +147,51 @@ class SoapClient extends InternalSoapClient
         return $one_way ? null : $body;
     }
 
+    public function getLastResponseTime(): float
+    {
+        return $this->lastResponseEndTime - $this->lastResponseStartTime;
+    }
+
+    public function getLastResponseHttpCode(): ?int
+    {
+        return $this->lastResponseHttpCode;
+    }
+
+    public function getConnectionTime(bool $tillLastRequest = false)
+    {
+        return $tillLastRequest ? $this->getConnectionTimeTillLastRequest() : $this->getConnectionTimeTillNow();
+    }
+
+    public function __getLastRequest(): string
+    {
+        return $this->lastRequest;
+    }
+
+    public function __getLastResponse(): string
+    {
+        return (string)$this->lastResponse;
+    }
+
+    public function setTimeout($milliseconds): void
+    {
+        $this->timeout = $milliseconds;
+    }
+
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    public function setConnectTimeout($milliseconds): void
+    {
+        $this->connectTimeout = $milliseconds;
+    }
+
+    public function getConnectTimeout()
+    {
+        return $this->connectTimeout;
+    }
+
     private function setCurlOptions($curl, array $options): void
     {
         foreach ($options as $option => $value) {
@@ -183,21 +223,6 @@ class SoapClient extends InternalSoapClient
         return $options;
     }
 
-    public function getLastResponseTime(): float
-    {
-        return $this->lastResponseEndTime - $this->lastResponseStartTime;
-    }
-
-    public function getLastResponseHttpCode(): ?int
-    {
-        return $this->lastResponseHttpCode;
-    }
-
-    public function getConnectionTime(bool $tillLastRequest = false)
-    {
-        return $tillLastRequest ? $this->getConnectionTimeTillLastRequest() : $this->getConnectionTimeTillNow();
-    }
-
     private function getConnectionTimeTillLastRequest()
     {
         if (!$this->lastResponseEndTime || !$this->connectionStartTime) {
@@ -214,35 +239,5 @@ class SoapClient extends InternalSoapClient
         }
 
         return microtime(true) - $this->connectionStartTime;
-    }
-
-    public function __getLastRequest(): string
-    {
-        return $this->lastRequest;
-    }
-
-    public function __getLastResponse(): string
-    {
-        return (string)$this->lastResponse;
-    }
-
-    public function setTimeout($milliseconds): void
-    {
-        $this->timeout = $milliseconds;
-    }
-
-    public function getTimeout()
-    {
-        return $this->timeout;
-    }
-
-    public function setConnectTimeout($milliseconds): void
-    {
-        $this->connectTimeout = $milliseconds;
-    }
-
-    public function getConnectTimeout()
-    {
-        return $this->connectTimeout;
     }
 }

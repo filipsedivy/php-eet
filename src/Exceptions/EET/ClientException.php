@@ -8,14 +8,11 @@ use Throwable;
 
 class ClientException extends RuntimeException
 {
-    /** @var Receipt */
-    private $receipt;
+    private Receipt $receipt;
 
-    /** @var string|null */
-    private $pkp;
+    private ?string $pkp;
 
-    /** @var string|null */
-    private $bkp;
+    private ?string $bkp;
 
     public function __construct(Receipt $receipt, ?string $pkp, ?string $bkp, Throwable $previous)
     {

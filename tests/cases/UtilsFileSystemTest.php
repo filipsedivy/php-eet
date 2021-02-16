@@ -13,7 +13,7 @@ class UtilsFileSystemTest extends TestCase
 {
     public function testNotExistFile(): void
     {
-        Assert::exception(static function () {
+        Assert::exception(static function (): void {
             Utils\FileSystem::read(__DIR__ . '/not-exist-file');
         }, Exceptions\IOException::class);
     }

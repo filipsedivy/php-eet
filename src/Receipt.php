@@ -4,8 +4,6 @@ namespace FilipSedivy\EET;
 
 use DateTime;
 use FilipSedivy\EET\Utils\Format;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class Receipt
 {
@@ -28,81 +26,57 @@ class Receipt
         'pouzit_zboz2', 'pouzit_zboz3', 'urceno_cerp_zuct', 'cerp_zuct'
     ];
 
-    /** @var string */
-    public $uuid_zpravy;
+    public string $uuid_zpravy;
 
-    /** @var bool */
-    public $prvni_zaslani = true;
+    public bool $prvni_zaslani = true;
 
-    /** @var string */
-    public $dic_popl;
+    public string $dic_popl;
 
-    /** @var string|null */
-    public $dic_poverujiciho;
+    public ?string $dic_poverujiciho = null;
 
-    /** @var string */
-    public $id_provoz;
+    public string $id_provoz;
 
-    /** @var string */
-    public $id_pokl;
+    public string $id_pokl;
 
-    /** @var string */
-    public $porad_cis;
+    public string $porad_cis;
 
-    /** @var \DateTime */
-    public $dat_trzby;
+    public DateTime $dat_trzby;
 
-    /** @var float */
-    public $celk_trzba;
+    public float $celk_trzba;
 
-    /** @var float|null */
-    public $zakl_nepodl_dph;
+    public ?float $zakl_nepodl_dph = null;
 
-    /** @var float|null */
-    public $zakl_dan1;
+    public ?float $zakl_dan1 = null;
 
-    /** @var float|null */
-    public $dan1;
+    public ?float $dan1 = null;
 
-    /** @var float|null */
-    public $zakl_dan2;
+    public ?float $zakl_dan2 = null;
 
-    /** @var float|null */
-    public $dan2;
+    public ?float $dan2 = null;
 
-    /** @var float|null */
-    public $zakl_dan3;
+    public ?float $zakl_dan3 = null;
 
-    /** @var float|null */
-    public $dan3;
+    public ?float $dan3 = null;
 
-    /** @var float|null */
-    public $cest_sluz;
+    public ?float $cest_sluz = null;
 
-    /** @var float|null */
-    public $pouzit_zboz1;
+    public ?float $pouzit_zboz1 = null;
 
-    /** @var float|null */
-    public $pouzit_zboz2;
+    public ?float $pouzit_zboz2 = null;
 
-    /** @var float|null */
-    public $pouzit_zboz3;
+    public ?float $pouzit_zboz3 = null;
 
-    /** @var float|null */
-    public $urceno_cerp_zuct;
+    public ?float $urceno_cerp_zuct = null;
 
-    /** @var float|null */
-    public $cerp_zuct;
+    public ?float $cerp_zuct = null;
 
-    /** @var int */
-    public $rezim = 0;
+    public int $rezim = 0;
 
-    /** @var string|null */
-    public $bkp;
+    public ?string $bkp = null;
 
-    /** @var string|null */
-    public $pkp;
+    public ?string $pkp = null;
 
+    /** @return array<string|float|int|null> */
     public function buildHeader(): array
     {
         $header = [];
@@ -116,6 +90,7 @@ class Receipt
         return $header;
     }
 
+    /** @return array<string|float|int|null> */
     public function buildBody(bool $autoFormatPrice = true): array
     {
         $body = [];
@@ -150,100 +125,5 @@ class Receipt
         }
 
         return $body;
-    }
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata): void
-    {
-        $metadata
-            ->addPropertyConstraint('uuid_zpravy', new Assert\NotBlank)
-            ->addPropertyConstraint('uuid_zpravy', new Assert\Type('string'))
-            ->addPropertyConstraint('uuid_zpravy', new Assert\Uuid([
-                'versions' => [Assert\Uuid::V4_RANDOM]
-            ]));
-
-        $metadata
-            ->addPropertyConstraint('prvni_zaslani', new Assert\Type('bool'));
-
-        $metadata
-            ->addPropertyConstraint('dic_popl', new Assert\NotBlank)
-            ->addPropertyConstraint('dic_popl', new Assert\Regex([
-                'pattern' => '/^CZ([0-9]{8,10})$/'
-            ]));
-
-        $metadata
-            ->addPropertyConstraint('dic_poverujiciho', new Assert\Regex([
-                'pattern' => '/^CZ([0-9]{8,10})$/'
-            ]));
-
-        $metadata
-            ->addPropertyConstraint('id_provoz', new Assert\NotBlank)
-            ->addPropertyConstraint('id_provoz', new Assert\Regex([
-                'pattern' => '/^[1-9][0-9]{0,5}$/'
-            ]));
-
-        $metadata
-            ->addPropertyConstraint('id_pokl', new Assert\NotBlank)
-            ->addPropertyConstraint('id_pokl', new Assert\Regex([
-                'pattern' => '/^[0-9a-zA-Z\.,:;\/#\-_ ]{1,20}$/'
-            ]));
-
-        $metadata
-            ->addPropertyConstraint('porad_cis', new Assert\NotBlank)
-            ->addPropertyConstraint('porad_cis', new Assert\Regex([
-                'pattern' => '/^[0-9a-zA-Z\.,:;\/#\-_ ]{1,25}$/'
-            ]));
-
-        $metadata
-            ->addPropertyConstraint('dat_trzby', new Assert\NotBlank)
-            ->addPropertyConstraint('dat_trzby', new Assert\Type(DateTime::class));
-
-        $metadata
-            ->addPropertyConstraint('celk_trzba', new Assert\NotBlank)
-            ->addPropertyConstraint('celk_trzba', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('zakl_nepodl_dph', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('zakl_dan1', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('dan1', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('zakl_dan2', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('dan2', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('zakl_dan3', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('dan3', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('cest_sluz', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('pouzit_zboz1', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('pouzit_zboz2', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('pouzit_zboz3', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('urceno_cerp_zuct', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('cerp_zuct', new Assert\Type('numeric'));
-
-        $metadata
-            ->addPropertyConstraint('rezim', new Assert\NotBlank)
-            ->addPropertyConstraint('rezim', new Assert\Regex([
-                'pattern' => '/^[01]$/'
-            ]));
     }
 }

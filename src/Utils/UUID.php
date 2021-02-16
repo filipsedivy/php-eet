@@ -7,7 +7,6 @@ use Ramsey;
 class UUID
 {
     /**
-     * @return string
      * @throws \Exception
      * @deprecated Use Ramsey\Uuid\Uuid::uuid4() instead
      */

@@ -8,14 +8,20 @@ use FilipSedivy\EET\Utils;
 
 class Certificate
 {
-    /** @var string */
-    private $privateKey;
+    private string $privateKey;
 
-    /** @var string */
-    private $certificate;
+    private string $certificate;
 
-    /** @var array */
-    private $export;
+    /** @var array<string,mixed> */
+    private array $export;
+
+    /** @param array<string> $export */
+    private function __construct(string $privateKey, string $certificate, array $export)
+    {
+        $this->privateKey = $privateKey;
+        $this->certificate = $certificate;
+        $this->export = $export;
+    }
 
     public static function fromString(string $pkcs12, string $password): Certificate
     {
@@ -33,33 +39,6 @@ class Certificate
         return self::readPkcs12($pkcs12, $password, $file);
     }
 
-    private static function readPkcs12(string $pkcs12, string $password, string $identifier): Certificate
-    {
-        if (!function_exists('openssl_pkcs12_read')) {
-            throw new Exceptions\ExtensionNotFound('OpenSSL');
-        }
-
-        $openSSL = openssl_pkcs12_read($pkcs12, $certs, $password);
-
-        if (!$openSSL) {
-            throw new Exceptions\Certificate\CertificateExportFailedException($identifier);
-        }
-
-        $privateKey = $certs['pkey'];
-        $certificate = $certs['cert'];
-        $export = openssl_x509_parse($certificate);
-
-        return new Certificate($privateKey, $certificate, $export);
-    }
-
-
-    private function __construct(string $privateKey, string $certificate, array $export)
-    {
-        $this->privateKey = $privateKey;
-        $this->certificate = $certificate;
-        $this->export = $export;
-    }
-
     public function getPrivateKey(): string
     {
         return $this->privateKey;
@@ -70,11 +49,13 @@ class Certificate
         return $this->certificate;
     }
 
+    /** @return array<string> */
     public function getExport(): array
     {
         return $this->export;
     }
 
+    /** @return array<string> */
     public function getIssuer(): array
     {
         $export = $this->getExport();
@@ -82,6 +63,7 @@ class Certificate
         return $export['issuer'];
     }
 
+    /** @return array<string> */
     public function getSubject(): array
     {
         $export = $this->getExport();
@@ -93,7 +75,13 @@ class Certificate
     {
         $export = $this->getExport();
 
-        return date_create_from_format('ymdHise', $export['validFrom']);
+        $format = date_create_from_format('ymdHise', $export['validFrom']);
+
+        if (!$format instanceof DateTime) {
+            throw new Exceptions\InvalidFormatException('Invalid validFrom parameter');
+        }
+
+        return $format;
     }
 
     public function getValidTo(): DateTime
@@ -139,5 +127,24 @@ class Certificate
         return $this->isIssuerOk() &&
             $this->isCertificateOk() &&
             $this->isValidOk();
+    }
+
+    private static function readPkcs12(string $pkcs12, string $password, string $identifier): Certificate
+    {
+        if (!function_exists('openssl_pkcs12_read')) {
+            throw new Exceptions\ExtensionNotFound('OpenSSL');
+        }
+
+        $openSSL = openssl_pkcs12_read($pkcs12, $certs, $password);
+
+        if (!$openSSL) {
+            throw new Exceptions\Certificate\CertificateExportFailedException($identifier);
+        }
+
+        $privateKey = $certs['pkey'];
+        $certificate = $certs['cert'];
+        $export = openssl_x509_parse($certificate);
+
+        return new Certificate($privateKey, $certificate, $export);
     }
 }

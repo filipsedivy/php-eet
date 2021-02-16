@@ -15,7 +15,7 @@ class CertificateTest extends TestCase
 {
     public function testFileNotExists(): void
     {
-        Assert::exception(static function () {
+        Assert::exception(static function (): void {
             Certificate::fromFile(__DIR__ . '/not-exists-certificate.p12', 'testPassword');
         }, Exceptions\Certificate\CertificateNotFoundException::class);
     }
@@ -37,7 +37,6 @@ class CertificateTest extends TestCase
         Assert::type('string', $certificate->getCertificate());
     }
 
-
     public function testCertificateFromFile(): void
     {
         $certificate = Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'eet');
@@ -48,7 +47,7 @@ class CertificateTest extends TestCase
 
     public function testBadPassword(): void
     {
-        Assert::exception(static function () {
+        Assert::exception(static function (): void {
             Certificate::fromFile(DATA_DIR . '/EET_CA1_Playground-CZ00000019.p12', 'password');
         }, Exceptions\Certificate\CertificateExportFailedException::class);
     }

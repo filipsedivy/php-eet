@@ -12,20 +12,15 @@ class LastRequest
         'BinarySecurityToken'
     ];
 
-    /** @var bool */
-    public $highlight = true;
+    public bool $highlight = true;
 
-    /** @var bool */
-    public $format = true;
+    public bool $format = true;
 
-    /** @var bool */
-    public $hiddenSensitiveData = true;
+    public bool $hiddenSensitiveData = true;
 
-    /** @var string */
-    public $sensitiveValue = '**** CENSURE ****';
+    public string $sensitiveValue = '**** CENSURE ****';
 
-    /** @var string */
-    private $lastRequest;
+    private string $lastRequest;
 
     public function __construct(string $lastRequest)
     {
