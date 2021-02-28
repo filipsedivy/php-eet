@@ -77,7 +77,7 @@ jobs:
           extensions: "${{ env.extensions }}"
 
       - run: composer update --no-interaction --prefer-dist --prefer-lowest --prefer-stable
-      - run: vendor/bin/nunjuck -s -c ./tests/php.ini ./tests
+      - run: vendor/bin/phpunit -c phpunit.xml.dist
 
   tests:
     name: "PHPUnit (${{ matrix.php-version }})"
