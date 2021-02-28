@@ -146,7 +146,7 @@ class Dispatcher
             throw new Exceptions\EET\ClientException($receipt, $this->pkp, $this->bkp, $exception);
         }
 
-        if (isset($response->Chyba)) {
+        if (isset($response->Chyba) && ($check && $response->Chyba->kod !== 0)) {
             $errorResult = $response->Chyba;
             $errorResponse = new Response\Error($errorResult->kod, $errorResult->test);
             throw Exceptions\EET\ErrorException::fromErrorResponse($errorResponse);
