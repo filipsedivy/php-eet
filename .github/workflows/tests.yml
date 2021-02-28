@@ -3,7 +3,7 @@ name: Tests
 on: [ push, pull_request ]
 
 env:
-  extensions: "json, soap"
+  extensions: "json, soap, curl"
   composer-version: "v1"
   cache-version: "1"
   composer-install: "composer update --no-interaction --no-progress --no-suggest --prefer-dist --prefer-stable"
@@ -11,39 +11,39 @@ env:
 jobs:
   static-analysis:
     name: "Static analysis"
-    runs-on: "${{ matrix.operating-system }}"
+    runs-on: ${{ matrix.operating-system }}
 
     strategy:
       matrix:
-        php-version: [ '7.4', '8.0' ]
-        operating-system: [ 'ubuntu-latest' ]
+        php-version: [ "7.4", "8.0" ]
+        operating-system: [ "ubuntu-latest" ]
       fail-fast: false
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: actions/checkout@v2
 
       - name: "Setup PHP cache environment"
-        id: "extcache"
-        uses: "shivammathur/cache-extensions@v1"
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
         with:
-          php-version: "${{ matrix.php-version }}"
-          extensions: "${{ env.extensions }}"
-          key: "${{ env.cache-version }}"
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.cache-version }}
 
       - name: "Cache PHP extensions"
-        uses: "actions/cache@v2"
+        uses: actions/cache@v2
         with:
-          path: "${{ steps.extcache.outputs.dir }}"
-          key: "${{ steps.extcache.outputs.key }}"
-          restore-keys: "${{ steps.extcache.outputs.key }}"
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: "${{ matrix.php-version }}"
-          extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }} "
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          tools: composer:${{ env.composer-version }}
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -53,7 +53,7 @@ jobs:
         run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
 
       - name: "Cache PHP dependencies"
-        uses: "actions/cache@v2"
+        uses: actions/cache@v2
         with:
           path: "${{ steps.composercache.outputs.dir }}"
           key: "${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}"
@@ -78,3 +78,27 @@ jobs:
 
       - run: composer update --no-interaction --prefer-dist --prefer-lowest --prefer-stable
       - run: vendor/bin/nunjuck -s -c ./tests/php.ini ./tests
+
+  tests:
+    name: "PHPUnit (${{ matrix.php-version }})"
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        php-version: [ "7.4", "8.0" ]
+        operating-system: [ "ubuntu-latest" ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2, pecl
+          extensions: ${{ env.extensions }}
+          coverage: pcov
+
+      - name: Execute tests
+        run: vendor/bin/phpunit -c phpunit.xml.dist
