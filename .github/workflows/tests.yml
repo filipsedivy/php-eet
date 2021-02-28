@@ -10,7 +10,7 @@ env:
 
 jobs:
   static-analysis:
-    name: "Static analysis"
+    name: "Static analysis (${{ matrix.php-version }})"
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
