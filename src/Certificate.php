@@ -55,7 +55,7 @@ class Certificate
         return $this->export;
     }
 
-    /** @return array<string> */
+    /** @return array<string, string> */
     public function getIssuer(): array
     {
         $export = $this->getExport();
@@ -63,7 +63,7 @@ class Certificate
         return $export['issuer'];
     }
 
-    /** @return array<string> */
+    /** @return array<string, string> */
     public function getSubject(): array
     {
         $export = $this->getExport();

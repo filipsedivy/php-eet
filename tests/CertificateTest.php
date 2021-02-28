@@ -30,6 +30,14 @@ class CertificateTest extends TestCase
 
         $this->assertIsString($certificate->getPrivateKey());
         $this->assertIsString($certificate->getCertificate());
+
+        $this->assertArrayHasKey('DC', $certificate->getIssuer());
+        $this->assertArrayHasKey('O', $certificate->getIssuer());
+        $this->assertArrayHasKey('CN', $certificate->getIssuer());
+
+        $this->assertArrayHasKey('DC', $certificate->getSubject());
+        $this->assertArrayHasKey('CN', $certificate->getSubject());
+        $this->assertArrayHasKey('description', $certificate->getSubject());
     }
 
     public function testBadPassword(): void
