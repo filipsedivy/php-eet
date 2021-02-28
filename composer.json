@@ -31,7 +31,8 @@
         "ext-openssl": "*",
         "ext-soap": "*",
         "ramsey/uuid": "^3.9 || ^4.0",
-        "robrichards/wse-php": "^2.0"
+        "robrichards/wse-php": "^2.0",
+        "myclabs/php-enum": "^1.8"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12.0",
