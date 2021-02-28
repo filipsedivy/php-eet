@@ -100,5 +100,8 @@ jobs:
           extensions: ${{ env.extensions }}
           coverage: pcov
 
+      - name: Install dependencies
+        run: ${{ env.composer-install }}
+
       - name: Execute tests
         run: vendor/bin/phpunit -c phpunit.xml.dist
