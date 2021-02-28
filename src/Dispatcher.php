@@ -4,6 +4,7 @@ namespace FilipSedivy\EET;
 
 use DateTime;
 use FilipSedivy\EET\Enum;
+use FilipSedivy\EET\Entity\Response;
 use FilipSedivy\EET\Exceptions;
 use FilipSedivy\EET\Utils\Debugger;
 use FilipSedivy\EET\Utils\Format;
@@ -25,7 +26,7 @@ class Dispatcher
 
     protected ?Receipt $lastReceipt = null;
 
-    /** @var array<string> */
+    /** @var array<Response\Warning> */
     protected array $lastWarnings = [];
 
     private Certificate $certificate;
@@ -146,7 +147,9 @@ class Dispatcher
         }
 
         if (isset($response->Chyba)) {
-            $this->processError($response->Chyba);
+            $errorResult = $response->Chyba;
+            $errorResponse = new Response\Error($errorResult->kod, $errorResult->test);
+            throw Exceptions\EET\ErrorException::fromErrorResponse($errorResponse);
         }
 
         if (isset($response->Varovani)) {
@@ -224,7 +227,7 @@ class Dispatcher
         return $this->lastReceipt;
     }
 
-    /** @return array<string> */
+    /** @return array<Response\Warning> */
     public function getWarnings(): array
     {
         return $this->lastWarnings;
@@ -252,31 +255,16 @@ class Dispatcher
         return $this->getSoapClient()->OdeslaniTrzby($data);
     }
 
-    private function processError(object $error): void
-    {
-        if ($error->kod) {
-            $msg = Enum\Error::LIST[$error->kod] ?? '';
-
-            throw new Exceptions\EET\ErrorException($msg, $error->kod);
-        }
-    }
-
     private function processWarnings(object $warnings): void
     {
         $this->lastWarnings = [];
 
-        if (is_array($warnings)) {
+        if (is_iterable($warnings)) {
             foreach ($warnings as $warning) {
-                $this->lastWarnings[] = [
-                    'code' => $warning->kod_varov,
-                    'message' => Enum\Warning::LIST[$warning->kod_varov] ?? ''
-                ];
+                $this->lastWarnings[] = new Response\Warning($warning->kod_varov);
             }
         } else {
-            $this->lastWarnings[] = [
-                'code' => $warnings->kod_varov,
-                'message' => Enum\Warning::LIST[$warnings->kod_varov] ?? ''
-            ];
+            $this->lastWarnings[] = new Response\Warning($warnings->kod_varov);
         }
     }
 

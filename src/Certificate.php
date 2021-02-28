@@ -49,7 +49,7 @@ class Certificate
         return $this->certificate;
     }
 
-    /** @return array<string> */
+    /** @return array<string,mixed> */
     public function getExport(): array
     {
         return $this->export;
