@@ -22,12 +22,12 @@ class ErrorException extends RuntimeException implements EETException
             $code .= $error->getCode();
         }
 
-        $enum = Enum\Error::$code();
+        try {
+            $enum = Enum\Error::$code();
 
-        if ($enum instanceof Enum\Error) {
             return new self($enum->getValue(), $error->getCode());
+        } catch (\BadMethodCallException $exception) {
+            return new self('', $error->getCode());
         }
-
-        return new self('', $error->getCode());
     }
 }
