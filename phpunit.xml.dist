@@ -14,4 +14,10 @@
     <logging>
         <log type="coverage-clover" target="coverage.xml"/>
     </logging>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
