@@ -40,4 +40,15 @@ class ErrorExceptionTest extends TestCase
 
         throw Exceptions\EET\ErrorException::fromErrorResponse($errorResponse);
     }
+
+    public function testEmptyMessage(): void
+    {
+        $errorResponse = new Response\Error(-99, true);
+
+        $this->expectException(Exceptions\EET\ErrorException::class);
+        $this->expectExceptionMessage('');
+        $this->expectExceptionCode(-99);
+
+        throw Exceptions\EET\ErrorException::fromErrorResponse($errorResponse);
+    }
 }
