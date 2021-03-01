@@ -39,7 +39,6 @@
         "phpunit/phpunit": "^9.5.2",
         "php-coveralls/php-coveralls": "^2.4",
         "slevomat/coding-standard": "^6.4.0",
-        "nette/tester": "^2.3.0",
         "symfony/thanks": "^1.2.0"
     },
     "autoload": {
