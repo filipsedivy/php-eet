@@ -3,7 +3,7 @@
 namespace FilipSedivy\EET\Entity\Response;
 
 use FilipSedivy\EET\Enum;
-use phpDocumentor\Reflection\Types\This;
+use BadMethodCallException;
 
 final class Warning
 {
@@ -29,10 +29,14 @@ final class Warning
             $key .= $this->code;
         }
 
-        $enum = Enum\Warning::$key();
+        try {
+            $enum = Enum\Warning::$key();
 
-        if ($enum instanceof Enum\Warning) {
-            return $enum->getValue();
+            if ($enum instanceof Enum\Warning) {
+                return $enum->getValue();
+            }
+        } catch (BadMethodCallException $exception) {
+            return null;
         }
 
         return null;
