@@ -8,7 +8,9 @@ use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SoapClient as InternalSoapClient;
 
-/** @method OdeslaniTrzby(array $data) */
+/**
+ * @method OdeslaniTrzby(array $data)
+ */
 class SoapClient extends InternalSoapClient
 {
     public string $lastRequest;
@@ -35,9 +37,12 @@ class SoapClient extends InternalSoapClient
     /** @var int|null connection timeout in milliseconds */
     private ?int $connectTimeout = 2000;
 
-    /** @var array */
+    /** @var array<string, mixed> */
     private array $curlOptions;
 
+    /**
+     * @param array<string, mixed> $curlOptions
+     */
     public function __construct(string $service, Certificate $certificate, bool $trace = false, array $curlOptions = [])
     {
         parent::__construct($service, [
@@ -50,7 +55,7 @@ class SoapClient extends InternalSoapClient
         $this->curlOptions = $curlOptions;
     }
 
-    public function getXML($request)
+    public function getXML(string $request): string
     {
         $doc = new \DOMDocument('1.0');
         $doc->loadXML($request);
@@ -70,6 +75,7 @@ class SoapClient extends InternalSoapClient
 
     public function __doRequest($request, $location, $action, $version, $one_way = 0): ?string
     {
+
         $xml = $this->getXML($request);
         $this->lastRequest = $xml;
 
@@ -157,7 +163,7 @@ class SoapClient extends InternalSoapClient
         return $this->lastResponseHttpCode;
     }
 
-    public function getConnectionTime(bool $tillLastRequest = false)
+    public function getConnectionTime(bool $tillLastRequest = false): ?float
     {
         return $tillLastRequest ? $this->getConnectionTimeTillLastRequest() : $this->getConnectionTimeTillNow();
     }
@@ -172,22 +178,22 @@ class SoapClient extends InternalSoapClient
         return (string)$this->lastResponse;
     }
 
-    public function setTimeout($milliseconds): void
+    public function setTimeout(?int $milliseconds): void
     {
         $this->timeout = $milliseconds;
     }
 
-    public function getTimeout()
+    public function getTimeout(): ?int
     {
         return $this->timeout;
     }
 
-    public function setConnectTimeout($milliseconds): void
+    public function setConnectTimeout(?int $milliseconds): void
     {
         $this->connectTimeout = $milliseconds;
     }
 
-    public function getConnectTimeout()
+    public function getConnectTimeout(): ?int
     {
         return $this->connectTimeout;
     }
@@ -223,7 +229,7 @@ class SoapClient extends InternalSoapClient
         return $options;
     }
 
-    private function getConnectionTimeTillLastRequest()
+    private function getConnectionTimeTillLastRequest(): ?float
     {
         if (!$this->lastResponseEndTime || !$this->connectionStartTime) {
             return null;
@@ -232,7 +238,7 @@ class SoapClient extends InternalSoapClient
         return $this->lastResponseEndTime - $this->connectionStartTime;
     }
 
-    private function getConnectionTimeTillNow()
+    private function getConnectionTimeTillNow(): ?float
     {
         if (!$this->connectionStartTime) {
             return null;
