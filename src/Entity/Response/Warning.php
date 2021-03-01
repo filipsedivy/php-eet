@@ -36,7 +36,6 @@ final class Warning
                 return $enum->getValue();
             }
         } catch (BadMethodCallException $exception) {
-            return null;
         }
 
         return null;
