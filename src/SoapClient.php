@@ -198,6 +198,10 @@ class SoapClient extends InternalSoapClient
         return $this->connectTimeout;
     }
 
+    /**
+     * @param resource $curl
+     * @param array<string|int, mixed> $options
+     */
     private function setCurlOptions($curl, array $options): void
     {
         foreach ($options as $option => $value) {
@@ -211,7 +215,11 @@ class SoapClient extends InternalSoapClient
         }
     }
 
-    private function curlSetTimeoutOption($options, $milliseconds, $name)
+    /**
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
+     */
+    private function curlSetTimeoutOption(array $options, int $milliseconds, string $name): array
     {
         if ($milliseconds > 0) {
             if (defined("{$name}_MS")) {
