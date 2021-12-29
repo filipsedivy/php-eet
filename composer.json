@@ -32,7 +32,7 @@
         "ext-soap": "*",
         "ramsey/uuid": "^3.9 || ^4.0",
         "robrichards/wse-php": "^2.0",
-        "symfony/validator": "^4.4 || ^5.0"
+        "symfony/validator": "^4.4 || ^5.0 || ^6.0"
     },
     "require-dev": {
         "ninjify/nunjuck": "^0.2",
