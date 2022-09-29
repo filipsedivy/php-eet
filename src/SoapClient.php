@@ -97,7 +97,7 @@ class SoapClient extends InternalSoapClient
         return $this->lastResponse;
     }
 
-    public function doRequestByCurl(string $request, string $location, string $action, int $version, int $one_way = 0): ?string
+    public function doRequestByCurl(string $request, string $location, string $action, int $version, int|bool $one_way = 0): ?string
     {
         $this->lastResponseHttpCode = null;
 
